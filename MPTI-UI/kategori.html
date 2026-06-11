@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kategori Pengaduan - SIPMA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="side-nav">
+      <a class="brand" href="index.html"><span class="brand-mark">SP</span><span><strong>SIPMA</strong><span>Pengaduan Mahasiswa</span></span></a>
+      <nav class="nav-group"><span class="nav-label">Mahasiswa</span><a class="nav-link" href="index.html">Dashboard</a><a class="nav-link" href="pengaduan.html">Buat Pengaduan</a><a class="nav-link" href="detail.html">Detail Pengaduan</a></nav>
+      <nav class="nav-group"><span class="nav-label">Pengelola</span><a class="nav-link" href="admin.html">Dashboard Admin</a><a class="nav-link active" href="kategori.html">Kategori</a><a class="nav-link" href="laporan.html">Laporan</a></nav>
+      <div class="nav-note">Kategori mengikuti contoh data pada rancangan database.</div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div class="page-title"><h1>Manajemen Kategori</h1><p>Tambah, ubah, dan nonaktifkan kategori pengaduan.</p></div><button class="btn primary" type="button">Tambah Kategori</button></header>
+      <section class="content">
+        <section class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>No</th><th>Kategori</th><th>Deskripsi</th><th>Status</th><th>Aksi</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Akademik</td><td>Jadwal, dosen, nilai, kelas, dan pembelajaran.</td><td><span class="badge done">Aktif</span></td><td><button class="btn">Edit</button></td></tr>
+                <tr><td>2</td><td>Administrasi</td><td>Surat, pembayaran, registrasi, dan layanan administrasi.</td><td><span class="badge done">Aktif</span></td><td><button class="btn">Edit</button></td></tr>
+                <tr><td>3</td><td>Fasilitas</td><td>Ruang kelas, laboratorium, internet, toilet, parkir, dan sarana kampus.</td><td><span class="badge done">Aktif</span></td><td><button class="btn">Edit</button></td></tr>
+                <tr><td>4</td><td>Kemahasiswaan</td><td>Organisasi, beasiswa, kegiatan mahasiswa, dan layanan kemahasiswaan.</td><td><span class="badge done">Aktif</span></td><td><button class="btn">Edit</button></td></tr>
+                <tr><td>5</td><td>Keamanan dan Kenyamanan</td><td>Keamanan lingkungan kampus, kehilangan, ketertiban, dan kenyamanan.</td><td><span class="badge done">Aktif</span></td><td><button class="btn">Edit</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

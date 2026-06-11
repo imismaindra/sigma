@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Form Pengaduan - SIPMA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="side-nav">
+      <a class="brand" href="index.html"><span class="brand-mark">SP</span><span><strong>SIPMA</strong><span>Pengaduan Mahasiswa</span></span></a>
+      <nav class="nav-group">
+        <span class="nav-label">Mahasiswa</span>
+        <a class="nav-link" href="index.html">Dashboard</a>
+        <a class="nav-link active" href="pengaduan.html">Buat Pengaduan</a>
+        <a class="nav-link" href="detail.html">Detail Pengaduan</a>
+      </nav>
+      <nav class="nav-group"><span class="nav-label">Pengelola</span><a class="nav-link" href="admin.html">Dashboard Admin</a><a class="nav-link" href="kategori.html">Kategori</a><a class="nav-link" href="laporan.html">Laporan</a></nav>
+      <div class="nav-note">Form dibuat sederhana agar mahasiswa bisa mengirim laporan tanpa langkah rumit.</div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="page-title"><h1>Buat Pengaduan</h1><p>Kirim laporan dengan kategori, prioritas, deskripsi, dan lampiran.</p></div>
+        <a class="btn" href="index.html">Kembali</a>
+      </header>
+      <section class="content">
+        <div class="grid cols-2">
+          <section class="card pad">
+            <div class="section-title">
+              <div><h2>Form Utama</h2><p>Nomor tiket akan dibuat otomatis setelah data valid.</p></div>
+            </div>
+            <form class="form-grid" data-demo-form>
+              <div class="field">
+                <label for="kategori">Kategori</label>
+                <select id="kategori" required>
+                  <option>Akademik</option>
+                  <option>Administrasi</option>
+                  <option>Fasilitas</option>
+                  <option>Kemahasiswaan</option>
+                  <option>Keamanan dan Kenyamanan</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="prioritas">Prioritas</label>
+                <select id="prioritas" required>
+                  <option>Tinggi</option>
+                  <option>Sedang</option>
+                  <option>Rendah</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="judul">Judul Pengaduan</label>
+                <input id="judul" value="Jaringan internet laboratorium tidak stabil" required>
+              </div>
+              <div class="field full">
+                <label for="deskripsi">Deskripsi</label>
+                <textarea id="deskripsi" required>Koneksi internet di Laboratorium Komputer 2 sering terputus saat praktikum. Kondisi ini menghambat proses pembelajaran dan pengumpulan tugas.</textarea>
+              </div>
+              <div class="field full">
+                <label for="lampiran">Lampiran</label>
+                <input id="lampiran" type="file">
+                <small>Format disarankan: PDF, JPG, PNG. Ukuran dibatasi sesuai kebutuhan keamanan sistem.</small>
+              </div>
+              <button class="btn primary" type="submit">Kirim Pengaduan</button>
+              <a class="btn" href="detail.html">Lihat Contoh Detail</a>
+            </form>
+          </section>
+          <aside class="card pad">
+            <div class="section-title"><div><h2>Panduan Isi</h2><p>Ringkas, jelas, dan bisa diverifikasi admin.</p></div></div>
+            <div class="timeline">
+              <div class="timeline-item"><span class="timeline-dot"></span><div><h4>Judul spesifik</h4><p>Tulis masalah utama, lokasi, atau layanan yang terdampak.</p></div></div>
+              <div class="timeline-item"><span class="timeline-dot"></span><div><h4>Deskripsi faktual</h4><p>Sertakan waktu kejadian, dampak, dan bukti pendukung bila tersedia.</p></div></div>
+              <div class="timeline-item"><span class="timeline-dot"></span><div><h4>Pilih prioritas</h4><p>Prioritas tinggi untuk masalah yang menghambat layanan akademik langsung.</p></div></div>
+              <div class="timeline-item"><span class="timeline-dot"></span><div><h4>Pantau status</h4><p>Status awal adalah Diajukan, lalu diverifikasi dan diproses admin.</p></div></div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

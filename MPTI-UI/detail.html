@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detail Pengaduan - SIPMA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="side-nav">
+      <a class="brand" href="index.html"><span class="brand-mark">SP</span><span><strong>SIPMA</strong><span>Pengaduan Mahasiswa</span></span></a>
+      <nav class="nav-group"><span class="nav-label">Mahasiswa</span><a class="nav-link" href="index.html">Dashboard</a><a class="nav-link" href="pengaduan.html">Buat Pengaduan</a><a class="nav-link active" href="detail.html">Detail Pengaduan</a></nav>
+      <nav class="nav-group"><span class="nav-label">Pengelola</span><a class="nav-link" href="admin.html">Dashboard Admin</a><a class="nav-link" href="kategori.html">Kategori</a><a class="nav-link" href="laporan.html">Laporan</a></nav>
+      <div class="nav-note">Halaman detail menampilkan tiket, laporan, lampiran, tanggapan, dan riwayat status.</div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="page-title"><h1>Detail Pengaduan</h1><p>No Tiket SPM-2026-041</p></div>
+        <span class="badge process">Diproses</span>
+      </header>
+      <section class="content">
+        <div class="grid cols-3">
+          <article class="card stat"><span>Kategori</span><strong style="font-size:22px">Fasilitas</strong><div class="trend">Laboratorium</div></article>
+          <article class="card stat"><span>Prioritas</span><strong style="font-size:22px">Tinggi</strong><div class="trend">Butuh tindak lanjut cepat</div></article>
+          <article class="card stat"><span>Dibuat</span><strong style="font-size:22px">11 Jun</strong><div class="trend">09.20 WIB</div></article>
+        </div>
+        <div class="grid cols-2">
+          <section class="card pad">
+            <div class="section-title"><div><h2>Isi Laporan</h2><p>Data pengaduan yang dikirim mahasiswa.</p></div></div>
+            <h3>Jaringan internet laboratorium tidak stabil</h3>
+            <p style="color:var(--muted);line-height:1.7">Koneksi internet di Laboratorium Komputer 2 sering terputus saat praktikum. Kondisi ini menghambat proses pembelajaran dan pengumpulan tugas. Laporan disertai tangkapan layar hasil uji koneksi.</p>
+            <div class="notice">Lampiran: bukti-koneksi-lab2.png tersimpan pada file storage sistem.</div>
+          </section>
+          <section class="card pad">
+            <div class="section-title"><div><h2>Riwayat Status</h2><p>Perubahan dicatat pada tabel status_log.</p></div></div>
+            <div class="timeline">
+              <div class="timeline-item"><span class="timeline-dot"></span><div><h4>Diajukan</h4><p>Mahasiswa mengirim pengaduan dan sistem membuat nomor tiket otomatis.</p></div></div>
+              <div class="timeline-item"><span class="timeline-dot"></span><div><h4>Diverifikasi</h4><p>Admin menyatakan data valid dan sesuai kategori fasilitas.</p></div></div>
+              <div class="timeline-item"><span class="timeline-dot"></span><div><h4>Diproses</h4><p>Pengaduan diteruskan ke unit laboratorium untuk pemeriksaan jaringan.</p></div></div>
+            </div>
+          </section>
+        </div>
+        <section class="card pad">
+          <div class="section-title"><div><h2>Tanggapan Admin</h2><p>Catatan tindak lanjut yang terlihat oleh mahasiswa.</p></div></div>
+          <p style="line-height:1.7">Terima kasih atas laporan Anda. Tim laboratorium sudah menerima tiket dan akan melakukan pengecekan router serta access point pada sesi perawatan berikutnya. Status akan diperbarui setelah hasil pemeriksaan tersedia.</p>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

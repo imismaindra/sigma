@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laporan - SIPMA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="side-nav">
+      <a class="brand" href="index.html"><span class="brand-mark">SP</span><span><strong>SIPMA</strong><span>Pengaduan Mahasiswa</span></span></a>
+      <nav class="nav-group"><span class="nav-label">Mahasiswa</span><a class="nav-link" href="index.html">Dashboard</a><a class="nav-link" href="pengaduan.html">Buat Pengaduan</a><a class="nav-link" href="detail.html">Detail Pengaduan</a></nav>
+      <nav class="nav-group"><span class="nav-label">Pengelola</span><a class="nav-link" href="admin.html">Dashboard Admin</a><a class="nav-link" href="kategori.html">Kategori</a><a class="nav-link active" href="laporan.html">Laporan</a></nav>
+      <div class="nav-note">Laporan membantu pimpinan mengevaluasi layanan kampus berdasarkan data nyata.</div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="page-title"><h1>Laporan dan Statistik</h1><p>Rekap berdasarkan status, kategori, dan periode.</p></div>
+        <button class="btn primary" type="button">Export</button>
+      </header>
+      <section class="content">
+        <section class="card pad">
+          <div class="section-title"><div><h2>Filter Periode</h2><p>Digunakan admin dan pimpinan/reviewer.</p></div></div>
+          <form class="filters">
+            <div class="field"><label>Dari</label><input type="date" value="2026-06-01"></div>
+            <div class="field"><label>Sampai</label><input type="date" value="2026-06-30"></div>
+            <div class="field"><label>Kategori</label><select><option>Semua Kategori</option><option>Akademik</option><option>Fasilitas</option></select></div>
+            <div class="field"><label>Status</label><select><option>Semua Status</option><option>Selesai</option><option>Diproses</option></select></div>
+          </form>
+        </section>
+        <div class="grid cols-2">
+          <section class="card pad">
+            <div class="section-title"><div><h2>Pengaduan per Status</h2><p>Distribusi proses penanganan.</p></div></div>
+            <div class="chart">
+              <div class="bar"><span style="height:68px"></span>Diajukan</div>
+              <div class="bar"><span style="height:102px"></span>Diverifikasi</div>
+              <div class="bar"><span style="height:148px"></span>Diproses</div>
+              <div class="bar"><span style="height:188px"></span>Selesai</div>
+              <div class="bar"><span style="height:38px"></span>Ditolak</div>
+            </div>
+          </section>
+          <section class="card pad">
+            <div class="section-title"><div><h2>Pengaduan per Kategori</h2><p>Kebutuhan evaluasi layanan kampus.</p></div></div>
+            <div class="chart">
+              <div class="bar"><span style="height:126px"></span>Akademik</div>
+              <div class="bar"><span style="height:92px"></span>Administrasi</div>
+              <div class="bar"><span style="height:178px"></span>Fasilitas</div>
+              <div class="bar"><span style="height:72px"></span>Kemahasiswaan</div>
+              <div class="bar"><span style="height:48px"></span>Keamanan</div>
+            </div>
+          </section>
+        </div>
+        <section class="card">
+          <div class="section-title pad"><div><h2>Ringkasan Evaluasi</h2><p>Contoh data untuk bahan rapat pimpinan.</p></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Kategori</th><th>Total</th><th>Selesai</th><th>Rata-rata Penanganan</th><th>Catatan</th></tr></thead>
+              <tbody>
+                <tr><td>Fasilitas</td><td>32</td><td>21</td><td>3 hari</td><td>Perlu prioritas pada internet dan ruang kelas.</td></tr>
+                <tr><td>Akademik</td><td>24</td><td>19</td><td>2 hari</td><td>Mayoritas terkait jadwal dan validasi KRS.</td></tr>
+                <tr><td>Administrasi</td><td>17</td><td>13</td><td>4 hari</td><td>Surat aktif kuliah dan registrasi menjadi isu utama.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

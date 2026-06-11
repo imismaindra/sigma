@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard Mahasiswa - Pengaduan Kampus</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="side-nav">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">SP</span>
+        <span><strong>SIPMA</strong><span>Pengaduan Mahasiswa</span></span>
+      </a>
+      <nav class="nav-group">
+        <span class="nav-label">Mahasiswa</span>
+        <a class="nav-link active" href="index.html">Dashboard</a>
+        <a class="nav-link" href="pengaduan.html">Buat Pengaduan</a>
+        <a class="nav-link" href="detail.html">Detail Pengaduan</a>
+      </nav>
+      <nav class="nav-group">
+        <span class="nav-label">Pengelola</span>
+        <a class="nav-link" href="admin.html">Dashboard Admin</a>
+        <a class="nav-link" href="kategori.html">Kategori</a>
+        <a class="nav-link" href="laporan.html">Laporan</a>
+      </nav>
+      <div class="nav-note">Status pengaduan mengikuti rancangan dokumen: Diajukan, Diverifikasi, Diproses, Selesai, dan Ditolak.</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="page-title">
+          <h1>Dashboard Mahasiswa</h1>
+          <p>Ringkasan pengaduan, status tiket, dan akses cepat pembuatan laporan.</p>
+        </div>
+        <div class="top-actions">
+          <a class="btn" href="login.html">Keluar</a>
+          <a class="btn primary" href="pengaduan.html">Buat Pengaduan</a>
+        </div>
+      </header>
+
+      <section class="content">
+        <div class="hero">
+          <div>
+            <h2>Sarana pengaduan akademik yang tertib, transparan, dan terdokumentasi.</h2>
+            <p>Mahasiswa dapat mengirim laporan, memilih kategori, melampirkan bukti, serta memantau perubahan status sampai laporan ditutup oleh admin.</p>
+          </div>
+          <div class="hero-panel">
+            <strong>SPM-2026-041</strong>
+            <span>Tiket terbaru sedang diproses oleh Admin Kemahasiswaan.</span>
+          </div>
+        </div>
+
+        <div class="grid cols-4">
+          <article class="card stat"><span>Total Pengaduan</span><strong>12</strong><div class="trend">3 laporan bulan ini</div></article>
+          <article class="card stat"><span>Diajukan</span><strong>2</strong><div class="trend">Menunggu verifikasi</div></article>
+          <article class="card stat"><span>Diproses</span><strong>4</strong><div class="trend">Dalam tindak lanjut</div></article>
+          <article class="card stat"><span>Selesai</span><strong>6</strong><div class="trend">Sudah ditutup</div></article>
+        </div>
+
+        <section class="card pad">
+          <div class="section-title">
+            <div>
+              <h2>Alur Pengaduan</h2>
+              <p>Proses utama sesuai rancangan bisnis sistem.</p>
+            </div>
+          </div>
+          <div class="flow-steps">
+            <div class="flow-step"><span>1</span><strong>Login</strong><p>Mahasiswa masuk dengan akun valid.</p></div>
+            <div class="flow-step"><span>2</span><strong>Isi Form</strong><p>Pilih kategori, prioritas, deskripsi, dan lampiran.</p></div>
+            <div class="flow-step"><span>3</span><strong>Validasi</strong><p>Sistem membuat nomor tiket otomatis.</p></div>
+            <div class="flow-step"><span>4</span><strong>Tindak Lanjut</strong><p>Admin memverifikasi dan memberi catatan proses.</p></div>
+            <div class="flow-step"><span>5</span><strong>Ditutup</strong><p>Status menjadi selesai atau ditolak dengan alasan.</p></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-title pad">
+            <div>
+              <h2>Riwayat Pengaduan Saya</h2>
+              <p>Daftar tiket yang pernah dikirim mahasiswa.</p>
+            </div>
+            <a class="btn" href="detail.html">Lihat Detail</a>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>No Tiket</th><th>Judul</th><th>Kategori</th><th>Prioritas</th><th>Status</th><th>Tanggal</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>SPM-2026-041</td><td>Jaringan internet laboratorium tidak stabil</td><td>Fasilitas</td><td class="priority high">Tinggi</td><td><span class="badge process">Diproses</span></td><td>11 Jun 2026</td></tr>
+                <tr><td>SPM-2026-038</td><td>Perubahan jadwal belum muncul di sistem</td><td>Akademik</td><td class="priority mid">Sedang</td><td><span class="badge verified">Diverifikasi</span></td><td>09 Jun 2026</td></tr>
+                <tr><td>SPM-2026-029</td><td>Permohonan surat aktif kuliah terlambat</td><td>Administrasi</td><td class="priority low">Rendah</td><td><span class="badge done">Selesai</span></td><td>02 Jun 2026</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

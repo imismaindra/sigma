@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard Admin - SIPMA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="side-nav">
+      <a class="brand" href="index.html"><span class="brand-mark">SP</span><span><strong>SIPMA</strong><span>Pengaduan Mahasiswa</span></span></a>
+      <nav class="nav-group"><span class="nav-label">Mahasiswa</span><a class="nav-link" href="index.html">Dashboard</a><a class="nav-link" href="pengaduan.html">Buat Pengaduan</a><a class="nav-link" href="detail.html">Detail Pengaduan</a></nav>
+      <nav class="nav-group"><span class="nav-label">Pengelola</span><a class="nav-link active" href="admin.html">Dashboard Admin</a><a class="nav-link" href="kategori.html">Kategori</a><a class="nav-link" href="laporan.html">Laporan</a></nav>
+      <div class="nav-note">Admin memverifikasi laporan, memperbarui status, dan memberi tanggapan.</div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div class="page-title"><h1>Dashboard Admin</h1><p>Pusat pengelolaan pengaduan mahasiswa.</p></div>
+        <div class="top-actions"><a class="btn" href="kategori.html">Kelola Kategori</a><a class="btn primary" href="laporan.html">Laporan</a></div>
+      </header>
+      <section class="content">
+        <div class="grid cols-4">
+          <article class="card stat"><span>Pengaduan Baru</span><strong>18</strong><div class="trend">Butuh verifikasi</div></article>
+          <article class="card stat"><span>Diverifikasi</span><strong>27</strong><div class="trend">Siap diproses</div></article>
+          <article class="card stat"><span>Diproses</span><strong>14</strong><div class="trend">Dalam SLA</div></article>
+          <article class="card stat"><span>Ditolak</span><strong>3</strong><div class="trend">Wajib ada alasan</div></article>
+        </div>
+        <section class="card pad">
+          <div class="section-title"><div><h2>Filter Pengaduan</h2><p>Filter berdasarkan kategori, status, prioritas, dan tanggal.</p></div></div>
+          <form class="filters">
+            <div class="field"><label>Kategori</label><select><option>Semua</option><option>Akademik</option><option>Fasilitas</option></select></div>
+            <div class="field"><label>Status</label><select><option>Semua</option><option>Diajukan</option><option>Diproses</option></select></div>
+            <div class="field"><label>Prioritas</label><select><option>Semua</option><option>Tinggi</option><option>Sedang</option></select></div>
+            <div class="field"><label>Tanggal</label><input type="date" value="2026-06-11"></div>
+          </form>
+        </section>
+        <section class="card">
+          <div class="section-title pad"><div><h2>Pengaduan Terbaru</h2><p>Data contoh untuk proses verifikasi dan tindak lanjut.</p></div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Tiket</th><th>Mahasiswa</th><th>Judul</th><th>Kategori</th><th>Prioritas</th><th>Status</th><th>Aksi</th></tr></thead>
+              <tbody>
+                <tr><td>SPM-2026-041</td><td>Abiyyu A.</td><td>Jaringan internet laboratorium tidak stabil</td><td>Fasilitas</td><td class="priority high">Tinggi</td><td><span class="badge process">Diproses</span></td><td><a class="btn" href="detail.html">Detail</a></td></tr>
+                <tr><td>SPM-2026-040</td><td>Nadia P.</td><td>Validasi KRS tertunda</td><td>Akademik</td><td class="priority mid">Sedang</td><td><span class="badge submitted">Diajukan</span></td><td><a class="btn" href="detail.html">Detail</a></td></tr>
+                <tr><td>SPM-2026-039</td><td>Raka D.</td><td>Surat aktif kuliah belum selesai</td><td>Administrasi</td><td class="priority low">Rendah</td><td><span class="badge verified">Diverifikasi</span></td><td><a class="btn" href="detail.html">Detail</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
