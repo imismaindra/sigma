@@ -16,8 +16,10 @@ class UserSeeder extends Seeder
         // 1. Akun Dummy Mahasiswa (siap login)
         User::factory()->create([
             'nama' => 'Budi Santoso',
-            'nim_nip' => '2100018123',
+            'nim_nip' => '06.2023.1.07661',
             'email' => 'mahasiswa@example.com',
+            'nomor_telepon' => '081234567890',
+            'jurusan' => 'Teknik Informatika',
             'password' => Hash::make('password'),
             'role' => 'mahasiswa',
         ]);

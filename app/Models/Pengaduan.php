@@ -33,9 +33,24 @@ class Pengaduan extends Model
     protected $fillable = [
         'id_user',
         'id_kategori',
+        'ticket_number',
         'judul',
         'isi_pengaduan',
         'status',
+        'priority',
+        'due_at',
+        'cancelled_at',
+        'cancel_reason',
+        'completed_confirmed_at',
+        'reopened_at',
+        'completion_note',
+    ];
+
+    protected $casts = [
+        'due_at' => 'datetime',
+        'cancelled_at' => 'datetime',
+        'completed_confirmed_at' => 'datetime',
+        'reopened_at' => 'datetime',
     ];
 
     /**
@@ -76,5 +91,33 @@ class Pengaduan extends Model
     public function tanggapan(): HasMany
     {
         return $this->hasMany(Tanggapan::class, 'id_pengaduan', 'id_pengaduan');
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'id_pengaduan', 'id_pengaduan');
+    }
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(ActivityLog::class, 'id_pengaduan', 'id_pengaduan');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(PengaduanComment::class, 'id_pengaduan', 'id_pengaduan');
+    }
+
+    public function isEditable(): bool
+    {
+        return $this->status === 'pending' && $this->cancelled_at === null;
+    }
+
+    public function isOverdue(): bool
+    {
+        return $this->due_at !== null
+            && $this->due_at->isPast()
+            && !in_array($this->status, ['selesai', 'ditolak'], true)
+            && $this->cancelled_at === null;
     }
 }

@@ -32,8 +32,10 @@ class UserFactory extends Factory
     {
         return [
             'nama' => fake()->name(),
-            'nim_nip' => fake()->unique()->numerify('19##########'), // e.g. 19xxxxxxxxxx
+            'nim_nip' => fake()->unique()->numerify('##.20##.#.#####'),
             'email' => fake()->unique()->safeEmail(),
+            'nomor_telepon' => null,
+            'jurusan' => null,
             'password' => static::$password ??= Hash::make('password'),
             'role' => fake()->randomElement(['mahasiswa', 'admin', 'pimpinan', 'super_admin']),
         ];
@@ -46,7 +48,15 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role' => 'mahasiswa',
-            'nim_nip' => fake()->unique()->numerify('21##########'),
+            'nim_nip' => fake()->unique()->numerify('##.20##.#.#####'),
+            'nomor_telepon' => fake()->phoneNumber(),
+            'jurusan' => fake()->randomElement([
+                'Teknik Informatika',
+                'Sistem Informasi',
+                'Manajemen',
+                'Akuntansi',
+                'Ilmu Komunikasi',
+            ]),
         ]);
     }
 

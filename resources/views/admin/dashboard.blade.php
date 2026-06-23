@@ -100,9 +100,10 @@
 
         /* Main Container */
         .container {
-            max-width: 1200px;
+            width: 100%;
+            max-width: 1500px;
             margin: 30px auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
 
         .dashboard-header {
@@ -163,6 +164,181 @@
         .stat-card.selesai { border-left: 4px solid var(--selesai); }
         .stat-card.ditolak { border-left: 4px solid var(--ditolak); }
 
+        .filter-card,
+        .analytics-card,
+        .category-card,
+        .activity-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .filter-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            align-items: end;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 8px;
+            align-items: end;
+            justify-content: flex-end;
+        }
+
+        .filter-actions .btn-small,
+        .filter-actions .btn-secondary-small {
+            min-width: 74px;
+        }
+
+        .btn-secondary-small,
+        .btn-detail {
+            min-height: 36px;
+            border-radius: 6px;
+            padding: 0 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .btn-secondary-small {
+            border: 1px solid var(--border-color);
+            color: var(--primary);
+            background: #ffffff;
+        }
+
+        .btn-detail {
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+            background: #eff6ff;
+            margin-top: 10px;
+        }
+
+        .analytics-grid,
+        .category-grid,
+        .activity-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .analytics-grid {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+
+        .analytics-item,
+        .activity-item {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            background: #f9fafb;
+            font-size: 13px;
+        }
+
+        .category-row {
+            display: grid;
+            grid-template-columns: minmax(180px, .9fr) minmax(260px, 1.4fr) minmax(86px, auto) minmax(96px, auto);
+            gap: 12px;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px;
+            background: #f9fafb;
+        }
+
+        .category-row label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            min-height: 42px;
+            padding: 0 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #ffffff;
+            color: var(--text-main);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .category-row input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
+        }
+
+        .activity-meta {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .sla-badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 22px;
+            padding: 0 8px;
+            border-radius: 999px;
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: 11px;
+            font-weight: 800;
+            margin-left: 8px;
+        }
+
+        .simple-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
+            margin-top: 18px;
+        }
+
+        .page-button {
+            min-height: 36px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: #1e3a8a;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .page-button.disabled {
+            color: #94a3b8;
+            background: #f8fafc;
+            cursor: not-allowed;
+        }
+
+        .page-info {
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            text-align: center;
+        }
+
+        .page-info span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
         /* Alerts */
         .alert {
             padding: 12px 16px;
@@ -207,35 +383,87 @@
         .complaint-list {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 0;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .complaint-sheet-head {
+            display: grid;
+            grid-template-columns: minmax(180px, 1.2fr) minmax(120px, .75fr) minmax(160px, 1fr) minmax(120px, .7fr) minmax(135px, .8fr) minmax(120px, .65fr) 120px;
+            gap: 12px;
+            align-items: center;
+            min-height: 42px;
+            padding: 0 14px;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .04em;
         }
 
         .complaint-item {
-            background: #f9fafb;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 18px;
+            background: #ffffff;
+            border: 0;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 0;
+            padding: 0;
             cursor: pointer;
             transition: background-color 0.15s ease;
         }
 
+        .complaint-item:last-child {
+            border-bottom: 0;
+        }
+
         .complaint-item:hover {
-            background: #ffffff;
-            border-color: #cbd5e1;
+            background: #f8fafc;
         }
 
         .complaint-header {
-            display: flex;
+            display: grid;
+            grid-template-columns: minmax(180px, 1.2fr) minmax(120px, .75fr) minmax(160px, 1fr) minmax(120px, .7fr) minmax(135px, .8fr) minmax(120px, .65fr) 120px;
             align-items: center;
-            justify-content: space-between;
             gap: 12px;
-            margin-bottom: 8px;
+            margin-bottom: 0;
+            padding: 14px;
         }
 
         .complaint-title {
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 800;
             color: var(--text-main);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sheet-cell {
+            min-width: 0;
+            color: var(--text-main);
+            font-size: 13px;
+        }
+
+        .sheet-cell-muted {
+            color: var(--text-muted);
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sheet-label {
+            display: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            margin-bottom: 5px;
         }
 
         .badge {
@@ -249,6 +477,9 @@
 
         .badge-pending { background: #fef3c7; color: #b45309; border-color: #fde68a; }
         .badge-proses { background: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
+        .badge-menunggu_klarifikasi,
+        .badge-menunggu_verifikasi_mahasiswa { background: #ede9fe; color: #6d28d9; border-color: #ddd6fe; }
+        .badge-ditindaklanjuti { background: #ccfbf1; color: #0f766e; border-color: #99f6e4; }
         .badge-selesai { background: #d1fae5; color: #047857; border-color: #a7f3d0; }
         .badge-ditolak { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
 
@@ -274,10 +505,11 @@
         /* Collapsible details */
         .complaint-details {
             border-top: 1px solid var(--border-color);
-            padding-top: 16px;
-            margin-top: 16px;
+            padding: 16px;
+            margin-top: 0;
             display: none;
             cursor: default;
+            background: #ffffff;
         }
 
         .complaint-item.active .complaint-details {
@@ -341,6 +573,59 @@
             }
         }
 
+        @media (max-width: 1180px) {
+            .complaint-sheet-head {
+                display: none;
+            }
+
+            .complaint-header {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                align-items: start;
+            }
+
+            .sheet-label {
+                display: block;
+            }
+
+            .btn-detail {
+                width: 100%;
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .container {
+                padding: 0 14px;
+                margin: 18px auto;
+            }
+
+            .complaint-header {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-form,
+            .category-row {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-actions {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 12px 16px;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .navbar-user {
+                width: 100%;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+        }
+
         /* Forms inside detail card */
         .form-group {
             margin-bottom: 12px;
@@ -354,23 +639,27 @@
             margin-bottom: 4px;
         }
 
-        .form-select, .form-textarea {
+        .form-input, .form-select, .form-textarea {
             width: 100%;
+            min-height: 42px;
             background: #ffffff;
             border: 1px solid var(--input-border);
-            border-radius: 4px;
-            padding: 8px 12px;
+            border-radius: 8px;
+            padding: 0 12px;
             font-size: 13px;
             color: var(--text-main);
             outline: none;
             transition: border-color 0.15s ease;
         }
 
-        .form-select:focus, .form-textarea:focus {
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
         }
 
         .form-textarea {
+            padding-top: 10px;
+            padding-bottom: 10px;
             resize: vertical;
             min-height: 80px;
         }
@@ -379,13 +668,17 @@
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 4px;
-            padding: 9px 14px;
+            border-radius: 8px;
+            padding: 0 14px;
+            min-height: 42px;
             font-size: 12.5px;
-            font-weight: 600;
+            font-weight: 800;
             cursor: pointer;
-            width: 100%;
             transition: background 0.15s;
+        }
+
+        .category-row .btn-small {
+            width: 100%;
         }
 
         .btn-small:hover {
@@ -445,6 +738,178 @@
             font-size: 11.5px;
             text-transform: uppercase;
         }
+
+        /* Success Toast Styles */
+        .success-toast {
+            position: fixed;
+            right: 24px;
+            top: 24px;
+            z-index: 1000;
+            width: min(380px, calc(100vw - 32px));
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 12px;
+            align-items: start;
+            padding: 14px;
+            border-radius: 14px;
+            border: 1px solid #bbf7d0;
+            background: #ffffff;
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.16);
+            transform: translateY(-12px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.24s ease, opacity 0.24s ease;
+        }
+
+        .success-toast.is-visible {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .toast-success-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0fdf4;
+            color: #16a34a;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .toast-success-title {
+            display: block;
+            color: #166534;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 3px;
+        }
+
+        .toast-success-message {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .toast-success-close {
+            width: 26px;
+            height: 26px;
+            border: 0;
+            border-radius: 8px;
+            background: #f8fafc;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 17px;
+            line-height: 1;
+        }
+
+        .toast-success-close:hover {
+            background: #eef2f7;
+            color: var(--text-main);
+        }
+
+        @media (max-width: 640px) {
+            .success-toast {
+                left: 16px;
+                right: 16px;
+                top: 16px;
+                width: auto;
+            }
+        }
+
+        /* Logout Modal Styles */
+        .logout-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            padding: 16px;
+        }
+
+        .logout-modal.is-open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .logout-modal-content {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.18);
+            transform: scale(0.95);
+            transition: transform 0.2s ease;
+            text-align: center;
+        }
+
+        .logout-modal.is-open .logout-modal-content {
+            transform: scale(1);
+        }
+
+        .logout-modal-content h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .logout-modal-content p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin-bottom: 24px;
+        }
+
+        .logout-modal-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn-modal-cancel {
+            min-height: 44px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #f8fafc;
+            color: var(--text-main);
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-modal-cancel:hover {
+            background: #eef2f7;
+        }
+
+        .btn-modal-confirm {
+            min-height: 44px;
+            border: 0;
+            border-radius: 8px;
+            background: #dc2626;
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 16px rgba(220, 38, 38, 0.2);
+            transition: background 0.15s, transform 0.15s;
+        }
+
+        .btn-modal-confirm:hover {
+            background: #b91c1c;
+        }
     </style>
 </head>
 <body>
@@ -453,16 +918,20 @@
     <nav class="navbar">
         <a href="#" class="navbar-brand">Sistem Informasi Pengaduan Mahasiswa</a>
         <div class="navbar-user">
+            @if(Auth::user()->role !== 'pimpinan')
+                <a href="{{ route('admin.users.index') }}" class="btn-logout" style="background:rgba(255,255,255,.14);">Manajemen User</a>
+            @endif
             <div class="user-info">
                 <div class="user-name">{{ Auth::user()->nama }}</div>
                 <div class="user-role">Administrator ({{ Auth::user()->nim_nip }})</div>
             </div>
-            <form action="{{ route('logout') }}" method="POST">
+            <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
-                <button type="submit" class="btn-logout">Logout</button>
             </form>
+            <button type="button" class="btn-logout" id="btnTriggerLogout">Logout</button>
         </div>
     </nav>
+
 
     <!-- Main Content -->
     <div class="container">
@@ -475,23 +944,23 @@
         <!-- Stats Grid -->
         <div class="stats-grid">
             <div class="stat-card total">
-                <div class="stat-value">{{ $pengaduans->count() }}</div>
+                <div class="stat-value">{{ $allPengaduans->count() }}</div>
                 <div class="stat-label">Total Masuk</div>
             </div>
             <div class="stat-card pending">
-                <div class="stat-value" style="color: var(--pending);">{{ $pengaduans->where('status', 'pending')->count() }}</div>
+                <div class="stat-value" style="color: var(--pending);">{{ $allPengaduans->where('status', 'pending')->count() }}</div>
                 <div class="stat-label">Pending</div>
             </div>
             <div class="stat-card proses">
-                <div class="stat-value" style="color: var(--proses);">{{ $pengaduans->where('status', 'proses')->count() }}</div>
+                <div class="stat-value" style="color: var(--proses);">{{ $allPengaduans->where('status', 'proses')->count() }}</div>
                 <div class="stat-label">Diproses</div>
             </div>
             <div class="stat-card selesai">
-                <div class="stat-value" style="color: var(--selesai);">{{ $pengaduans->where('status', 'selesai')->count() }}</div>
+                <div class="stat-value" style="color: var(--selesai);">{{ $allPengaduans->where('status', 'selesai')->count() }}</div>
                 <div class="stat-label">Selesai</div>
             </div>
             <div class="stat-card ditolak">
-                <div class="stat-value" style="color: var(--ditolak);">{{ $pengaduans->where('status', 'ditolak')->count() }}</div>
+                <div class="stat-value" style="color: var(--ditolak);">{{ $allPengaduans->where('status', 'ditolak')->count() }}</div>
                 <div class="stat-label">Ditolak</div>
             </div>
         </div>
@@ -509,6 +978,110 @@
             </div>
         @endif
 
+        <div class="filter-card">
+            <div class="section-title">Filter Pengaduan</div>
+            <form action="{{ route('admin.dashboard') }}" method="GET" class="filter-form">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="q" class="form-label">Cari</label>
+                    <input type="text" id="q" name="q" class="form-input" value="{{ request('q') }}" placeholder="Judul atau isi laporan">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="status" class="form-label">Status</label>
+                    <select id="status" name="status" class="form-select">
+                        <option value="">Semua</option>
+                    @foreach($statusLabels as $key => $label)
+                        <option value="{{ $key }}" {{ request('status') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+            </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="priority" class="form-label">Prioritas</label>
+                    <select id="priority" name="priority" class="form-select">
+                        <option value="">Semua</option>
+                        @foreach($priorityLabels as $key => $label)
+                            <option value="{{ $key }}" {{ request('priority') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="kategori" class="form-label">Kategori</label>
+                    <select id="kategori" name="kategori" class="form-select">
+                        <option value="">Semua</option>
+                        @foreach($kategoris as $kategori)
+                            <option value="{{ $kategori->id_kategori }}" {{ (string) request('kategori') === (string) $kategori->id_kategori ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="tanggal_mulai" class="form-label">Mulai</label>
+                    <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-input" value="{{ request('tanggal_mulai') }}">
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="tanggal_selesai" class="form-label">Selesai</label>
+                    <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-input" value="{{ request('tanggal_selesai') }}">
+                </div>
+                <div class="filter-actions">
+                    <button type="submit" class="btn-small">Filter</button>
+                    <a href="{{ route('admin.dashboard') }}" class="btn-secondary-small">Reset</a>
+                    <a href="{{ route('admin.pengaduan.export', request()->query()) }}" class="btn-secondary-small">Export CSV</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="analytics-card">
+            <div class="section-title">Statistik per Kategori</div>
+            <div class="analytics-grid">
+                @foreach($categoryStats as $categoryName => $count)
+                    <div class="analytics-item">
+                        <strong>{{ $categoryName }}</strong>
+                        <div class="activity-meta">{{ $count }} pengaduan</div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        @if(Auth::user()->role !== 'pimpinan')
+            <div class="category-card">
+                <div class="section-title">Manajemen Kategori</div>
+                <form action="{{ route('admin.kategori.store') }}" method="POST" class="category-row" style="margin-bottom:12px;">
+                    @csrf
+                    <input type="text" name="nama_kategori" class="form-input" placeholder="Nama kategori baru" required>
+                    <input type="text" name="deskripsi" class="form-input" placeholder="Deskripsi kategori">
+                    <label><input type="checkbox" name="status_aktif" value="1" checked> Aktif</label>
+                    <button type="submit" class="btn-small">Tambah</button>
+                </form>
+                <div class="category-grid">
+                    @foreach($kategoris as $kategori)
+                        <form action="{{ route('admin.kategori.update', $kategori->id_kategori) }}" method="POST" class="category-row">
+                            @csrf
+                            @method('PUT')
+                            <input type="text" name="nama_kategori" class="form-input" value="{{ $kategori->nama_kategori }}" required>
+                            <input type="text" name="deskripsi" class="form-input" value="{{ $kategori->deskripsi }}">
+                            <label><input type="checkbox" name="status_aktif" value="1" {{ $kategori->status_aktif ? 'checked' : '' }}> Aktif</label>
+                            <button type="submit" class="btn-small">Simpan</button>
+                        </form>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        <div class="activity-card">
+            <div class="section-title">Riwayat Aktivitas Terbaru</div>
+            <div class="activity-list">
+                @forelse($activities as $activity)
+                    <div class="activity-item">
+                        <strong>{{ str_replace('_', ' ', $activity->action) }}</strong>
+                        <div>{{ $activity->description }}</div>
+                        <div class="activity-meta">
+                            {{ $activity->user?->nama ?? 'Sistem' }} - {{ $activity->created_at->format('d M Y, H:i') }}
+                        </div>
+                    </div>
+                @empty
+                    <div class="activity-item">Belum ada aktivitas tercatat.</div>
+                @endforelse
+            </div>
+        </div>
+
         <!-- Main Panel List -->
         <div class="section-card">
             <div class="section-title">Daftar Pengaduan Masuk</div>
@@ -519,19 +1092,55 @@
                 </div>
             @else
                 <div class="complaint-list">
+                    <div class="complaint-sheet-head">
+                        <div>Judul</div>
+                        <div>Tiket</div>
+                        <div>Pelapor</div>
+                        <div>Kategori</div>
+                        <div>Status</div>
+                        <div>Prioritas</div>
+                        <div>Aksi</div>
+                    </div>
                     @foreach($pengaduans as $p)
                         <div class="complaint-item" onclick="toggleDetails(this)">
                             <div class="complaint-header">
-                                <span class="complaint-title">{{ $p->judul }}</span>
-                                <span class="badge badge-{{ $p->status }}">{{ $p->status }}</span>
-                            </div>
-                            <div class="complaint-meta">
-                                <span>Pengirim: <strong>{{ $p->user->nama }} ({{ $p->user->nim_nip }})</strong></span>
-                                <span>Kategori: <strong>{{ $p->kategori->nama_kategori }}</strong></span>
-                                <span>Tanggal: <strong>{{ $p->created_at->format('d M Y, H:i') }}</strong></span>
-                            </div>
-                            <div class="complaint-body">
-                                {{ Str::limit($p->isi_pengaduan, 200) }}
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Judul</span>
+                                    <div class="complaint-title" title="{{ $p->judul }}">{{ $p->judul }}</div>
+                                    <div class="sheet-cell-muted">{{ Str::limit($p->isi_pengaduan, 70) }}</div>
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Tiket</span>
+                                    <strong>{{ $p->ticket_number ?? 'Belum tersedia' }}</strong>
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Pelapor</span>
+                                    <strong>{{ $p->user->nama }}</strong>
+                                    <div class="sheet-cell-muted">{{ $p->user->nim_nip }}</div>
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Kategori</span>
+                                    <strong>{{ $p->kategori->nama_kategori }}</strong>
+                                    <div class="sheet-cell-muted">{{ $p->created_at->format('d M Y, H:i') }}</div>
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Status</span>
+                                    @if($p->isOverdue())
+                                        <span class="sla-badge">Lewat SLA</span>
+                                    @endif
+                                    <span class="badge badge-{{ $p->status }}">{{ $statusLabels[$p->status] ?? $p->status }}</span>
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Prioritas</span>
+                                    <strong>{{ $priorityLabels[$p->priority] ?? ucfirst($p->priority ?? 'sedang') }}</strong>
+                                    @if($p->due_at)
+                                        <div class="sheet-cell-muted">SLA {{ $p->due_at->format('d M') }}</div>
+                                    @endif
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Aksi</span>
+                                    <a href="{{ route('admin.pengaduan.show', $p->id_pengaduan) }}" class="btn-detail" onclick="event.stopPropagation()">Detail</a>
+                                </div>
                             </div>
 
                             <!-- Detail Dropdown -->
@@ -556,6 +1165,7 @@
                                 @endif
 
                                 <!-- Actions Grid -->
+                                @if(Auth::user()->role !== 'pimpinan')
                                 <div class="actions-grid">
                                     <!-- Aksi 1: Update Status -->
                                     <form action="{{ route('admin.pengaduan.status.update', $p->id_pengaduan) }}" method="POST">
@@ -565,10 +1175,9 @@
                                         <div class="form-group">
                                             <label class="form-label" for="status-{{ $p->id_pengaduan }}">Status Baru</label>
                                             <select name="status" id="status-{{ $p->id_pengaduan }}" class="form-select" required>
-                                                <option value="pending" {{ $p->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                                                <option value="proses" {{ $p->status === 'proses' ? 'selected' : '' }}>Proses</option>
-                                                <option value="selesai" {{ $p->status === 'selesai' ? 'selected' : '' }}>Selesai</option>
-                                                <option value="ditolak" {{ $p->status === 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                                                @foreach($statusLabels as $status => $label)
+                                                    <option value="{{ $status }}" {{ $p->status === $status ? 'selected' : '' }}>{{ $label }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 
@@ -593,6 +1202,7 @@
                                         <button type="submit" class="btn-small">Kirim Tanggapan</button>
                                     </form>
                                 </div>
+                                @endif
 
                                 @if($p->tanggapan->isNotEmpty())
                                     <div class="detail-section">
@@ -629,6 +1239,7 @@
                         </div>
                     @endforeach
                 </div>
+                @include('partials.simple-pagination', ['paginator' => $pengaduans])
             @endif
         </div>
     </div>
@@ -664,6 +1275,58 @@
                 }
             });
         });
+
+        (() => {
+            // Success Toast Logic
+            const toast = document.getElementById('successToast');
+            if (toast) {
+                const close = document.getElementById('successToastClose');
+                window.setTimeout(() => toast.classList.add('is-visible'), 120);
+                const hideToast = () => toast.classList.remove('is-visible');
+                close?.addEventListener('click', hideToast);
+                window.setTimeout(hideToast, 5200);
+            }
+
+            window.addEventListener('DOMContentLoaded', () => {
+                const btnTrigger = document.getElementById('btnTriggerLogout');
+                const modal = document.getElementById('logoutModal');
+                const btnCancel = document.getElementById('btnCancelLogout');
+                const btnConfirm = document.getElementById('btnConfirmLogout');
+                const form = document.getElementById('logoutForm');
+
+                btnTrigger?.addEventListener('click', () => {
+                    modal?.classList.add('is-open');
+                });
+
+                btnCancel?.addEventListener('click', () => {
+                    modal?.classList.remove('is-open');
+                });
+
+                modal?.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('is-open');
+                    }
+                });
+
+                btnConfirm?.addEventListener('click', () => {
+                    form?.submit();
+                });
+            });
+        })();
     </script>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal" id="logoutModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="logout-modal-content">
+            <h3 id="modalTitle">Konfirmasi Keluar</h3>
+            <p>Apakah Anda yakin ingin keluar dari Panel Administrasi SIPMA?</p>
+            <div class="logout-modal-actions">
+                <button type="button" class="btn-modal-cancel" id="btnCancelLogout">Batal</button>
+                <button type="button" class="btn-modal-confirm" id="btnConfirmLogout">Keluar</button>
+            </div>
+        </div>
+    </div>
+
+    @include('partials.toast')
 </body>
 </html>

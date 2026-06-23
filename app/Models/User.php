@@ -36,8 +36,11 @@ class User extends Authenticatable
         'nama',
         'nim_nip',
         'email',
+        'nomor_telepon',
+        'jurusan',
         'password',
         'role',
+        'account_status',
     ];
 
     /**
@@ -84,5 +87,15 @@ class User extends Authenticatable
     public function tanggapan(): HasMany
     {
         return $this->hasMany(Tanggapan::class, 'id_admin', 'id_user');
+    }
+
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class, 'id_user', 'id_user');
+    }
+
+    public function activityLogs(): HasMany
+    {
+        return $this->hasMany(ActivityLog::class, 'id_user', 'id_user');
     }
 }

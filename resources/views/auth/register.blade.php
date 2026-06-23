@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistem Informasi Pengaduan Mahasiswa</title>
+    <title>Registrasi Mahasiswa - Sistem Informasi Pengaduan Mahasiswa</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -21,9 +21,7 @@
             --muted: #64748b;
             --danger: #dc2626;
             --danger-soft: #fef2f2;
-            --success: #16a34a;
-            --success-soft: #f0fdf4;
-            --shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+            --shadow: 0 18px 42px rgba(15, 23, 42, 0.1);
         }
 
         * {
@@ -33,19 +31,17 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
-        html {
+        html,
+        body {
             width: 100%;
             height: 100%;
             overflow: hidden;
         }
 
         body {
-            width: 100%;
             height: 100dvh;
             color: var(--text);
             background:
-                radial-gradient(circle at 14% 18%, rgba(29, 78, 216, 0.12), transparent 28%),
-                radial-gradient(circle at 86% 10%, rgba(15, 118, 110, 0.12), transparent 24%),
                 linear-gradient(135deg, #eef4ff 0%, var(--bg) 48%, #f6fbfa 100%);
             display: flex;
             align-items: center;
@@ -54,31 +50,25 @@
             overflow: hidden;
         }
 
-        .login-page {
+        .register-page {
             width: min(100%, 1120px);
-            max-width: 100%;
             height: min(680px, calc(100dvh - 64px));
             min-height: 0;
             display: grid;
-            grid-template-columns: minmax(0, 1.08fr) minmax(360px, 440px);
-            background: rgba(255, 255, 255, 0.82);
+            grid-template-columns: minmax(0, 0.95fr) minmax(430px, 500px);
+            background: #ffffff;
             border: 1px solid rgba(226, 232, 240, 0.9);
             border-radius: 24px;
             overflow: hidden;
             box-shadow: var(--shadow);
-            backdrop-filter: blur(18px);
         }
 
         .info-panel {
             position: relative;
-            min-width: 0;
-            padding: clamp(28px, 4vw, 42px);
+            min-height: 0;
+            padding: clamp(26px, 3.5vw, 40px);
             color: #ffffff;
-            background:
-                linear-gradient(145deg, rgba(30, 58, 138, 0.92), rgba(29, 78, 216, 0.84)),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(0deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-            background-size: auto, 44px 44px, 44px 44px;
+            background: linear-gradient(145deg, #1e3a8a, #2563eb);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -93,12 +83,17 @@
             right: -120px;
             bottom: -110px;
             border-radius: 50%;
-            background: rgba(204, 251, 241, 0.18);
+            background: rgba(204, 251, 241, 0.14);
+        }
+
+        .brand,
+        .hero-copy,
+        .feature-list {
+            position: relative;
+            z-index: 1;
         }
 
         .brand {
-            position: relative;
-            z-index: 1;
             display: flex;
             align-items: center;
             gap: 14px;
@@ -131,10 +126,8 @@
         }
 
         .hero-copy {
-            position: relative;
-            z-index: 1;
             max-width: 520px;
-            margin: clamp(34px, 7vh, 64px) 0;
+            margin: clamp(32px, 6vh, 62px) 0;
         }
 
         .eyebrow {
@@ -162,34 +155,29 @@
         }
 
         h1 {
-            font-size: clamp(32px, 4.5vw, 54px);
+            font-size: clamp(32px, 4vw, 50px);
             line-height: 1.02;
             letter-spacing: 0;
-            margin-bottom: 18px;
-            overflow-wrap: anywhere;
+            margin-bottom: 14px;
         }
 
         .lead {
-            max-width: 480px;
             color: rgba(255, 255, 255, 0.78);
-            font-size: 15px;
-            line-height: 1.7;
-            overflow-wrap: anywhere;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
-        .feature-grid {
-            position: relative;
-            z-index: 1;
+        .feature-list {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
+            gap: 10px;
         }
 
-        .feature-card {
-            min-width: 0;
-            min-height: 108px;
-            border-radius: 16px;
-            padding: 14px;
+        .feature-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px;
+            border-radius: 14px;
             background: rgba(255, 255, 255, 0.12);
             border: 1px solid rgba(255, 255, 255, 0.18);
         }
@@ -202,16 +190,16 @@
             align-items: center;
             justify-content: center;
             background: rgba(255, 255, 255, 0.16);
-            margin-bottom: 12px;
+            flex: 0 0 auto;
         }
 
-        .feature-card strong {
+        .feature-item strong {
             display: block;
             font-size: 13px;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
-        .feature-card span {
+        .feature-item span {
             display: block;
             color: rgba(255, 255, 255, 0.68);
             font-size: 12px;
@@ -220,16 +208,16 @@
 
         .form-panel {
             background: var(--surface);
-            padding: clamp(28px, 4vw, 42px);
+            min-height: 0;
+            overflow: hidden;
+            padding: clamp(26px, 3.3vw, 38px);
             display: flex;
             flex-direction: column;
             justify-content: center;
-            min-height: 0;
-            min-width: 0;
         }
 
         .form-header {
-            margin-bottom: 22px;
+            margin-bottom: 16px;
         }
 
         .form-badge {
@@ -241,21 +229,20 @@
             background: var(--primary-soft);
             color: var(--primary-dark);
             font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 14px;
+            font-weight: 800;
+            margin-bottom: 10px;
         }
 
         .form-header h2 {
-            font-size: 28px;
+            font-size: 26px;
             line-height: 1.2;
-            letter-spacing: 0;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .form-header p {
             color: var(--muted);
-            font-size: 14px;
-            line-height: 1.55;
+            font-size: 13px;
+            line-height: 1.45;
         }
 
         .alert {
@@ -264,40 +251,38 @@
             font-size: 13px;
             line-height: 1.45;
             margin-bottom: 16px;
-            border: 1px solid transparent;
-        }
-
-        .alert-danger {
             background: var(--danger-soft);
-            border-color: #fecaca;
+            border: 1px solid #fecaca;
             color: #991b1b;
         }
 
-        .alert-success {
-            background: var(--success-soft);
-            border-color: #bbf7d0;
-            color: #166534;
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 12px;
+        }
+
+        .field-full {
+            grid-column: 1 / -1;
         }
 
         .field {
-            margin-bottom: 14px;
+            min-width: 0;
         }
 
         .form-label {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display: block;
             color: var(--text);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            margin-bottom: 7px;
+            margin-bottom: 5px;
         }
 
         .input-wrap {
             position: relative;
             display: flex;
             align-items: center;
-            min-height: 48px;
+            min-height: 44px;
             border: 1px solid var(--border);
             border-radius: 12px;
             background: var(--surface-soft);
@@ -307,13 +292,13 @@
         .input-wrap:focus-within {
             border-color: #60a5fa;
             background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.16);
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.12);
         }
 
         .input-icon {
-            width: 18px;
-            height: 18px;
-            margin-left: 14px;
+            width: 17px;
+            height: 17px;
+            margin-left: 12px;
             color: var(--muted);
             flex: 0 0 auto;
         }
@@ -325,9 +310,9 @@
             outline: 0;
             background: transparent;
             color: var(--text);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
-            padding: 0 14px 0 10px;
+            padding: 0 12px 0 9px;
         }
 
         .form-input:-webkit-autofill,
@@ -347,33 +332,9 @@
             color: #94a3b8;
         }
 
-        .remember-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 14px;
-            margin: 2px 0 18px;
-        }
-
-        .checkbox-container {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--muted);
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .checkbox-container input {
-            width: 15px;
-            height: 15px;
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-
         .btn-submit {
             width: 100%;
-            min-height: 48px;
+            min-height: 44px;
             border: 0;
             border-radius: 12px;
             background: linear-gradient(135deg, var(--primary), #2563eb);
@@ -381,35 +342,21 @@
             font-size: 14px;
             font-weight: 800;
             cursor: pointer;
-            box-shadow: 0 14px 24px rgba(37, 99, 235, 0.24);
+            box-shadow: 0 10px 18px rgba(37, 99, 235, 0.2);
             transition: transform 0.15s ease, box-shadow 0.15s ease;
+            margin-top: 14px;
         }
 
         .btn-submit:hover {
             transform: translateY(-1px);
-            box-shadow: 0 18px 30px rgba(37, 99, 235, 0.28);
-        }
-
-        .support-box {
-            margin-top: 18px;
-            padding: 12px;
-            border-radius: 14px;
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.55;
-        }
-
-        .support-box strong {
-            color: var(--text);
+            box-shadow: 0 14px 22px rgba(37, 99, 235, 0.24);
         }
 
         .auth-switch {
-            margin-top: 14px;
+            margin-top: 12px;
             text-align: center;
             color: var(--muted);
-            font-size: 13px;
+            font-size: 12px;
             line-height: 1.55;
         }
 
@@ -423,162 +370,18 @@
             text-decoration: underline;
         }
 
-        .footer-info {
-            margin-top: 18px;
-            color: var(--muted);
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.6;
-        }
-
-        .footer-info code {
-            color: var(--primary-dark);
-            background: #eff6ff;
-            padding: 1px 5px;
-            border-radius: 5px;
-            font-size: 11.5px;
-        }
-
-        .auth-toast {
-            position: fixed;
-            right: 24px;
-            top: 24px;
-            z-index: 10;
-            width: min(380px, calc(100vw - 32px));
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 12px;
-            align-items: start;
-            padding: 14px;
+        .support-box {
+            margin-top: 12px;
+            padding: 10px 12px;
             border-radius: 14px;
-            border: 1px solid #fecaca;
-            background: #ffffff;
-            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.16);
-            transform: translateY(-12px);
-            opacity: 0;
-            pointer-events: none;
-            transition: transform 0.24s ease, opacity 0.24s ease;
-        }
-
-        .auth-toast.is-visible {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .toast-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--danger-soft);
-            color: var(--danger);
-            font-size: 16px;
-            font-weight: 800;
-        }
-
-        .toast-title {
-            display: block;
-            color: #991b1b;
-            font-size: 13px;
-            font-weight: 800;
-            margin-bottom: 3px;
-        }
-
-        .toast-message {
+            background: #f8fafc;
+            border: 1px solid var(--border);
             color: var(--muted);
-            font-size: 13px;
+            font-size: 11px;
             line-height: 1.45;
         }
 
-        .toast-close {
-            width: 26px;
-            height: 26px;
-            border: 0;
-            border-radius: 8px;
-            background: #f8fafc;
-            color: var(--muted);
-            cursor: pointer;
-            font-size: 17px;
-            line-height: 1;
-        }
-
-        .toast-close:hover {
-            background: #eef2f7;
-            color: var(--text);
-        }
-
-        /* Success Toast Styles */
-        .success-toast {
-            position: fixed;
-            right: 24px;
-            top: 24px;
-            z-index: 100;
-            width: min(380px, calc(100vw - 32px));
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 12px;
-            align-items: start;
-            padding: 14px;
-            border-radius: 14px;
-            border: 1px solid #bbf7d0;
-            background: #ffffff;
-            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.16);
-            transform: translateY(-12px);
-            opacity: 0;
-            pointer-events: none;
-            transition: transform 0.24s ease, opacity 0.24s ease;
-        }
-
-        .success-toast.is-visible {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .toast-success-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #f0fdf4;
-            color: #16a34a;
-            font-size: 16px;
-            font-weight: 800;
-        }
-
-        .toast-success-title {
-            display: block;
-            color: #166534;
-            font-size: 13px;
-            font-weight: 800;
-            margin-bottom: 3px;
-        }
-
-        .toast-success-message {
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.45;
-        }
-
-        .toast-success-close {
-            width: 26px;
-            height: 26px;
-            border: 0;
-            border-radius: 8px;
-            background: #f8fafc;
-            color: var(--muted);
-            cursor: pointer;
-            font-size: 17px;
-            line-height: 1;
-        }
-
-        .toast-success-close:hover {
-            background: #eef2f7;
+        .support-box strong {
             color: var(--text);
         }
 
@@ -598,11 +401,11 @@
                 justify-content: center;
             }
 
-            .login-page {
+            .register-page {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto;
                 width: 100%;
-                max-width: 460px;
+                max-width: 500px;
                 height: auto;
                 border-radius: 20px;
                 border: 1px solid rgba(226, 232, 240, 0.9);
@@ -682,7 +485,7 @@
                 max-width: 100%;
             }
 
-            .feature-grid {
+            .feature-list {
                 display: none;
             }
 
@@ -699,8 +502,7 @@
             .alert,
             .form-panel form,
             .support-box,
-            .auth-switch,
-            .footer-info {
+            .auth-switch {
                 width: 100%;
                 max-width: 100%;
             }
@@ -726,6 +528,10 @@
                 line-height: 1.5;
             }
 
+            .form-grid {
+                gap: 10px 12px;
+            }
+
             .alert {
                 padding: 10px 12px;
                 font-size: 12.5px;
@@ -733,7 +539,7 @@
             }
 
             .field {
-                margin-bottom: 12px;
+                margin-bottom: 2px;
             }
 
             .form-label {
@@ -746,10 +552,6 @@
                 border-radius: 11px;
             }
 
-            .remember-row {
-                margin: 0 0 16px;
-            }
-
             .btn-submit {
                 min-height: 46px;
             }
@@ -760,19 +562,21 @@
                 font-size: 12px;
                 line-height: 1.45;
             }
+        }
 
-            .auth-toast,
-            .success-toast {
-                left: 16px;
-                right: 16px;
-                top: 16px;
-                width: auto;
+        @media (max-width: 620px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .form-header p {
+                display: none;
             }
         }
     </style>
 </head>
 <body>
-    <main class="login-page">
+    <main class="register-page">
         <section class="info-panel" aria-labelledby="page-title">
             <div class="brand">
                 <div class="brand-mark">SP</div>
@@ -783,123 +587,150 @@
             </div>
 
             <div class="hero-copy">
-                <div class="eyebrow">Portal layanan kampus</div>
-                <h1 id="page-title">Laporkan kendala kampus dengan lebih terarah.</h1>
+                <div class="eyebrow">Registrasi mahasiswa</div>
+                <h1 id="page-title">Buat akun untuk mulai melapor.</h1>
                 <p class="lead">
-                    SIPMA membantu mahasiswa menyampaikan pengaduan akademik, administrasi, fasilitas, dan layanan kampus dalam satu alur yang rapi, tercatat, dan mudah dipantau.
+                    Lengkapi data akademik Anda agar setiap pengaduan tercatat dengan identitas yang jelas dan mudah ditindaklanjuti oleh pihak kampus.
                 </p>
             </div>
 
-            <div class="feature-grid" aria-label="Keunggulan sistem">
-                <div class="feature-card">
+            <div class="feature-list" aria-label="Alur registrasi">
+                <div class="feature-item">
                     <div class="feature-icon" aria-hidden="true">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                            <path d="M5 12h14M12 5v14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </div>
-                    <strong>Ajukan laporan</strong>
-                    <span>Pengaduan tersimpan lengkap dengan kategori dan lampiran.</span>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon" aria-hidden="true">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                            <path d="M4 6h16M4 12h10M4 18h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
+                    <div>
+                        <strong>Identitas lengkap</strong>
+                        <span>NIM, nama, email, telepon, dan jurusan tersimpan dalam profil akun.</span>
                     </div>
-                    <strong>Pantau status</strong>
-                    <span>Setiap progres tindak lanjut dapat dipantau dari dashboard.</span>
                 </div>
-                <div class="feature-card">
+                <div class="feature-item">
                     <div class="feature-icon" aria-hidden="true">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                             <path d="M12 3 4 7v6c0 4 3 7 8 8 5-1 8-4 8-8V7l-8-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                         </svg>
                     </div>
-                    <strong>Akses aman</strong>
-                    <span>Hak akses dipisahkan untuk mahasiswa, admin, dan pimpinan.</span>
+                    <div>
+                        <strong>Akun mahasiswa</strong>
+                        <span>Setelah daftar, akses langsung diarahkan ke dashboard pengaduan mahasiswa.</span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="form-panel" aria-labelledby="login-title">
+        <section class="form-panel" aria-labelledby="register-title">
             <div class="form-header">
-                <span class="form-badge">Masuk ke sistem</span>
-                <h2 id="login-title">Selamat datang kembali</h2>
-                <p>Gunakan akun yang sudah terdaftar untuk mengakses dashboard pengaduan sesuai peran Anda.</p>
+                <span class="form-badge">Daftar akun</span>
+                <h2 id="register-title">Registrasi mahasiswa</h2>
+                <p>Gunakan data yang sesuai dengan identitas akademik Anda.</p>
             </div>
 
-            @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            @if(session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
-                </div>
-            @endif
-
             @if($errors->any())
-                <div class="alert alert-danger">
+                <div class="alert">
                     @foreach ($errors->all() as $error)
                         <div>{{ $error }}</div>
                     @endforeach
                 </div>
             @endif
 
-            <form action="{{ route('login.post') }}" method="POST">
+            <form action="{{ route('register.post') }}" method="POST">
                 @csrf
 
-                <div class="field">
-                    <label for="email" class="form-label">Email</label>
-                    <div class="input-wrap">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-width="2"/>
-                            <path d="m6 8 6 5 6-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <input type="email" id="email" name="email" class="form-input" placeholder="mahasiswa@example.com" value="{{ old('email') }}" required autocomplete="email">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="nim" class="form-label">NIM</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M7 4h10v16H7V4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M10 8h4M10 12h4M10 16h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <input type="text" id="nim" name="nim" class="form-input" placeholder="06.2023.1.07661" value="{{ old('nim') }}" required autocomplete="username" inputmode="numeric" pattern="\d{2}\.\d{4}\.\d\.\d{5}" title="Format NIM: 06.2023.1.07661">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="nama" class="form-label">Nama Lengkap</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 21a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <input type="text" id="nama" name="nama" class="form-input" placeholder="Nama sesuai data kampus" value="{{ old('nama') }}" required autocomplete="name">
+                        </div>
+                    </div>
+
+                    <div class="field field-full">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5h11A2.5 2.5 0 0 1 20 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-width="2"/>
+                                <path d="m6 8 6 5 6-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="nama@student.ac.id" value="{{ old('email') }}" required autocomplete="email">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="nomor_telepon" class="form-label">Nomor Telepon</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M7 4h10v16H7V4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M11 17h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <input type="tel" id="nomor_telepon" name="nomor_telepon" class="form-input" placeholder="081234567890" value="{{ old('nomor_telepon') }}" required autocomplete="tel">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="jurusan" class="form-label">Jurusan</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M4 10 12 5l8 5-8 5-8-5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M6 12v4c2 2 10 2 12 0v-4" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                            </svg>
+                            <input type="text" id="jurusan" name="jurusan" class="form-input" placeholder="Teknik Informatika" value="{{ old('jurusan') }}" required autocomplete="organization-title">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M7 10V8a5 5 0 0 1 10 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M6 10h12v9H6v-9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M12 14v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <input type="password" id="password" name="password" class="form-input" placeholder="Minimal 8 karakter" required autocomplete="new-password">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M7 10V8a5 5 0 0 1 10 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M6 10h12v9H6v-9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="m10 15 1.5 1.5L15 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input type="password" id="password_confirmation" name="password_confirmation" class="form-input" placeholder="Ulangi password" required autocomplete="new-password">
+                        </div>
                     </div>
                 </div>
 
-                <div class="field">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="input-wrap">
-                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M7 10V8a5 5 0 0 1 10 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M6 10h12v9H6v-9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                            <path d="M12 14v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        <input type="password" id="password" name="password" class="form-input" placeholder="Masukkan password" required autocomplete="current-password">
-                    </div>
-                </div>
-
-                <div class="remember-row">
-                    <label class="checkbox-container">
-                        <input type="checkbox" name="remember">
-                        <span>Ingat saya</span>
-                    </label>
-                </div>
-
-                <button type="submit" class="btn-submit">Masuk</button>
+                <button type="submit" class="btn-submit">Daftar sebagai Mahasiswa</button>
             </form>
 
-            <div class="support-box">
-                <strong>Butuh bantuan?</strong> Hubungi admin akademik jika akun belum aktif atau Anda lupa kredensial login.
-            </div>
-
             <div class="auth-switch">
-                Belum punya akun mahasiswa?
-                <a href="{{ route('register') }}">Daftar sekarang</a>
+                Sudah punya akun?
+                <a href="{{ route('login') }}">Masuk ke sistem</a>
             </div>
 
-            <div class="footer-info">
-                <p>&copy; 2026 MPTI Kelompok Sigma.</p>
-                <p>Uji coba: <code>mahasiswa@example.com</code> / <code>password</code></p>
+            <div class="support-box">
+                <strong>Catatan:</strong> Akun baru otomatis menggunakan peran mahasiswa dan dapat langsung membuat pengaduan setelah registrasi berhasil.
             </div>
         </section>
     </main>
-
     @include('partials.toast')
 </body>
 </html>
