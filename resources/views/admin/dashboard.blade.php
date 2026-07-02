@@ -1,1540 +1,591 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Sistem Informasi Pengaduan Mahasiswa</title>
-    <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #f3f4f6;
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --text-main: #1f2937;
-            --text-muted: #4b5563;
-            --card-bg: #ffffff;
-            --border-color: #e5e7eb;
-            --input-border: #d1d5db;
-            
-            --pending: #d97706;
-            --proses: #2563eb;
-            --selesai: #16a34a;
-            --ditolak: #dc2626;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding-bottom: 60px;
-        }
-
-        /* Navbar */
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 40px;
-            background: #1e3a8a; /* Solid Deep Blue */
-            color: #ffffff;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .navbar-brand {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffffff;
-            text-decoration: none;
-            letter-spacing: -0.5px;
-        }
-
-        .navbar-user {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .user-info {
-            text-align: right;
-        }
-
-        .user-name {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .user-role {
-            font-size: 12px;
-            color: #93c5fd;
-        }
-
-        .btn-logout {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background 0.15s ease;
-        }
-
-        .btn-logout:hover {
-            background: rgba(239, 68, 68, 0.2);
-            border-color: rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
-        }
-
-        /* Main Container */
-        .container {
-            width: 100%;
-            max-width: 1500px;
-            margin: 30px auto;
-            padding: 0 24px;
-        }
-
-        .dashboard-header {
-            margin-bottom: 24px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .dashboard-header h1 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .dashboard-header p {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 18px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-card.total { border-left: 4px solid var(--primary); }
-        .stat-card.pending { border-left: 4px solid var(--pending); }
-        .stat-card.proses { border-left: 4px solid var(--proses); }
-        .stat-card.selesai { border-left: 4px solid var(--selesai); }
-        .stat-card.ditolak { border-left: 4px solid var(--ditolak); }
-
-        .filter-card,
-        .analytics-card,
-        .category-card,
-        .activity-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 18px;
-            margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .filter-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            align-items: end;
-        }
-
-        .filter-actions {
-            display: flex;
-            gap: 8px;
-            align-items: end;
-            justify-content: flex-end;
-        }
-
-        .filter-actions .btn-small,
-        .filter-actions .btn-secondary-small {
-            min-width: 74px;
-        }
-
-        .btn-secondary-small,
-        .btn-detail {
-            min-height: 36px;
-            border-radius: 6px;
-            padding: 0 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .btn-secondary-small {
-            border: 1px solid var(--border-color);
-            color: var(--primary);
-            background: #ffffff;
-        }
-
-        .btn-detail {
-            border: 1px solid #bfdbfe;
-            color: #1d4ed8;
-            background: #eff6ff;
-            margin-top: 10px;
-        }
-
-        .analytics-grid,
-        .category-grid,
-        .activity-list {
-            display: grid;
-            gap: 10px;
-        }
-
-        .analytics-grid {
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        }
-
-        .analytics-item,
-        .activity-item {
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 12px;
-            background: #f9fafb;
-            font-size: 13px;
-        }
-
-        .category-row {
-            display: grid;
-            grid-template-columns: minmax(180px, .9fr) minmax(260px, 1.4fr) minmax(86px, auto) minmax(96px, auto);
-            gap: 12px;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 14px;
-            background: #f9fafb;
-        }
-
-        .category-row label {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            min-height: 42px;
-            padding: 0 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: #ffffff;
-            color: var(--text-main);
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .category-row input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: var(--primary);
-        }
-
-        .activity-meta {
-            color: var(--text-muted);
-            font-size: 12px;
-            margin-top: 4px;
-        }
-
-        .sla-badge {
-            display: inline-flex;
-            align-items: center;
-            min-height: 22px;
-            padding: 0 8px;
-            border-radius: 999px;
-            background: #fee2e2;
-            color: #991b1b;
-            font-size: 11px;
-            font-weight: 800;
-            margin-left: 8px;
-        }
-
-        .simple-pagination {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-            border-top: 1px solid var(--border-color);
-            padding-top: 14px;
-            margin-top: 18px;
-        }
-
-        .page-button {
-            min-height: 36px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 0 12px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #ffffff;
-            color: #1e3a8a;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .page-button.disabled {
-            color: #94a3b8;
-            background: #f8fafc;
-            cursor: not-allowed;
-        }
-
-        .page-info {
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 700;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            text-align: center;
-        }
-
-        .page-info span {
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        /* Alerts */
-        .alert {
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-size: 13.5px;
-            margin-bottom: 24px;
-            line-height: 1.4;
-            border: 1px solid transparent;
-        }
-
-        .alert-success {
-            background: #f0fdf4;
-            border-color: #bbf7d0;
-            color: #15803d;
-        }
-
-        .alert-danger {
-            background: #fef2f2;
-            border-color: #fecaca;
-            color: #b91c1c;
-        }
-
-        /* Section Panel */
-        .section-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-            color: var(--text-main);
-        }
-
-        /* Complaint Item List */
-        .complaint-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            background: #ffffff;
-        }
-
-        .complaint-sheet-head {
-            display: grid;
-            grid-template-columns: minmax(180px, 1.2fr) minmax(120px, .75fr) minmax(160px, 1fr) minmax(120px, .7fr) minmax(135px, .8fr) minmax(120px, .65fr) 120px;
-            gap: 12px;
-            align-items: center;
-            min-height: 42px;
-            padding: 0 14px;
-            background: #f8fafc;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: .04em;
-        }
-
-        .complaint-item {
-            background: #ffffff;
-            border: 0;
-            border-bottom: 1px solid var(--border-color);
-            border-radius: 0;
-            padding: 0;
-            cursor: pointer;
-            transition: background-color 0.15s ease;
-        }
-
-        .complaint-item:last-child {
-            border-bottom: 0;
-        }
-
-        .complaint-item:hover {
-            background: #f8fafc;
-        }
-
-        .complaint-header {
-            display: grid;
-            grid-template-columns: minmax(180px, 1.2fr) minmax(120px, .75fr) minmax(160px, 1fr) minmax(120px, .7fr) minmax(135px, .8fr) minmax(120px, .65fr) 120px;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 0;
-            padding: 14px;
-        }
-
-        .complaint-title {
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--text-main);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .sheet-cell {
-            min-width: 0;
-            color: var(--text-main);
-            font-size: 13px;
-        }
-
-        .sheet-cell-muted {
-            color: var(--text-muted);
-            font-size: 12px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .sheet-label {
-            display: none;
-            color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: .04em;
-            margin-bottom: 5px;
-        }
-
-        .badge {
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            border: 1px solid transparent;
-        }
-
-        .badge-pending { background: #fef3c7; color: #b45309; border-color: #fde68a; }
-        .badge-proses { background: #dbeafe; color: #1d4ed8; border-color: #bfdbfe; }
-        .badge-menunggu_klarifikasi,
-        .badge-menunggu_verifikasi_mahasiswa { background: #ede9fe; color: #6d28d9; border-color: #ddd6fe; }
-        .badge-ditindaklanjuti { background: #ccfbf1; color: #0f766e; border-color: #99f6e4; }
-        .badge-selesai { background: #d1fae5; color: #047857; border-color: #a7f3d0; }
-        .badge-ditolak { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
-
-        .complaint-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 11.5px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .complaint-meta strong {
-            color: var(--text-main);
-        }
-
-        .complaint-body {
-            font-size: 13.5px;
-            color: #374151;
-            line-height: 1.5;
-        }
-
-        /* Collapsible details */
-        .complaint-details {
-            border-top: 1px solid var(--border-color);
-            padding: 16px;
-            margin-top: 0;
-            display: none;
-            cursor: default;
-            background: #ffffff;
-        }
-
-        .complaint-item.active .complaint-details {
-            display: block;
-        }
-
-        .detail-section {
-            margin-bottom: 16px;
-        }
-
-        .detail-title {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-
-        /* Lampiran files */
-        .attachments-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .attachment-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .attachment-link:hover {
-            background: #f3f4f6;
-            text-decoration: underline;
-        }
-
-        /* Actions Grid: Update Status & Tanggapi */
-        .actions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-
-        @media (max-width: 768px) {
-            .actions-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 1180px) {
-            .complaint-sheet-head {
-                display: none;
-            }
-
-            .complaint-header {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-                align-items: start;
-            }
-
-            .sheet-label {
-                display: block;
-            }
-
-            .btn-detail {
-                width: 100%;
-                margin-top: 0;
-            }
-        }
-
-        @media (max-width: 760px) {
-            .container {
-                padding: 0 14px;
-                margin: 18px auto;
-            }
-
-            .complaint-header {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-form,
-            .category-row {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-actions {
-                display: grid;
-                grid-template-columns: 1fr;
-            }
-
-            .navbar {
-                padding: 12px 16px;
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .navbar-user {
-                width: 100%;
-                justify-content: space-between;
-                flex-wrap: wrap;
-            }
-        }
-
-        /* Forms inside detail card */
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 12.5px;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 4px;
-        }
-
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            min-height: 42px;
-            background: #ffffff;
-            border: 1px solid var(--input-border);
-            border-radius: 8px;
-            padding: 0 12px;
-            font-size: 13px;
-            color: var(--text-main);
-            outline: none;
-            transition: border-color 0.15s ease;
-        }
-
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
-        }
-
-        .form-textarea {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .btn-small {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 0 14px;
-            min-height: 42px;
-            font-size: 12.5px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: background 0.15s;
-        }
-
-        .category-row .btn-small {
-            width: 100%;
-        }
-
-        .btn-small:hover {
-            background: var(--primary-hover);
-        }
-
-        /* Logs and replies */
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            border-left: 2px solid var(--border-color);
-            padding-left: 15px;
-            margin-left: 5px;
-        }
-
-        .timeline-item {
-            position: relative;
-            font-size: 12.5px;
-            color: #4b5563;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -21px;
-            top: 4px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #9ca3af;
-        }
-
-        .timeline-item.active::before {
-            background: var(--primary);
-        }
-
-        .timeline-meta {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        .reply-box {
-            background: #f9fafb;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 12px 14px;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .reply-header {
-            font-weight: 700;
-            color: #1e3a8a;
-            margin-bottom: 4px;
-            font-size: 11.5px;
-            text-transform: uppercase;
-        }
-
-        /* Success Toast Styles */
-        .success-toast {
-            position: fixed;
-            right: 24px;
-            top: 24px;
-            z-index: 1000;
-            width: min(380px, calc(100vw - 32px));
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 12px;
-            align-items: start;
-            padding: 14px;
-            border-radius: 14px;
-            border: 1px solid #bbf7d0;
-            background: #ffffff;
-            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.16);
-            transform: translateY(-12px);
-            opacity: 0;
-            pointer-events: none;
-            transition: transform 0.24s ease, opacity 0.24s ease;
-        }
-
-        .success-toast.is-visible {
-            transform: translateY(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .toast-success-icon {
-            width: 30px;
-            height: 30px;
-            border-radius: 10px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: #f0fdf4;
-            color: #16a34a;
-            font-size: 16px;
-            font-weight: 800;
-        }
-
-        .toast-success-title {
-            display: block;
-            color: #166534;
-            font-size: 13px;
-            font-weight: 800;
-            margin-bottom: 3px;
-        }
-
-        .toast-success-message {
-            color: var(--text-muted);
-            font-size: 13px;
-            line-height: 1.45;
-        }
-
-        .toast-success-close {
-            width: 26px;
-            height: 26px;
-            border: 0;
-            border-radius: 8px;
-            background: #f8fafc;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 17px;
-            line-height: 1;
-        }
-
-        .toast-success-close:hover {
-            background: #eef2f7;
-            color: var(--text-main);
-        }
-
-        @media (max-width: 640px) {
-            .success-toast {
-                left: 16px;
-                right: 16px;
-                top: 16px;
-                width: auto;
-            }
-        }
-
-        /* Logout Modal Styles */
-        .logout-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            background: rgba(15, 23, 42, 0.45);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
-            padding: 16px;
-        }
-
-        .logout-modal.is-open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .logout-modal-content {
-            background: #ffffff;
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            border-radius: 16px;
-            padding: 24px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.18);
-            transform: scale(0.95);
-            transition: transform 0.2s ease;
-            text-align: center;
-        }
-
-        .logout-modal.is-open .logout-modal-content {
-            transform: scale(1);
-        }
-
-        .logout-modal-content h3 {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--text-main);
-            margin-bottom: 10px;
-        }
-
-        .logout-modal-content p {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.55;
-            margin-bottom: 24px;
-        }
-
-        .logout-modal-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .btn-modal-cancel {
-            min-height: 44px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: #f8fafc;
-            color: var(--text-main);
-            font-size: 13.5px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.15s;
-        }
-
-        .btn-modal-cancel:hover {
-            background: #eef2f7;
-        }
-
-        .btn-modal-confirm {
-            min-height: 44px;
-            border: 0;
-            border-radius: 8px;
-            background: #dc2626;
-            color: #ffffff;
-            font-size: 13.5px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 8px 16px rgba(220, 38, 38, 0.2);
-            transition: background 0.15s, transform 0.15s;
-        }
-
-        .btn-modal-confirm:hover {
-            background: #b91c1c;
-        }
-
-        /* Blur effect for Pelapor */
-        .blurred-pelapor {
-            filter: blur(4.5px);
-            transition: filter 0.25s ease;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .blurred-pelapor:hover {
-            filter: blur(0);
-            user-select: auto;
-        }
-
-        /* Kanban View Styles */
-        .kanban-board {
-            display: flex;
-            gap: 16px;
-            overflow-x: auto;
-            padding-bottom: 20px;
-            align-items: flex-start;
-            min-height: 550px;
-        }
-
-        .kanban-column {
-            flex: 0 0 290px;
-            background: #f1f5f9;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            max-height: 700px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-        }
-
-        .kanban-column-header {
-            padding: 12px 14px;
-            font-size: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 2px solid var(--border-color);
-            border-top-left-radius: 9px;
-            border-top-right-radius: 9px;
-            color: var(--text-main);
-        }
-
-        /* Status Colors for Column Headers */
-        .kanban-column[data-status="pending"] .kanban-column-header { border-bottom-color: var(--pending); background: #fffbeb; }
-        .kanban-column[data-status="proses"] .kanban-column-header { border-bottom-color: var(--proses); background: #eff6ff; }
-        .kanban-column[data-status="menunggu_klarifikasi"] .kanban-column-header { border-bottom-color: #6d28d9; background: #faf5ff; }
-        .kanban-column[data-status="ditindaklanjuti"] .kanban-column-header { border-bottom-color: #0f766e; background: #f0fdfa; }
-        .kanban-column[data-status="menunggu_verifikasi_mahasiswa"] .kanban-column-header { border-bottom-color: #6d28d9; background: #faf5ff; }
-        .kanban-column[data-status="selesai"] .kanban-column-header { border-bottom-color: var(--selesai); background: #f0fdf4; }
-        .kanban-column[data-status="ditolak"] .kanban-column-header { border-bottom-color: var(--ditolak); background: #fef2f2; }
-
-        .kanban-count {
-            background: rgba(0,0,0,0.06);
-            padding: 2px 8px;
-            border-radius: 99px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .kanban-cards {
-            padding: 10px;
-            overflow-y: auto;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            min-height: 250px;
-            background: #f8fafc;
-            border-bottom-left-radius: 9px;
-            border-bottom-right-radius: 9px;
-            transition: background-color 0.2s;
-        }
-
-        .kanban-cards.drag-over {
-            background-color: #e2e8f0;
-        }
-
-        .kanban-card {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            cursor: grab;
-            transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
-            position: relative;
-        }
-
-        .kanban-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.06);
-            border-color: #cbd5e1;
-        }
-
-        .kanban-card:active {
-            cursor: grabbing;
-        }
-
-        .kanban-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-
-        .kanban-ticket {
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--text-muted);
-        }
-
-        .kanban-priority {
-            font-size: 9px;
-            font-weight: 800;
-            padding: 1px 5px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-        .kanban-priority.priority-tinggi { background: #fee2e2; color: #b91c1c; }
-        .kanban-priority.priority-sedang { background: #fef3c7; color: #b45309; }
-        .kanban-priority.priority-rendah { background: #dbeafe; color: #1d4ed8; }
-
-        .kanban-card-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 4px;
-            line-height: 1.4;
-        }
-
-        .kanban-card-desc {
-            font-size: 11.5px;
-            color: var(--text-muted);
-            line-height: 1.4;
-            margin-bottom: 10px;
-        }
-
-        .kanban-card-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 11px;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 8px;
-            margin-bottom: 6px;
-        }
-
-        .kanban-reporter {
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .kanban-date {
-            color: var(--text-muted);
-        }
-
-        .kanban-detail-link {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--primary);
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .kanban-detail-link:hover {
-            text-decoration: underline;
-        }
-
-        /* View Toggle Styling */
-        .view-toggle-container {
-            display: flex;
-            background: #f1f5f9;
-            padding: 4px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-toggle-view {
-            border: 0;
-            background: transparent;
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: 700;
-            border-radius: 6px;
-            cursor: pointer;
-            color: var(--text-muted);
-            transition: all 0.15s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .btn-toggle-view.active {
-            background: #ffffff;
-            color: var(--primary);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Navbar -->
-    <nav class="navbar">
-        <a href="#" class="navbar-brand">Sistem Informasi Pengaduan Mahasiswa</a>
-        <div class="navbar-user">
-            @if(Auth::user()->role !== 'pimpinan')
-                <a href="{{ route('admin.users.index') }}" class="btn-logout" style="background:rgba(255,255,255,.14);">Manajemen User</a>
-            @endif
-            <div class="user-info">
-                <div class="user-name">{{ Auth::user()->nama }}</div>
-                <div class="user-role">Administrator ({{ Auth::user()->nim_nip }})</div>
-            </div>
-            <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-            <button type="button" class="btn-logout" id="btnTriggerLogout">Logout</button>
+@extends('layouts.admin')
+
+@section('title', 'Dashboard Admin')
+
+@section('content')
+    <!-- Welcome Header Card -->
+    <section class="bg-white/80 backdrop-blur-md border border-slate-200/80 rounded-2xl p-6 lg:p-8 shadow-sm relative overflow-hidden mb-6">
+        <div class="absolute -right-24 -bottom-24 w-64 h-64 rounded-full bg-indigo-500/5 blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 max-w-4xl">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-[10px] font-bold text-indigo-650 uppercase mb-3">
+                <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-pulse"></span>
+                Panel Kontrol Utama
+            </span>
+            <h1 class="text-xl sm:text-2xl font-black text-slate-900 leading-tight tracking-tight">Panel Administrasi SIPMA</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-2 font-medium leading-relaxed">
+                Kelola data pengaduan masuk, lakukan peninjauan lampiran berkas, perbarui status pengaduan, dan kirim tanggapan resmi kepada pelapor.
+            </p>
         </div>
-    </nav>
+    </section>
 
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Dashboard Header -->
-        <div class="dashboard-header">
-            <h1>Panel Administrasi</h1>
-            <p>Kelola data pengaduan masuk, lakukan peninjauan lampiran berkas, perbarui status pengaduan, dan kirim tanggapan resmi.</p>
+    <!-- Balanced Statistics Grid (Total + 7 Statuses) -->
+    <section class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white/95 border-l-4 border-slate-400 border border-slate-200/80 rounded-xl p-4 shadow-3xs hover:shadow-md transition-all duration-200">
+            <div class="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">Total Masuk</div>
+            <div class="text-2xl font-black text-slate-900">{{ $allPengaduans->count() }}</div>
         </div>
 
-        <!-- Stats Grid -->
-        <div class="stats-grid">
-            <div class="stat-card total">
-                <div class="stat-value">{{ $allPengaduans->count() }}</div>
-                <div class="stat-label">Total Masuk</div>
-            </div>
-            <div class="stat-card pending">
-                <div class="stat-value" style="color: var(--pending);">{{ $allPengaduans->where('status', 'pending')->count() }}</div>
-                <div class="stat-label">Pending</div>
-            </div>
-            <div class="stat-card proses">
-                <div class="stat-value" style="color: var(--proses);">{{ $allPengaduans->where('status', 'proses')->count() }}</div>
-                <div class="stat-label">Diproses</div>
-            </div>
-            <div class="stat-card selesai">
-                <div class="stat-value" style="color: var(--selesai);">{{ $allPengaduans->where('status', 'selesai')->count() }}</div>
-                <div class="stat-label">Selesai</div>
-            </div>
-            <div class="stat-card ditolak">
-                <div class="stat-value" style="color: var(--ditolak);">{{ $allPengaduans->where('status', 'ditolak')->count() }}</div>
-                <div class="stat-label">Ditolak</div>
-            </div>
+        <div class="bg-white/95 border-l-4 border-amber-500 border border-slate-200/80 rounded-xl p-4 shadow-3xs hover:shadow-md transition-all duration-200">
+            <div class="text-[10px] font-extrabold text-amber-600 uppercase tracking-wider mb-1">Pending</div>
+            <div class="text-2xl font-black text-amber-650">{{ $allPengaduans->where('status', 'pending')->count() }}</div>
         </div>
 
-        <!-- Notification Alerts -->
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        <div class="filter-card">
-            <div class="section-title">Filter Pengaduan</div>
-            <form action="{{ route('admin.dashboard') }}" method="GET" class="filter-form">
-                <div class="form-group" style="margin-bottom:0;">
-                    <label for="q" class="form-label">Cari</label>
-                    <input type="text" id="q" name="q" class="form-input" value="{{ request('q') }}" placeholder="Judul atau isi laporan">
-                </div>
-                <div class="form-group" style="margin-bottom:0;">
-                    <label for="status" class="form-label">Status</label>
-                    <select id="status" name="status" class="form-select">
-                        <option value="">Semua</option>
-                    @foreach($statusLabels as $key => $label)
-                        <option value="{{ $key }}" {{ request('status') === $key ? 'selected' : '' }}>{{ $label }}</option>
-                    @endforeach
-                </select>
-            </div>
-                <div class="form-group" style="margin-bottom:0;">
-                    <label for="priority" class="form-label">Prioritas</label>
-                    <select id="priority" name="priority" class="form-select">
-                        <option value="">Semua</option>
-                        @foreach($priorityLabels as $key => $label)
-                            <option value="{{ $key }}" {{ request('priority') === $key ? 'selected' : '' }}>{{ $label }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group" style="margin-bottom:0;">
-                    <label for="kategori" class="form-label">Kategori</label>
-                    <select id="kategori" name="kategori" class="form-select">
-                        <option value="">Semua</option>
-                        @foreach($kategoris as $kategori)
-                            <option value="{{ $kategori->id_kategori }}" {{ (string) request('kategori') === (string) $kategori->id_kategori ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group" style="margin-bottom:0;">
-                    <label for="tanggal_mulai" class="form-label">Mulai</label>
-                    <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-input" value="{{ request('tanggal_mulai') }}">
-                </div>
-                <div class="form-group" style="margin-bottom:0;">
-                    <label for="tanggal_selesai" class="form-label">Selesai</label>
-                    <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-input" value="{{ request('tanggal_selesai') }}">
-                </div>
-                <div class="filter-actions">
-                    <button type="submit" class="btn-small">Filter</button>
-                    <a href="{{ route('admin.dashboard') }}" class="btn-secondary-small">Reset</a>
-                    <a href="{{ route('admin.pengaduan.export', request()->query()) }}" class="btn-secondary-small">Export CSV</a>
-                </div>
-            </form>
+        <div class="bg-white/95 border-l-4 border-blue-500 border border-slate-200/80 rounded-xl p-4 shadow-3xs hover:shadow-md transition-all duration-200">
+            <div class="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider mb-1">Diproses</div>
+            <div class="text-2xl font-black text-blue-600">{{ $allPengaduans->where('status', 'proses')->count() }}</div>
         </div>
 
-        <div class="analytics-card">
-            <div class="section-title">Top 5 Masalah Aduan Terbanyak (Kategori)</div>
-            <div class="analytics-grid">
-                @php $rank = 1; @endphp
-                @foreach($categoryStats as $categoryName => $count)
-                    <div class="analytics-item" style="position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-left: 4px solid var(--primary);">
-                        <div>
-                            <div style="font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Peringkat #{{ $rank }}</div>
-                            <strong style="font-size: 14px; color: var(--text-main); display: block;">{{ $categoryName }}</strong>
-                            <div class="activity-meta" style="margin-top: 4px; font-weight: 600; font-size: 12px;">{{ $count }} laporan aduan</div>
-                        </div>
-                        <div style="font-size: 32px; font-weight: 800; color: rgba(37, 99, 235, 0.08); user-select: none; line-height: 1;">#{{ $rank++ }}</div>
+        <div class="bg-white/95 border-l-4 border-purple-500 border border-slate-200/80 rounded-xl p-4 shadow-3xs hover:shadow-md transition-all duration-200">
+            <div class="text-[10px] font-extrabold text-purple-600 uppercase tracking-wider mb-1">Klarifikasi</div>
+            <div class="text-2xl font-black text-purple-650">{{ $allPengaduans->where('status', 'menunggu_klarifikasi')->count() }}</div>
+        </div>
+
+        <div class="bg-white/95 border-l-4 border-teal-500 border border-slate-200/80 rounded-xl p-4 shadow-3xs hover:shadow-md transition-all duration-200">
+            <div class="text-[10px] font-extrabold text-teal-600 uppercase tracking-wider mb-1">Tindaklanjut</div>
+            <div class="text-2xl font-black text-teal-650">{{ $allPengaduans->where('status', 'ditindaklanjuti')->count() }}</div>
+        </div>
+
+        <div class="bg-white/95 border-l-4 border-violet-500 border border-slate-200/80 rounded-xl p-4 shadow-3xs hover:shadow-md transition-all duration-200">
+            <div class="text-[10px] font-extrabold text-violet-600 uppercase tracking-wider mb-1">Verif Mhs</div>
+            <div class="text-2xl font-black text-violet-650">{{ $allPengaduans->where('status', 'menunggu_verifikasi_mahasiswa')->count() }}</div>
+        </div>
+
+        <div class="bg-white/95 border-l-4 border-emerald-500 border border-slate-200/80 rounded-xl p-4 shadow-3xs hover:shadow-md transition-all duration-200">
+            <div class="text-[10px] font-extrabold text-emerald-600 uppercase tracking-wider mb-1">Selesai</div>
+            <div class="text-2xl font-black text-emerald-650">{{ $allPengaduans->where('status', 'selesai')->count() }}</div>
+        </div>
+
+        <div class="bg-white/95 border-l-4 border-rose-500 border border-slate-200/80 rounded-xl p-4 shadow-3xs hover:shadow-md transition-all duration-200">
+            <div class="text-[10px] font-extrabold text-rose-600 uppercase tracking-wider mb-1">Ditolak</div>
+            <div class="text-2xl font-black text-rose-650">{{ $allPengaduans->where('status', 'ditolak')->count() }}</div>
+        </div>
+    </section>
+
+    <!-- Filters, Charts & Categories Wrapper -->
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+        
+        <!-- Filters Form -->
+        <div class="lg:col-span-8 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-3xs flex flex-col justify-between">
+            <div>
+                <h3 class="text-sm font-extrabold text-slate-900 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                    <i data-lucide="filter" class="w-4 h-4 text-indigo-650"></i> Filter Pengaduan
+                </h3>
+                <form action="{{ route('admin.dashboard') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label for="q" class="block text-[11px] font-bold text-slate-700 mb-1">Kata Kunci</label>
+                        <input type="text" id="q" name="q" class="w-full h-9.5 text-xs border border-slate-200 rounded-lg px-3 bg-slate-50/50 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all font-semibold" value="{{ request('q') }}" placeholder="Cari judul/isi aduan">
                     </div>
+                    <div>
+                        <label for="status" class="block text-[11px] font-bold text-slate-700 mb-1">Status</label>
+                        <select id="status" name="status" class="w-full h-9.5 text-xs border border-slate-200 rounded-lg px-3 bg-slate-50/50 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all font-semibold">
+                            <option value="">Semua Status</option>
+                            @foreach($statusLabels as $key => $label)
+                                <option value="{{ $key }}" {{ request('status') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="priority" class="block text-[11px] font-bold text-slate-700 mb-1">Prioritas</label>
+                        <select id="priority" name="priority" class="w-full h-9.5 text-xs border border-slate-200 rounded-lg px-3 bg-slate-50/50 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all font-semibold">
+                            <option value="">Semua Prioritas</option>
+                            @foreach($priorityLabels as $key => $label)
+                                <option value="{{ $key }}" {{ request('priority') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="kategori" class="block text-[11px] font-bold text-slate-700 mb-1">Kategori</label>
+                        <select id="kategori" name="kategori" class="w-full h-9.5 text-xs border border-slate-200 rounded-lg px-3 bg-slate-50/50 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all font-semibold">
+                            <option value="">Semua Kategori</option>
+                            @foreach($kategoris as $kategori)
+                                <option value="{{ $kategori->id_kategori }}" {{ (string) request('kategori') === (string) $kategori->id_kategori ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="tanggal_mulai" class="block text-[11px] font-bold text-slate-700 mb-1">Mulai</label>
+                        <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="w-full h-9.5 text-xs border border-slate-200 rounded-lg px-3 bg-slate-50/50 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all font-semibold" value="{{ request('tanggal_mulai') }}">
+                    </div>
+                    <div>
+                        <label for="tanggal_selesai" class="block text-[11px] font-bold text-slate-700 mb-1">Selesai</label>
+                        <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="w-full h-9.5 text-xs border border-slate-200 rounded-lg px-3 bg-slate-50/50 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all font-semibold" value="{{ request('tanggal_selesai') }}">
+                    </div>
+            </div>
+            <div class="flex flex-wrap gap-2.5 justify-end mt-4 pt-4 border-t border-slate-100">
+                <button type="submit" class="h-9 px-4 rounded-lg bg-indigo-600 text-xs font-bold text-white hover:bg-indigo-750 shadow-3xs transition-colors cursor-pointer">Terapkan Filter</button>
+                <a href="{{ route('admin.dashboard') }}" class="h-9 px-4 rounded-lg border border-slate-200 text-xs font-bold text-slate-750 hover:bg-slate-50 transition-colors flex items-center justify-center">Reset</a>
+                <a href="{{ route('admin.pengaduan.export', request()->query()) }}" class="h-9 px-4 rounded-lg border border-emerald-250 bg-emerald-50/50 text-xs font-bold text-emerald-700 hover:bg-emerald-50 transition-colors flex items-center justify-center gap-1.5">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
+                </a>
+            </div>
+            </form>
+        </div>
+
+        <!-- Top 5 Masalah: Horizontal Visual Charts -->
+        <div class="lg:col-span-4 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-3xs">
+            <h3 class="text-sm font-extrabold text-slate-900 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-650"></i> Top 5 Kategori Terbanyak
+            </h3>
+            <div class="space-y-4">
+                @php
+                    $maxCount = $categoryStats->max();
+                    $rank = 1;
+                @endphp
+                @forelse($categoryStats as $categoryName => $count)
+                    @php
+                        $percentage = $maxCount > 0 ? ($count / $maxCount) * 100 : 0;
+                    @endphp
+                    <div class="space-y-1">
+                        <div class="flex justify-between items-center text-xs font-bold text-slate-800">
+                            <span class="truncate flex items-center gap-1.5">
+                                <span class="w-4.5 h-4.5 rounded bg-indigo-50 border border-indigo-150 flex items-center justify-center text-[9px] text-indigo-600 font-extrabold flex-shrink-0">#{{ $rank++ }}</span>
+                                {{ $categoryName }}
+                            </span>
+                            <span class="text-indigo-600 font-extrabold flex-shrink-0">{{ $count }} Laporan</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                            <div class="bg-indigo-650 h-full rounded-full transition-all duration-700" style="width: {{ $percentage }}%"></div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-slate-400 text-xs py-8">Belum ada data aduan.</div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories & Recent Activities Layout -->
+    @if(Auth::user()->role !== 'pimpinan')
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+        
+        <!-- Category Management (Spreadsheet Grid design) -->
+        <div class="lg:col-span-8 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-3xs">
+            <h3 class="text-sm font-extrabold text-slate-900 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                <i data-lucide="tag" class="w-4 h-4 text-indigo-650"></i> Manajemen Kategori Pengaduan
+            </h3>
+
+            <!-- Add Kategori Form -->
+            <form action="{{ route('admin.kategori.store') }}" method="POST" class="grid grid-cols-1 sm:grid-cols-12 gap-3 mb-4 p-3 bg-slate-50 border border-slate-200/60 rounded-xl">
+                @csrf
+                <div class="sm:col-span-4">
+                    <input type="text" name="nama_kategori" class="w-full h-8.5 text-xs border border-slate-200 rounded-lg px-2.5 bg-white focus:border-indigo-650 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all font-semibold" placeholder="Nama Kategori Baru" required>
+                </div>
+                <div class="sm:col-span-5">
+                    <input type="text" name="deskripsi" class="w-full h-8.5 text-xs border border-slate-200 rounded-lg px-2.5 bg-white focus:border-indigo-650 focus:ring-2 focus:ring-indigo-500/10 outline-none transition-all font-semibold" placeholder="Deskripsi Singkat Kategori">
+                </div>
+                <div class="sm:col-span-3 flex items-center justify-between gap-2.5">
+                    <label class="relative inline-flex items-center cursor-pointer select-none">
+                        <input type="checkbox" name="status_aktif" value="1" checked class="sr-only peer">
+                        <div class="w-8 h-4.5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-indigo-600"></div>
+                        <span class="ml-1.5 text-[10px] font-bold text-slate-650">Aktif</span>
+                    </label>
+                    <button type="submit" class="h-8.5 px-3 bg-indigo-600 hover:bg-indigo-750 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1">
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Tambah
+                    </button>
+                </div>
+            </form>
+
+            <!-- Categories Scroll List -->
+            <div class="max-h-60 overflow-y-auto space-y-2 pr-1">
+                @foreach($kategoris as $kategori)
+                    <form action="{{ route('admin.kategori.update', $kategori->id_kategori) }}" method="POST" class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center border border-slate-200/50 p-2 bg-slate-50/20 hover:bg-slate-50/70 rounded-xl transition-all">
+                        @csrf
+                        @method('PUT')
+                        <div class="sm:col-span-4">
+                            <input type="text" name="nama_kategori" class="w-full h-8.5 text-xs bg-transparent border-b border-transparent focus:border-indigo-650 focus:bg-white px-1.5 rounded-sm outline-none transition-all font-bold text-slate-800" value="{{ $kategori->nama_kategori }}" required>
+                        </div>
+                        <div class="sm:col-span-5">
+                            <input type="text" name="deskripsi" class="w-full h-8.5 text-xs bg-transparent border-b border-transparent focus:border-indigo-650 focus:bg-white px-1.5 rounded-sm outline-none transition-all font-semibold text-slate-650" value="{{ $kategori->deskripsi }}" placeholder="Belum ada deskripsi">
+                        </div>
+                        <div class="sm:col-span-3 flex items-center justify-between gap-2.5">
+                            <label class="relative inline-flex items-center cursor-pointer select-none">
+                                <input type="checkbox" name="status_aktif" value="1" {{ $kategori->status_aktif ? 'checked' : '' }} onchange="this.form.submit()" class="sr-only peer">
+                                <div class="w-8 h-4.5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3.5 after:w-3.5 after:transition-all peer-checked:bg-indigo-650"></div>
+                                <span class="ml-1.5 text-[10px] font-bold text-slate-650">Aktif</span>
+                            </label>
+                            <button type="submit" class="w-7 h-7 rounded-lg bg-indigo-50 border border-indigo-150/40 text-indigo-600 hover:bg-indigo-100 flex items-center justify-center transition-colors cursor-pointer" title="Simpan Perubahan">
+                                <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </form>
                 @endforeach
             </div>
         </div>
 
-        @if(Auth::user()->role !== 'pimpinan')
-            <div class="category-card">
-                <div class="section-title">Manajemen Kategori</div>
-                <form action="{{ route('admin.kategori.store') }}" method="POST" class="category-row" style="margin-bottom:12px;">
-                    @csrf
-                    <input type="text" name="nama_kategori" class="form-input" placeholder="Nama kategori baru" required>
-                    <input type="text" name="deskripsi" class="form-input" placeholder="Deskripsi kategori">
-                    <label><input type="checkbox" name="status_aktif" value="1" checked> Aktif</label>
-                    <button type="submit" class="btn-small">Tambah</button>
-                </form>
-                <div class="category-grid">
-                    @foreach($kategoris as $kategori)
-                        <form action="{{ route('admin.kategori.update', $kategori->id_kategori) }}" method="POST" class="category-row">
-                            @csrf
-                            @method('PUT')
-                            <input type="text" name="nama_kategori" class="form-input" value="{{ $kategori->nama_kategori }}" required>
-                            <input type="text" name="deskripsi" class="form-input" value="{{ $kategori->deskripsi }}">
-                            <label><input type="checkbox" name="status_aktif" value="1" {{ $kategori->status_aktif ? 'checked' : '' }}> Aktif</label>
-                            <button type="submit" class="btn-small">Simpan</button>
-                        </form>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
-        <div class="activity-card">
-            <div class="section-title">Riwayat Aktivitas Terbaru</div>
-            <div class="activity-list">
+        <!-- Recent Activity Logs -->
+        <div class="lg:col-span-4 bg-white border border-slate-200/80 rounded-2xl p-5 shadow-3xs flex flex-col">
+            <h3 class="text-sm font-extrabold text-slate-900 border-b border-slate-100 pb-3 mb-4 flex items-center gap-2">
+                <i data-lucide="clock" class="w-4 h-4 text-indigo-650"></i> Aktivitas Terbaru
+            </h3>
+            <div class="space-y-3.5 flex-1 max-h-72 overflow-y-auto pr-1">
                 @forelse($activities as $activity)
-                    <div class="activity-item">
-                        <strong>{{ str_replace('_', ' ', $activity->action) }}</strong>
-                        <div>{{ $activity->description }}</div>
-                        <div class="activity-meta">
-                            {{ $activity->user?->nama ?? 'Sistem' }} - {{ $activity->created_at->format('d M Y, H:i') }}
+                    <div class="border border-slate-150/80 rounded-xl p-3 bg-slate-50/40 hover:bg-slate-50 transition-colors">
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="text-[10px] font-extrabold text-indigo-600 uppercase bg-indigo-50 border border-indigo-100/50 px-2 py-0.5 rounded leading-none truncate">{{ str_replace('_', ' ', $activity->action) }}</span>
+                            <span class="text-[9px] text-slate-400 font-bold whitespace-nowrap">{{ $activity->created_at->format('d M, H:i') }}</span>
                         </div>
+                        <p class="text-xs text-slate-700 leading-relaxed font-semibold mt-2">{{ $activity->description }}</p>
+                        <div class="text-[9px] text-slate-500 font-bold text-right mt-1.5">Oleh: {{ $activity->user?->nama ?? 'Sistem' }}</div>
                     </div>
                 @empty
-                    <div class="activity-item">Belum ada aktivitas tercatat.</div>
+                    <div class="text-center text-slate-450 text-xs py-12 flex flex-col items-center gap-2">
+                        <i data-lucide="inbox" class="w-8 h-8 text-slate-300"></i> Belum ada aktivitas log.
+                    </div>
                 @endforelse
             </div>
         </div>
+    </section>
+    @endif
 
-        <!-- Main Panel List -->
-        <div class="section-card">
-            <div class="section-title" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-                <span>Daftar Pengaduan Masuk</span>
-                <div class="view-toggle-container">
-                    <button class="btn-toggle-view active" id="btn-list-view" onclick="switchView('list')">
-                        📄 List View
-                    </button>
-                    <button class="btn-toggle-view" id="btn-kanban-view" onclick="switchView('kanban')">
-                        📋 Kanban View
-                    </button>
-                </div>
+    <!-- Main Complaints Panel (List View & Kanban View) -->
+    <section class="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-sm">
+        <!-- Panel Header & View Switcher -->
+        <div class="border-b border-slate-100 pb-4 mb-5 flex items-center justify-between flex-wrap gap-4">
+            <div class="flex items-center gap-3">
+                <h2 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-4.5 h-4.5 text-indigo-600"></i> Daftar Laporan Pengaduan
+                </h2>
+                <!-- Global Privacy Name Mask Toggle -->
+                <button type="button" onclick="toggleReporterNames()" id="toggleReporterNamesBtn" class="inline-flex h-7.5 items-center gap-1 px-3 border border-slate-200 hover:bg-slate-50 rounded-lg text-[10.5px] font-extrabold text-slate-600 shadow-3xs cursor-pointer transition-all">
+                    <i data-lucide="eye" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Unhide Nama</span>
+                </button>
             </div>
 
-            <div id="list-view">
-                @if($pengaduans->isEmpty())
-                    <div style="text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 13.5px;">
-                        Belum ada data pengaduan masuk dalam sistem database.
+            <!-- Tabs buttons -->
+            <div class="flex bg-slate-100 border border-slate-200/50 p-1 rounded-xl">
+                <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-650 cursor-pointer transition-all active-view-btn" id="btn-list-view" onclick="switchView('list')">
+                    <i data-lucide="list" class="w-3.5 h-3.5"></i> List View
+                </button>
+                <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-655 cursor-pointer transition-all" id="btn-kanban-view" onclick="switchView('kanban')">
+                    <i data-lucide="kanban" class="w-3.5 h-3.5"></i> Kanban View
+                </button>
+            </div>
+        </div>
+
+        <!-- 1. List View Section -->
+        <div id="list-view" class="space-y-4">
+            @if($pengaduans->isEmpty())
+                <div class="text-center py-16 text-slate-450 border border-slate-200/60 border-dashed rounded-2xl flex flex-col items-center gap-2">
+                    <i data-lucide="folder-open" class="w-10 h-10 text-slate-300"></i>
+                    <p class="text-sm font-semibold">Tidak ada data pengaduan masuk.</p>
+                </div>
+            @else
+                <!-- Responsive Sheet Layout -->
+                <div class="border border-slate-200/80 rounded-2xl overflow-hidden bg-white">
+                    <!-- Head Column -->
+                    <div class="hidden xl:grid xl:grid-cols-12 gap-4 items-center bg-slate-50 border-b border-slate-200/80 px-4.5 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <div class="col-span-3">Judul Pengaduan</div>
+                        <div class="col-span-1.5">No Tiket</div>
+                        <div class="col-span-2">Pelapor</div>
+                        <div class="col-span-2">Kategori & Tanggal</div>
+                        <div class="col-span-2">Status & SLA</div>
+                        <div class="col-span-1.5 text-right">Aksi</div>
                     </div>
-                @else
-                    <div class="complaint-list">
-                        <div class="complaint-sheet-head">
-                            <div>Judul</div>
-                            <div>Tiket</div>
-                            <div>Pelapor</div>
-                            <div>Kategori</div>
-                            <div>Status</div>
-                            <div>Prioritas</div>
-                            <div>Aksi</div>
-                        </div>
+
+                    <!-- Items Body -->
+                    <div class="divide-y divide-slate-100">
                         @foreach($pengaduans as $p)
-                            <div class="complaint-item" onclick="toggleDetails(this)">
-                                <div class="complaint-header">
-                                    <div class="sheet-cell">
-                                        <span class="sheet-label">Judul</span>
-                                        <div class="complaint-title" title="{{ $p->judul }}">{{ $p->judul }}</div>
-                                        <div class="sheet-cell-muted">{{ Str::limit($p->isi_pengaduan, 70) }}</div>
+                            <div class="complaint-item cursor-pointer transition-colors hover:bg-slate-50/60" onclick="toggleDetails(this)">
+                                
+                                <!-- Accordion Row Header -->
+                                <div class="grid grid-cols-1 xl:grid-cols-12 gap-3.5 xl:gap-4 items-center p-4.5">
+                                    
+                                    <!-- Title -->
+                                    <div class="xl:col-span-3 min-w-0">
+                                        <div class="xl:hidden text-[9px] font-bold text-slate-400 uppercase mb-0.5">Judul Pengaduan</div>
+                                        <h4 class="text-sm font-extrabold text-slate-800 leading-snug truncate" title="{{ $p->judul }}">{{ $p->judul }}</h4>
+                                        <p class="text-xs text-slate-450 truncate mt-1">{{ Str::limit($p->isi_pengaduan, 75) }}</p>
                                     </div>
-                                    <div class="sheet-cell">
-                                        <span class="sheet-label">Tiket</span>
-                                        <strong>{{ $p->ticket_number ?? 'Belum tersedia' }}</strong>
+
+                                    <!-- Ticket -->
+                                    <div class="xl:col-span-1.5">
+                                        <div class="xl:hidden text-[9px] font-bold text-slate-400 uppercase mb-0.5">No Tiket</div>
+                                        <span class="inline-flex text-[10.5px] font-bold text-slate-850 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-md leading-none shadow-3xs">{{ $p->ticket_number ?? 'PGD' }}</span>
                                     </div>
-                                    <div class="sheet-cell">
-                                        <span class="sheet-label">Pelapor</span>
-                                        <div class="blurred-pelapor" title="Arahkan kursor untuk melihat nama pelapor">
-                                            <strong>{{ $p->user->nama }}</strong>
-                                            <div class="sheet-cell-muted">{{ $p->user->nim_nip }}</div>
+
+                                    <!-- Pelapor -->
+                                    <div class="xl:col-span-2 min-w-0">
+                                        <div class="xl:hidden text-[9px] font-bold text-slate-400 uppercase mb-0.5">Pelapor</div>
+                                        <div class="reporter-name-container blur-sm select-none pointer-events-none transition-all duration-300">
+                                            <p class="text-xs font-bold text-slate-800 truncate">{{ $p->user->nama }}</p>
+                                            <p class="text-[10px] text-slate-500 font-bold truncate mt-0.5">{{ $p->user->nim_nip }}</p>
                                         </div>
                                     </div>
-                                    <div class="sheet-cell">
-                                        <span class="sheet-label">Kategori</span>
-                                        <strong>{{ $p->kategori->nama_kategori }}</strong>
-                                        <div class="sheet-cell-muted">{{ $p->created_at->format('d M Y, H:i') }}</div>
+
+                                    <!-- Kategori & Tanggal -->
+                                    <div class="xl:col-span-2 min-w-0">
+                                        <div class="xl:hidden text-[9px] font-bold text-slate-400 uppercase mb-0.5">Kategori & Tanggal</div>
+                                        <p class="text-xs font-bold text-slate-800 truncate">{{ $p->kategori->nama_kategori }}</p>
+                                        <p class="text-[10px] text-slate-450 font-bold truncate mt-0.5">{{ $p->created_at->format('d M Y, H:i') }}</p>
                                     </div>
-                                    <div class="sheet-cell">
-                                        <span class="sheet-label">Status</span>
+
+                                    <!-- Status & SLA -->
+                                    <div class="xl:col-span-2 flex flex-wrap items-center gap-1.5">
+                                        <div class="xl:hidden w-full text-[9px] font-bold text-slate-400 uppercase mb-0.5">Status & SLA</div>
+                                        <span class="badge badge-{{ $p->status }}">{{ $statusLabels[$p->status] ?? $p->status }}</span>
                                         @if($p->isOverdue())
                                             <span class="sla-badge">Lewat SLA</span>
                                         @endif
-                                        <span class="badge badge-{{ $p->status }}">{{ $statusLabels[$p->status] ?? $p->status }}</span>
-                                    </div>
-                                    <div class="sheet-cell">
-                                        <span class="sheet-label">Prioritas</span>
-                                        <strong>{{ $priorityLabels[$p->priority] ?? ucfirst($p->priority ?? 'sedang') }}</strong>
                                         @if($p->due_at)
-                                            <div class="sheet-cell-muted">SLA {{ $p->due_at->format('d M') }}</div>
+                                            <span class="text-[10px] text-slate-450 font-bold w-full xl:block xl:mt-1">SLA: {{ $p->due_at->format('d M Y') }}</span>
                                         @endif
                                     </div>
-                                    <div class="sheet-cell">
-                                        <span class="sheet-label">Aksi</span>
-                                        <a href="{{ route('admin.pengaduan.show', $p->id_pengaduan) }}" class="btn-detail" onclick="event.stopPropagation()">Detail</a>
+
+                                    <!-- Aksi button -->
+                                    <div class="xl:col-span-1.5 text-left xl:text-right" onclick="event.stopPropagation()">
+                                        <a href="{{ route('admin.pengaduan.show', $p->id_pengaduan) }}" class="inline-flex h-8 items-center gap-1 px-3 border border-indigo-100 bg-indigo-50/50 hover:bg-indigo-100 text-indigo-600 rounded-lg text-xs font-bold transition-all shadow-3xs">
+                                            Detail <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                                        </a>
                                     </div>
                                 </div>
 
-                                <!-- Detail Dropdown -->
-                                <div class="complaint-details" onclick="event.stopPropagation()">
-                                    <div class="detail-section">
-                                        <div class="detail-title">Detail Laporan</div>
-                                        <p style="white-space: pre-wrap; font-size: 13.5px; line-height: 1.5; color: #1f2937; background: #f3f4f6; padding: 12px; border-radius: 4px; border: 1px solid var(--border-color);">{{ $p->isi_pengaduan }}</p>
-                                    </div>
-
-                                    <div class="detail-section" style="margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
-                                        <div style="border: 1px solid #99f6e4; border-radius: 6px; background: #f0fdfa; padding: 8px 12px;">
-                                            <div style="font-size: 10px; font-weight: 800; color: #0f766e; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Durasi Penyelesaian (Total)</div>
-                                            <div style="font-size: 12.5px; font-weight: 800; color: #0d9488;">{{ $p->durasi_penyelesaian }}</div>
-                                        </div>
-                                        @if($p->waktu_proses)
-                                            <div style="border: 1px solid var(--border-color); border-radius: 6px; background: #f9fafb; padding: 8px 12px;">
-                                                <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Mulai Diproses</div>
-                                                <div style="font-size: 12.5px; font-weight: 700; color: var(--text-main);">{{ $p->waktu_proses->format('d M Y, H:i') }}</div>
+                                <!-- Accordion Collapsible Detail (Animated with transition-all) -->
+                                <div class="complaint-details overflow-hidden border-t border-slate-100 bg-slate-50/30 p-0 max-h-0 opacity-0 transition-all duration-300 pointer-events-none" onclick="event.stopPropagation()">
+                                    <div class="p-6 space-y-6">
+                                        
+                                        <!-- Detail Description -->
+                                        <div class="space-y-2">
+                                            <h5 class="text-[10px] font-extrabold text-slate-450 uppercase tracking-wide">Detail Laporan</h5>
+                                            <div class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-white border border-slate-200/80 rounded-xl p-4 shadow-3xs white-space-pre-wrap font-medium">
+                                                {{ $p->isi_pengaduan }}
                                             </div>
-                                            @if(in_array($p->status, ['selesai', 'ditolak']))
-                                                <div style="border: 1px solid var(--border-color); border-radius: 6px; background: #f9fafb; padding: 8px 12px;">
-                                                    <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Waktu Selesai/Ditolak</div>
-                                                    <div style="font-size: 12.5px; font-weight: 700; color: var(--text-main);">{{ $p->waktu_selesai_ditolak ? $p->waktu_selesai_ditolak->format('d M Y, H:i') : '-' }}</div>
+                                        </div>
+
+                                        <!-- Performance & SLA Metrics -->
+                                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                                            <div class="border border-teal-200 bg-teal-50/30 rounded-xl p-3">
+                                                <div class="text-[9px] font-bold text-teal-650 uppercase tracking-wider mb-1">Durasi Penyelesaian (Total)</div>
+                                                <div class="text-xs font-extrabold text-teal-800">{{ $p->durasi_penyelesaian }}</div>
+                                            </div>
+                                            @if($p->waktu_proses)
+                                                <div class="border border-slate-200 bg-white rounded-xl p-3">
+                                                    <div class="text-[9px] font-bold text-slate-450 uppercase tracking-wider mb-1">Mulai Diproses</div>
+                                                    <div class="text-xs font-extrabold text-slate-800">{{ $p->waktu_proses->format('d M Y, H:i') }}</div>
                                                 </div>
-                                                <div style="border: 1px solid #bbf7d0; border-radius: 6px; background: #f0fdf4; padding: 8px 12px;">
-                                                    <div style="font-size: 10px; font-weight: 800; color: #166534; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Durasi Proses</div>
-                                                    <div style="font-size: 12.5px; font-weight: 800; color: #15803d;">{{ $p->durasi_proses }}</div>
-                                                </div>
+                                                @if(in_array($p->status, ['selesai', 'ditolak']))
+                                                    <div class="border border-slate-200 bg-white rounded-xl p-3">
+                                                        <div class="text-[9px] font-bold text-slate-450 uppercase tracking-wider mb-1">Waktu Selesai</div>
+                                                        <div class="text-xs font-extrabold text-slate-800">{{ $p->waktu_selesai_ditolak ? $p->waktu_selesai_ditolak->format('d M Y, H:i') : '-' }}</div>
+                                                    </div>
+                                                    <div class="border border-emerald-200 bg-emerald-50/30 rounded-xl p-3">
+                                                        <div class="text-[9px] font-bold text-emerald-650 uppercase tracking-wider mb-1">Durasi Proses</div>
+                                                        <div class="text-xs font-extrabold text-emerald-800">{{ $p->durasi_proses }}</div>
+                                                    </div>
+                                                @else
+                                                    <div class="border-2 border-indigo-150 bg-indigo-50/20 rounded-xl p-3">
+                                                        <div class="text-[9px] font-bold text-indigo-600 uppercase tracking-wider mb-1">Sedang Berjalan</div>
+                                                        <div class="text-xs font-extrabold text-indigo-850">{{ $p->durasi_proses }}</div>
+                                                    </div>
+                                                @endif
                                             @else
-                                                <div style="border: 1px solid #bfdbfe; border-radius: 6px; background: #eff6ff; padding: 8px 12px;">
-                                                    <div style="font-size: 10px; font-weight: 800; color: #1d4ed8; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Durasi Proses</div>
-                                                    <div style="font-size: 12.5px; font-weight: 800; color: #1e40af;">{{ $p->durasi_proses }}</div>
+                                                <div class="border border-slate-200 bg-white rounded-xl p-3 col-span-3">
+                                                    <div class="text-[9px] font-bold text-slate-450 uppercase tracking-wider mb-1">Durasi Proses</div>
+                                                    <div class="text-xs font-bold text-slate-400">Menunggu verifikasi admin untuk memulai pemrosesan aduan.</div>
                                                 </div>
                                             @endif
-                                        @else
-                                            <div style="border: 1px solid var(--border-color); border-radius: 6px; background: #f9fafb; padding: 8px 12px;">
-                                                <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Durasi Proses</div>
-                                                <div style="font-size: 12.5px; font-weight: 700; color: var(--text-muted);">Belum diproses</div>
+                                        </div>
+
+                                        <!-- Attachments -->
+                                        @if($p->lampiran->isNotEmpty())
+                                            <div class="space-y-2.5">
+                                                <h5 class="text-[10px] font-extrabold text-slate-450 uppercase tracking-wide">Lampiran Berkas ({{ $p->lampiran->count() }})</h5>
+                                                <div class="flex flex-wrap gap-2">
+                                                    @foreach($p->lampiran as $file)
+                                                        <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="inline-flex h-9 items-center gap-1.5 px-3 border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-indigo-650 rounded-lg shadow-3xs transition-colors">
+                                                            <i data-lucide="file" class="w-4 h-4 text-slate-400"></i> {{ $file->nama_file }}
+                                                            <span class="text-[10px] text-slate-400 font-semibold uppercase">({{ $file->tipe_file }})</span>
+                                                        </a>
+                                                    @endforeach
+                                                </div>
                                             </div>
                                         @endif
-                                    </div>
 
-                                    @if($p->lampiran->isNotEmpty())
-                                        <div class="detail-section">
-                                            <div class="detail-title">Lampiran Berkas ({{ $p->lampiran->count() }})</div>
-                                            <div class="attachments-list">
-                                                @foreach($p->lampiran as $file)
-                                                    <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="attachment-link">
-                                                        📁 {{ $file->nama_file }} 
-                                                        <span style="color: var(--text-muted); font-size: 11px;">({{ $file->tipe_file }})</span>
-                                                    </a>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                    <!-- Actions Grid -->
-                                    @if(Auth::user()->role !== 'pimpinan')
-                                    <div class="actions-grid">
-                                        <!-- Aksi 1: Update Status -->
-                                        <form action="{{ route('admin.pengaduan.status.update', $p->id_pengaduan) }}" method="POST">
-                                            @csrf
-                                            <div class="detail-title" style="margin-bottom: 12px; color: var(--text-main);">Update Status Pengaduan</div>
+                                        <!-- Main Updates Actions -->
+                                        @if(Auth::user()->role !== 'pimpinan')
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white border border-slate-250/60 rounded-2xl p-5 shadow-3xs">
                                             
-                                            <div class="form-group">
-                                                <label class="form-label" for="status-{{ $p->id_pengaduan }}">Status Baru</label>
-                                                <select name="status" id="status-{{ $p->id_pengaduan }}" class="form-select" required>
-                                                    @foreach($statusLabels as $status => $label)
-                                                        <option value="{{ $status }}" {{ $p->status === $status ? 'selected' : '' }}>{{ $label }}</option>
+                                            <!-- Action 1: Status Updates -->
+                                            <form action="{{ route('admin.pengaduan.status.update', $p->id_pengaduan) }}" method="POST" class="space-y-3.5">
+                                                @csrf
+                                                <h4 class="text-xs font-extrabold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-1.5"><i data-lucide="refresh-cw" class="w-4 h-4 text-indigo-650"></i> Update Status Pengaduan</h4>
+                                                <div>
+                                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Pilih Status Baru</label>
+                                                    <select name="status" class="w-full h-9 text-xs border border-slate-200 rounded-lg px-2.5 bg-slate-50 focus:bg-white focus:border-indigo-600 outline-none transition-all font-semibold">
+                                                        @foreach($statusLabels as $status => $label)
+                                                            <option value="{{ $status }}" {{ $p->status === $status ? 'selected' : '' }}>{{ $label }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Catatan Perubahan</label>
+                                                    <textarea name="catatan" class="w-full h-20 text-xs border border-slate-200 rounded-lg p-2 bg-slate-50 focus:bg-white focus:border-indigo-600 outline-none transition-all resize-none font-medium" placeholder="Alasan perubahan status..."></textarea>
+                                                </div>
+                                                <button type="submit" class="h-8.5 px-4 bg-indigo-600 hover:bg-indigo-750 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer shadow-3xs">Simpan Status</button>
+                                            </form>
+
+                                            <!-- Action 2: Tanggapan Resmi -->
+                                            <form action="{{ route('admin.pengaduan.tanggapan.store', $p->id_pengaduan) }}" method="POST" class="space-y-3.5">
+                                                @csrf
+                                                <h4 class="text-xs font-extrabold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-1.5"><i data-lucide="message-square" class="w-4 h-4 text-indigo-650"></i> Kirim Tanggapan Resmi</h4>
+                                                <div>
+                                                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Pesan Tanggapan Resmi</label>
+                                                    <textarea name="isi_tanggapan" class="w-full h-32 text-xs border border-slate-200 rounded-lg p-2.5 bg-slate-50 focus:bg-white focus:border-indigo-600 outline-none transition-all resize-none font-medium" placeholder="Tuliskan tanggapan penyelesaian aduan secara formal kepada pelapor..." required></textarea>
+                                                </div>
+                                                <button type="submit" class="h-8.5 px-4 bg-indigo-600 hover:bg-indigo-750 text-white rounded-lg text-xs font-bold transition-colors cursor-pointer shadow-3xs">Kirim Tanggapan</button>
+                                            </form>
+                                        </div>
+                                        @endif
+
+                                        <!-- Sent Feedbacks / Replies -->
+                                        @if($p->tanggapan->isNotEmpty())
+                                            <div class="space-y-2.5">
+                                                <h5 class="text-[10px] font-extrabold text-slate-450 uppercase tracking-wide">Tanggapan Terkirim</h5>
+                                                <div class="space-y-2.5">
+                                                    @foreach($p->tanggapan as $reply)
+                                                        <div class="border border-slate-200 rounded-2xl p-4 bg-white shadow-3xs max-w-2xl relative">
+                                                            <div class="absolute right-4 top-4 text-[9px] text-slate-400 font-bold">{{ $reply->created_at->format('d M Y, H:i') }}</div>
+                                                            <div class="text-[10px] font-extrabold text-indigo-650 flex items-center gap-1.5 mb-1.5">
+                                                                <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Tanggapan Resmi ({{ $reply->admin->nama }})
+                                                            </div>
+                                                            <p class="text-xs text-slate-700 leading-relaxed font-semibold">{{ $reply->isi_tanggapan }}</p>
+                                                        </div>
                                                     @endforeach
-                                                </select>
+                                                </div>
                                             </div>
+                                        @endif
 
-                                            <div class="form-group">
-                                                <label class="form-label" for="catatan-{{ $p->id_pengaduan }}">Catatan Perubahan</label>
-                                                <textarea name="catatan" id="catatan-{{ $p->id_pengaduan }}" class="form-textarea" placeholder="Tambahkan catatan..."></textarea>
+                                        <!-- Log Logs History -->
+                                        @if($p->statusLogs->isNotEmpty())
+                                            <div class="space-y-3">
+                                                <h5 class="text-[10px] font-extrabold text-slate-450 uppercase tracking-wide">Log Perubahan Status</h5>
+                                                <div class="relative pl-6 border-l-2 border-slate-100 space-y-4">
+                                                    @foreach($p->statusLogs as $log)
+                                                        <div class="relative">
+                                                            <div class="absolute -left-8.5 top-0.5 w-5 h-5 rounded-full bg-slate-150 border-4 border-slate-50 flex items-center justify-center"></div>
+                                                            <div class="text-xs font-bold text-slate-800 leading-snug">
+                                                                Status dirubah dari <span class="text-slate-450">{{ $log->status_lama ?: 'belum ada' }}</span> menjadi <span class="text-indigo-600 font-extrabold">{{ $log->status_baru }}</span>
+                                                            </div>
+                                                            @if($log->catatan)
+                                                                <p class="text-xs text-slate-500 italic mt-1">"{{ $log->catatan }}"</p>
+                                                            @endif
+                                                            <div class="text-[10px] text-slate-400 font-bold mt-1">Oleh: {{ $log->creator->nama }} | {{ $log->created_at->format('d M Y, H:i') }}</div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </div>
+                                        @endif
 
-                                            <button type="submit" class="btn-small">Update Status</button>
-                                        </form>
-
-                                        <!-- Aksi 2: Kirim Tanggapan / Feedback -->
-                                        <form action="{{ route('admin.pengaduan.tanggapan.store', $p->id_pengaduan) }}" method="POST">
-                                            @csrf
-                                            <div class="detail-title" style="margin-bottom: 12px; color: var(--text-main);">Kirim Tanggapan Resmi</div>
-
-                                            <div class="form-group">
-                                                <label class="form-label" for="isi_tanggapan-{{ $p->id_pengaduan }}">Pesan Tanggapan</label>
-                                                <textarea name="isi_tanggapan" id="isi_tanggapan-{{ $p->id_pengaduan }}" class="form-textarea" required placeholder="Tuliskan tanggapan resmi kepada pelapor..."></textarea>
-                                            </div>
-
-                                            <button type="submit" class="btn-small">Kirim Tanggapan</button>
-                                        </form>
                                     </div>
-                                    @endif
-
-                                    @if($p->tanggapan->isNotEmpty())
-                                        <div class="detail-section">
-                                            <div class="detail-title">Tanggapan Terkirim</div>
-                                            <div class="complaint-list" style="gap: 10px;">
-                                                @foreach($p->tanggapan as $reply)
-                                                    <div class="reply-box">
-                                                        <div class="reply-header">Dijawab oleh: {{ $reply->admin->nama }} (Admin)</div>
-                                                        <div>{{ $reply->isi_tanggapan }}</div>
-                                                        <div class="timeline-meta" style="margin-top: 4px;">Pada: {{ $reply->created_at->format('d M Y, H:i') }}</div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                    @if($p->statusLogs->isNotEmpty())
-                                        <div class="detail-section">
-                                            <div class="detail-title">Log Perubahan Status</div>
-                                            <div class="timeline">
-                                                @foreach($p->statusLogs as $log)
-                                                    <div class="timeline-item">
-                                                        <div>Status berubah dari <strong>{{ $log->status_lama ?: 'null' }}</strong> menjadi <strong>{{ $log->status_baru }}</strong></div>
-                                                        @if($log->catatan)
-                                                            <div style="color: #4b5563; margin-top: 2px;">Catatan: "{{ $log->catatan }}"</div>
-                                                        @endif
-                                                        <div class="timeline-meta">Oleh: {{ $log->creator->nama }} | {{ $log->created_at->format('d M Y, H:i') }}</div>
-                                                    </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    @endif
                                 </div>
                             </div>
                         @endforeach
                     </div>
-                    @include('partials.simple-pagination', ['paginator' => $pengaduans])
-                @endif
-            </div>
-
-            <!-- Tampilan Kanban (Disembunyikan secara default) -->
-            <div id="kanban-view" style="display: none; margin-top: 20px;">
-                <div class="kanban-board">
-                    @foreach($statusLabels as $statusKey => $statusLabel)
-                        <div class="kanban-column" data-status="{{ $statusKey }}">
-                            <div class="kanban-column-header">
-                                <span>{{ $statusLabel }}</span>
-                                <span class="kanban-count">{{ $kanbanPengaduans->where('status', $statusKey)->count() }}</span>
-                            </div>
-                            <div class="kanban-cards" ondragover="allowDrop(event)" ondrop="drop(event)">
-                                @foreach($kanbanPengaduans->where('status', $statusKey) as $p)
-                                    <div class="kanban-card" draggable="true" ondragstart="drag(event)" id="card-{{ $p->id_pengaduan }}" data-id="{{ $p->id_pengaduan }}">
-                                        <div class="kanban-card-header">
-                                            <span class="kanban-ticket">{{ $p->ticket_number ?? 'PGD' }}</span>
-                                            <span class="kanban-priority priority-{{ $p->priority }}">{{ $priorityLabels[$p->priority] ?? $p->priority }}</span>
-                                        </div>
-                                        <div class="kanban-card-title">{{ $p->judul }}</div>
-                                        <div class="kanban-card-desc">{{ Str::limit($p->isi_pengaduan, 65) }}</div>
-                                        <div class="kanban-card-footer">
-                                            <div class="blurred-pelapor" title="Arahkan kursor untuk melihat nama pelapor">
-                                                <div class="kanban-reporter">{{ $p->user->nama }}</div>
-                                            </div>
-                                            <div class="kanban-date">{{ $p->created_at->format('d M') }}</div>
-                                        </div>
-                                        <a href="{{ route('admin.pengaduan.show', $p->id_pengaduan) }}" class="kanban-detail-link">Detail →</a>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endforeach
                 </div>
+
+                <!-- Paginate footer link -->
+                <div class="mt-4">
+                    @include('partials.simple-pagination', ['paginator' => $pengaduans])
+                </div>
+            @endif
+        </div>
+
+        <!-- 2. Kanban Board View Section (Hidden by default) -->
+        <div id="kanban-view" class="hidden overflow-x-auto py-2">
+            <div class="flex gap-4.5 pb-3 min-w-max items-start">
+                @foreach($statusLabels as $statusKey => $statusLabel)
+                    <div class="flex-shrink-0 w-72 bg-slate-50 border border-slate-200/80 rounded-2xl flex flex-col max-h-[640px] shadow-3xs kanban-column" data-status="{{ $statusKey }}">
+                        
+                        <!-- Column Header -->
+                        <div class="p-3.5 border-b-2 bg-slate-100/50 rounded-t-2xl flex justify-between items-center text-xs font-bold text-slate-900 border-slate-200/80
+                            {{ $statusKey==='pending'?'border-b-amber-500 bg-amber-50/20':'' }}
+                            {{ $statusKey==='proses'?'border-b-blue-500 bg-blue-50/20':'' }}
+                            {{ $statusKey==='menunggu_klarifikasi'?'border-b-purple-500 bg-purple-50/20':'' }}
+                            {{ $statusKey==='ditindaklanjuti'?'border-b-teal-500 bg-teal-50/20':'' }}
+                            {{ $statusKey==='menunggu_verifikasi_mahasiswa'?'border-b-violet-500 bg-violet-50/20':'' }}
+                            {{ $statusKey==='selesai'?'border-b-emerald-500 bg-emerald-50/20':'' }}
+                            {{ $statusKey==='ditolak'?'border-b-rose-500 bg-rose-50/20':'' }}
+                        ">
+                            <span>{{ $statusLabel }}</span>
+                            <span class="bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full text-[10px] font-extrabold kanban-count">{{ $kanbanPengaduans->where('status', $statusKey)->count() }}</span>
+                        </div>
+
+                        <!-- Column Drop Area -->
+                        <div class="p-3.5 space-y-3 overflow-y-auto flex-grow min-h-[300px] rounded-b-2xl bg-slate-50/20 kanban-cards" ondragover="allowDrop(event)" ondrop="drop(event)">
+                            @forelse($kanbanPengaduans->where('status', $statusKey) as $p)
+                                <div class="bg-white border border-slate-200/85 hover:border-slate-350 hover:shadow-md transition-all rounded-xl p-3.5 cursor-grab active:cursor-grabbing relative shadow-3xs" draggable="true" ondragstart="drag(event)" id="card-{{ $p->id_pengaduan }}" data-id="{{ $p->id_pengaduan }}">
+                                    <!-- Priority Indicator line -->
+                                    <div class="absolute left-0 top-0.5 bottom-0.5 w-1 rounded-r-md
+                                        {{ $p->priority==='darurat'?'bg-rose-600':'' }}
+                                        {{ $p->priority==='tinggi'?'bg-rose-500':'' }}
+                                        {{ $p->priority==='sedang'?'bg-amber-500':'' }}
+                                        {{ $p->priority==='rendah'?'bg-indigo-500':'' }}
+                                    "></div>
+
+                                    <div class="flex justify-between items-center text-[10px] font-bold text-slate-400 mb-2 pl-1.5">
+                                        <span>{{ $p->ticket_number ?? 'PGD' }}</span>
+                                        <span class="px-1.5 py-0.5 rounded text-[8px] uppercase tracking-wider font-extrabold
+                                            {{ $p->priority==='darurat'?'bg-rose-50 text-rose-600 border border-rose-100':'' }}
+                                            {{ $p->priority==='tinggi'?'bg-rose-50 text-rose-650 border border-rose-100/50':'' }}
+                                            {{ $p->priority==='sedang'?'bg-amber-50 text-amber-600 border border-amber-100':'' }}
+                                            {{ $p->priority==='rendah'?'bg-indigo-50 text-indigo-600 border border-indigo-100':'' }}
+                                        ">{{ $priorityLabels[$p->priority] ?? $p->priority }}</span>
+                                    </div>
+
+                                    <h4 class="text-xs font-extrabold text-slate-800 line-clamp-2 pl-1.5 leading-snug">{{ $p->judul }}</h4>
+                                    <p class="text-[11px] text-slate-450 mt-1.5 pl-1.5 line-clamp-2 leading-relaxed">{{ $p->isi_pengaduan }}</p>
+                                    
+                                    <!-- Reporter & date info -->
+                                    <div class="mt-3.5 pt-2.5 border-t border-slate-100 flex justify-between items-center text-[10px] pl-1.5">
+                                        <div class="reporter-name-container blur-sm select-none pointer-events-none transition-all duration-300">
+                                            <span class="font-extrabold text-slate-850">{{ $p->user->nama }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-1.5 text-slate-450 font-bold whitespace-nowrap">
+                                            <span>{{ $p->created_at->format('d M') }}</span>
+                                            <a href="{{ route('admin.pengaduan.show', $p->id_pengaduan) }}" class="text-indigo-650 hover:underline inline-flex items-center">Detail &rarr;</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="text-center py-16 text-slate-350 text-[11px] border border-dashed border-slate-200 rounded-xl flex flex-col items-center gap-1">
+                                    <i data-lucide="circle-slash" class="w-5 h-5 text-slate-300"></i>
+                                    Kosong
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
-    </div>
+    </section>
+@endsection
 
+@section('scripts')
     <script>
+        // Global privacy mask toggle
+        let showReporterNames = false;
+        function toggleReporterNames() {
+            showReporterNames = !showReporterNames;
+            document.querySelectorAll('.reporter-name-container').forEach(el => {
+                if (showReporterNames) {
+                    el.classList.remove('blur-sm', 'select-none', 'pointer-events-none');
+                    el.setAttribute('title', 'Nama pelapor terlihat');
+                } else {
+                    el.classList.add('blur-sm', 'select-none', 'pointer-events-none');
+                    el.setAttribute('title', 'Nama pelapor disembunyikan (klik tombol Mask di atas)');
+                }
+            });
+            const btn = document.getElementById('toggleReporterNamesBtn');
+            if (btn) {
+                btn.innerHTML = showReporterNames 
+                    ? '<i data-lucide="eye-off" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Mask Nama</span>'
+                    : '<i data-lucide="eye" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Unhide Nama</span>';
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons();
+                }
+            }
+        }
+
+        // View Toggler (List vs Kanban)
         function switchView(view) {
             const listView = document.getElementById('list-view');
             const kanbanView = document.getElementById('kanban-view');
@@ -1544,14 +595,18 @@
             if (view === 'list') {
                 listView.style.display = 'block';
                 kanbanView.style.display = 'none';
-                btnList.classList.add('active');
-                btnKanban.classList.remove('active');
+                btnList.classList.add('active-view-btn', 'bg-white', 'text-indigo-650', 'shadow-3xs');
+                btnList.classList.remove('text-slate-655');
+                btnKanban.classList.remove('active-view-btn', 'bg-white', 'text-indigo-650', 'shadow-3xs');
+                btnKanban.classList.add('text-slate-655');
                 localStorage.setItem('admin_dashboard_view', 'list');
             } else {
                 listView.style.display = 'none';
                 kanbanView.style.display = 'block';
-                btnList.classList.remove('active');
-                btnKanban.classList.add('active');
+                btnList.classList.remove('active-view-btn', 'bg-white', 'text-indigo-650', 'shadow-3xs');
+                btnList.classList.add('text-slate-655');
+                btnKanban.classList.add('active-view-btn', 'bg-white', 'text-indigo-650', 'shadow-3xs');
+                btnKanban.classList.remove('text-slate-655');
                 localStorage.setItem('admin_dashboard_view', 'kanban');
             }
         }
@@ -1561,17 +616,19 @@
             const savedView = localStorage.getItem('admin_dashboard_view');
             if (savedView === 'kanban') {
                 switchView('kanban');
+            } else {
+                switchView('list');
             }
         });
 
         // Drag and Drop Logic
         function drag(ev) {
             ev.dataTransfer.setData("text/plain", ev.target.id);
-            ev.target.style.opacity = '0.5';
+            ev.target.style.opacity = '0.6';
         }
 
         document.addEventListener('dragend', (ev) => {
-            if (ev.target.classList.contains('kanban-card')) {
+            if (ev.target.classList.contains('cursor-grab')) {
                 ev.target.style.opacity = '1';
             }
         });
@@ -1580,14 +637,14 @@
             ev.preventDefault();
             const cardsContainer = ev.target.closest('.kanban-cards');
             if (cardsContainer) {
-                cardsContainer.classList.add('drag-over');
+                cardsContainer.classList.add('bg-slate-200/50');
             }
         }
 
-        // Remove highlight on leave
+        // Remove highlights on leave
         document.addEventListener('dragleave', (ev) => {
             if (ev.target.classList.contains('kanban-cards')) {
-                ev.target.classList.remove('drag-over');
+                ev.target.classList.remove('bg-slate-200/50');
             }
         });
 
@@ -1596,7 +653,7 @@
             const cardsContainer = ev.target.closest('.kanban-cards');
             if (!cardsContainer) return;
             
-            cardsContainer.classList.remove('drag-over');
+            cardsContainer.classList.remove('bg-slate-200/50');
             
             const cardId = ev.dataTransfer.getData("text/plain");
             const cardElement = document.getElementById(cardId);
@@ -1624,21 +681,22 @@
 
         function updateColumnCounters() {
             document.querySelectorAll('.kanban-column').forEach(column => {
-                const count = column.querySelectorAll('.kanban-card').length;
-                column.querySelector('.kanban-count').textContent = count;
+                const count = column.querySelectorAll('[draggable="true"]').length;
+                const counter = column.querySelector('.kanban-count');
+                if (counter) counter.textContent = count;
             });
         }
 
         function updateComplaintStatus(id, status, sourceColumn, cardElement) {
-            // Toast notification creator
-            showToast('Mengubah status aduan...', 'info');
+            // Show dynamic AJAX Toast
+            showAJAXToast('Mengubah status aduan...', 'info');
 
             fetch(`/admin/pengaduan/${id}/status`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                 },
                 body: JSON.stringify({
                     status: status,
@@ -1653,165 +711,119 @@
             })
             .then(data => {
                 if (data.success) {
-                    showToast(data.message, 'success');
+                    showAJAXToast(data.message, 'success');
                 } else {
                     throw new Error(data.message || 'Gagal memperbarui status.');
                 }
             })
             .catch(error => {
-                showToast(error.message, 'error');
+                showAJAXToast(error.message, 'error');
                 // Revert card movement
                 sourceColumn.querySelector('.kanban-cards').appendChild(cardElement);
                 updateColumnCounters();
             });
         }
 
-        // Custom beautiful toast function for admin panel
-        function showToast(message, type = 'success') {
-            // Remove existing toast if any
+        // Custom AJAX Toast
+        function showAJAXToast(message, type = 'success') {
             const existing = document.getElementById('ajax-toast');
             if (existing) existing.remove();
 
             const toast = document.createElement('div');
             toast.id = 'ajax-toast';
-            toast.className = `success-toast`; // use existing success toast layout styles
             
-            // Custom styling based on type
-            let borderColor = '#bbf7d0';
-            let bg = '#ffffff';
-            let color = '#15803d';
-            let icon = '✔️';
+            let color = '#4f46e5';
+            let bg = '#eeebff';
+            let border = 'rgba(79, 70, 229, 0.2)';
+            let icon = 'info';
 
             if (type === 'error') {
-                borderColor = '#fca5a5';
-                color = '#b91c1c';
-                icon = '❌';
-            } else if (type === 'info') {
-                borderColor = '#bfdbfe';
-                color = '#1d4ed8';
-                icon = '⏳';
+                color = '#dc2626';
+                bg = '#fef2f2';
+                border = 'rgba(220, 38, 38, 0.2)';
+                icon = 'alert-octagon';
+            } else if (type === 'success') {
+                color = '#16a34a';
+                bg = '#f0fdf4';
+                border = 'rgba(22, 163, 74, 0.2)';
+                icon = 'check-circle';
             }
 
             toast.style.cssText = `
                 position: fixed;
                 right: 24px;
                 top: 24px;
-                z-index: 1000;
+                z-index: 99999;
                 display: flex;
                 align-items: center;
                 gap: 10px;
-                padding: 12px 18px;
-                border-radius: 8px;
-                border: 1px solid ${borderColor};
+                padding: 14px 18px;
+                border-radius: 16px;
+                border: 1px solid ${border};
                 background: ${bg};
                 color: ${color};
-                font-weight: 700;
+                font-weight: 800;
                 font-size: 13px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
                 transition: opacity 0.3s, transform 0.3s;
+                transform: translateY(-10px);
+                opacity: 0;
             `;
 
-            toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+            toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0"></i> <span>${message}</span>`;
             document.body.appendChild(toast);
 
-            // Trigger animation
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+
             setTimeout(() => {
                 toast.style.transform = 'translateY(0)';
                 toast.style.opacity = '1';
             }, 50);
 
-            // Auto dismiss unless it's info (loading)
             if (type !== 'info') {
                 setTimeout(() => {
                     toast.style.opacity = '0';
                     toast.style.transform = 'translateY(-10px)';
                     setTimeout(() => toast.remove(), 300);
-                }, 3000);
+                }, 3500);
             }
         }
 
-        function toggleDetails(element) {
-            if (element.classList.contains('active')) {
-                return;
-            }
+        // Accordion Toggle function (Fixed to allow closing active ones correctly)
+        function toggleDetails(rowElement) {
+            const detailContainer = rowElement.querySelector('.complaint-details');
+            if (!detailContainer) return;
+
+            const isOpen = rowElement.classList.contains('active');
+
+            // Close all other rows
             document.querySelectorAll('.complaint-item').forEach(item => {
-                if (item !== element) {
+                if (item !== rowElement) {
                     item.classList.remove('active');
-                }
-            });
-            element.classList.toggle('active');
-        }
-
-        // Mencegah penutupan detail saat berinteraksi di formulir/form-group
-        document.querySelectorAll('.complaint-details').forEach(detail => {
-            detail.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        });
-
-        // Penanganan klik header untuk menutup item aktif
-        document.querySelectorAll('.complaint-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                if (!e.target.closest('.complaint-details')) {
-                    if (this.classList.contains('active')) {
-                        this.classList.remove('active');
-                        e.stopPropagation();
+                    const details = item.querySelector('.complaint-details');
+                    if (details) {
+                        details.style.maxHeight = '0';
+                        details.style.opacity = '0';
+                        details.style.pointerEvents = 'none';
                     }
                 }
             });
-        });
 
-        (() => {
-            // Success Toast Logic
-            const toast = document.getElementById('successToast');
-            if (toast) {
-                const close = document.getElementById('successToastClose');
-                window.setTimeout(() => toast.classList.add('is-visible'), 120);
-                const hideToast = () => toast.classList.remove('is-visible');
-                close?.addEventListener('click', hideToast);
-                window.setTimeout(hideToast, 5200);
+            // Toggle clicked row
+            if (isOpen) {
+                rowElement.classList.remove('active');
+                detailContainer.style.maxHeight = '0';
+                detailContainer.style.opacity = '0';
+                detailContainer.style.pointerEvents = 'none';
+            } else {
+                rowElement.classList.add('active');
+                // Set height dynamically based on scrollHeight
+                detailContainer.style.maxHeight = detailContainer.scrollHeight + 'px';
+                detailContainer.style.opacity = '1';
+                detailContainer.style.pointerEvents = 'auto';
             }
-
-            window.addEventListener('DOMContentLoaded', () => {
-                const btnTrigger = document.getElementById('btnTriggerLogout');
-                const modal = document.getElementById('logoutModal');
-                const btnCancel = document.getElementById('btnCancelLogout');
-                const btnConfirm = document.getElementById('btnConfirmLogout');
-                const form = document.getElementById('logoutForm');
-
-                btnTrigger?.addEventListener('click', () => {
-                    modal?.classList.add('is-open');
-                });
-
-                btnCancel?.addEventListener('click', () => {
-                    modal?.classList.remove('is-open');
-                });
-
-                modal?.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.classList.remove('is-open');
-                    }
-                });
-
-                btnConfirm?.addEventListener('click', () => {
-                    form?.submit();
-                });
-            });
-        })();
+        }
     </script>
-
-    <!-- Logout Confirmation Modal -->
-    <div class="logout-modal" id="logoutModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="logout-modal-content">
-            <h3 id="modalTitle">Konfirmasi Keluar</h3>
-            <p>Apakah Anda yakin ingin keluar dari Panel Administrasi SIPMA?</p>
-            <div class="logout-modal-actions">
-                <button type="button" class="btn-modal-cancel" id="btnCancelLogout">Batal</button>
-                <button type="button" class="btn-modal-confirm" id="btnConfirmLogout">Keluar</button>
-            </div>
-        </div>
-    </div>
-
-    @include('partials.toast')
-</body>
-</html>
+@endsection

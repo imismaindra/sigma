@@ -20,33 +20,28 @@
 
     <nav class="sidebar-nav" aria-label="Navigasi mahasiswa">
         <a href="{{ route('mahasiswa.dashboard') }}" class="nav-link {{ $activeRoute === 'mahasiswa.dashboard' ? 'is-active' : '' }}" data-close-sidebar>
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h4A1.5 1.5 0 0 1 11 5.5v4A1.5 1.5 0 0 1 9.5 11h-4A1.5 1.5 0 0 1 4 9.5v-4ZM13 5.5A1.5 1.5 0 0 1 14.5 4h4A1.5 1.5 0 0 1 20 5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4A1.5 1.5 0 0 1 13 9.5v-4ZM4 14.5A1.5 1.5 0 0 1 5.5 13h4a1.5 1.5 0 0 1 1.5 1.5v4A1.5 1.5 0 0 1 9.5 20h-4A1.5 1.5 0 0 1 4 18.5v-4ZM13 14.5a1.5 1.5 0 0 1 1.5-1.5h4a1.5 1.5 0 0 1 1.5 1.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a1.5 1.5 0 0 1-1.5-1.5v-4Z" stroke="currentColor" stroke-width="1.8"/>
-            </svg>
+            <i data-lucide="layout-dashboard" class="nav-icon"></i>
             Dashboard
         </a>
         <a href="{{ route('mahasiswa.pengaduan.create') }}" class="nav-link {{ $activeRoute === 'mahasiswa.pengaduan.create' ? 'is-active' : '' }}" data-close-sidebar>
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                <path d="M5.5 4h13A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13A1.5 1.5 0 0 1 5.5 4Z" stroke="currentColor" stroke-width="1.6"/>
-            </svg>
+            <i data-lucide="file-plus" class="nav-icon"></i>
             Buat Pengaduan
         </a>
         <a href="{{ route('mahasiswa.pengaduan.index') }}" class="nav-link {{ str_starts_with($activeRoute ?? '', 'mahasiswa.pengaduan.') && $activeRoute !== 'mahasiswa.pengaduan.create' ? 'is-active' : '' }}" data-close-sidebar>
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M7 5h10M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                <path d="M5.5 3.5h13A1.5 1.5 0 0 1 20 5v14a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V5a1.5 1.5 0 0 1 1.5-1.5Z" stroke="currentColor" stroke-width="1.6"/>
-                <path d="m14 17 1.7 1.7L20 14.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <i data-lucide="clipboard-list" class="nav-icon"></i>
             Riwayat Pengaduan
         </a>
         <a href="{{ route('mahasiswa.profile') }}" class="nav-link {{ str_starts_with($activeRoute ?? '', 'mahasiswa.profile') ? 'is-active' : '' }}" data-close-sidebar>
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="1.8"/>
-                <path d="M4.5 20a7.5 7.5 0 0 1 15 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
+            <i data-lucide="user" class="nav-icon"></i>
             Profil Mahasiswa
         </a>
     </nav>
 
+    <!-- Sidebar Footer -->
+    <div class="p-4 border-t border-slate-200/60 bg-slate-50/30">
+        <button type="button" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold text-rose-600 bg-rose-50/50 hover:bg-rose-50 border border-rose-100/40 hover:border-rose-200/50 transition-all cursor-pointer" id="btnTriggerMahasiswaLogout">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            Keluar Panel
+        </button>
+    </div>
 </aside>

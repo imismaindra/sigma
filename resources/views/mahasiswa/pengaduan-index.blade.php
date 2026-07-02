@@ -4,87 +4,42 @@
 @section('page_title', 'Riwayat Pengaduan')
 @section('page_subtitle', 'Pantau semua pengaduan, status, prioritas, dan progres tindak lanjut.')
 
-@section('styles')
-    .history-grid {
-        display: grid;
-        gap: 14px;
-    }
-
-    .history-card {
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        background: #ffffff;
-        padding: 16px;
-        box-shadow: 0 10px 26px rgba(15, 23, 42, .05);
-    }
-
-    .history-top {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 12px;
-        align-items: start;
-    }
-
-    .ticket-code {
-        color: var(--primary-dark);
-        font-size: 12px;
-        font-weight: 900;
-        letter-spacing: .03em;
-        margin-bottom: 6px;
-    }
-
-    .progress-mini {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 6px;
-        margin: 14px 0 10px;
-    }
-
-    .progress-mini span {
-        height: 7px;
-        border-radius: 999px;
-        background: #e2e8f0;
-    }
-
-    .progress-mini span.done,
-    .progress-mini span.active {
-        background: linear-gradient(135deg, var(--primary), #38bdf8);
-    }
-
-    .history-actions {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    @media (max-width: 640px) {
-        .history-top {
-            grid-template-columns: 1fr;
-        }
-    }
-@endsection
-
 @section('content')
-    <section class="filter-panel" aria-label="Filter riwayat pengaduan">
+    <!-- Hero Header Card -->
+    <section class="page-hero">
+        <article class="hero-card bg-gradient-to-tr from-white to-slate-50/50">
+            <div class="eyebrow">Daftar Pengaduan</div>
+            <h1>Arsip & Riwayat Pengaduan Anda.</h1>
+            <p>Telusuri kembali aduan-aduan terdahulu Anda, lihat proses penyelesaian dari petugas, atau berikan tanggapan masukan pada tiket yang aktif.</p>
+        </article>
+
+        <aside class="guide-card panel bg-white/85">
+            <div>
+                <strong class="flex items-center gap-1.5 text-indigo-650"><i data-lucide="info" class="w-4.5 h-4.5"></i> Ringkasan Riwayat</strong>
+                <p>Klik tombol untuk mengajukan laporan kendala baru jika terdapat kendala perkuliahan yang saat ini Anda alami.</p>
+            </div>
+            <a href="{{ route('mahasiswa.pengaduan.create') }}" class="btn-primary flex items-center justify-center gap-1.5"><i data-lucide="plus-circle" class="w-4 h-4"></i> Buat Laporan Baru</a>
+        </aside>
+    </section>
+
+    <!-- Filter Panel -->
+    <section class="filter-panel bg-white/80" aria-label="Filter riwayat pengaduan">
         <div class="panel-head">
             <div>
-                <div class="panel-title">Filter Riwayat</div>
-                <p class="panel-subtitle">Cari berdasarkan judul, isi laporan, nomor tiket, status, kategori, prioritas, dan tanggal.</p>
+                <div class="panel-title flex items-center gap-1.5"><i data-lucide="search" class="w-4.5 h-4.5 text-indigo-600"></i> Cari & Saring Laporan</div>
+                <p class="panel-subtitle">Gunakan penyaringan berikut untuk mencari tiket pengaduan spesifik.</p>
             </div>
-            <a href="{{ route('mahasiswa.pengaduan.create') }}" class="btn-primary">Buat Pengaduan</a>
         </div>
 
         <form action="{{ route('mahasiswa.pengaduan.index') }}" method="GET" class="filter-form">
             <div>
-                <label for="q" class="form-label">Cari</label>
+                <label for="q" class="form-label">Cari Pengaduan</label>
                 <input type="text" id="q" name="q" class="form-input" value="{{ request('q') }}" placeholder="Judul, isi, atau nomor tiket">
             </div>
             <div>
                 <label for="status" class="form-label">Status</label>
-                <select id="status" name="status" class="form-select">
-                    <option value="">Semua</option>
+                <select id="status" name="status" class="form-select font-semibold cursor-pointer">
+                    <option value="">Semua Status</option>
                     @foreach($statusLabels as $key => $label)
                         <option value="{{ $key }}" {{ request('status') === $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
@@ -92,8 +47,8 @@
             </div>
             <div>
                 <label for="priority" class="form-label">Prioritas</label>
-                <select id="priority" name="priority" class="form-select">
-                    <option value="">Semua</option>
+                <select id="priority" name="priority" class="form-select font-semibold cursor-pointer">
+                    <option value="">Semua Prioritas</option>
                     @foreach($priorityLabels as $key => $label)
                         <option value="{{ $key }}" {{ request('priority') === $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
@@ -101,8 +56,8 @@
             </div>
             <div>
                 <label for="kategori" class="form-label">Kategori</label>
-                <select id="kategori" name="kategori" class="form-select">
-                    <option value="">Semua</option>
+                <select id="kategori" name="kategori" class="form-select font-semibold cursor-pointer">
+                    <option value="">Semua Kategori</option>
                     @foreach($kategoris as $kategori)
                         <option value="{{ $kategori->id_kategori }}" {{ (string) request('kategori') === (string) $kategori->id_kategori ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
                     @endforeach
@@ -117,24 +72,28 @@
                 <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-input" value="{{ request('tanggal_selesai') }}">
             </div>
             <div class="filter-actions">
-                <button type="submit" class="btn-primary">Filter</button>
-                <a href="{{ route('mahasiswa.pengaduan.index') }}" class="btn-secondary">Reset</a>
+                <button type="submit" class="btn-primary flex items-center justify-center gap-1.5"><i data-lucide="filter" class="w-4 h-4"></i> Filter</button>
+                <a href="{{ route('mahasiswa.pengaduan.index') }}" class="btn-secondary flex items-center justify-center gap-1.5"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Reset</a>
             </div>
         </form>
     </section>
 
-    <section class="panel">
+    <!-- Complaints history listing -->
+    <section class="panel bg-white/90">
         <div class="panel-head">
             <div>
-                <div class="panel-title">Daftar Riwayat</div>
-                <p class="panel-subtitle">{{ $pengaduans->total() }} pengaduan terdaftar. Buka detail untuk melihat progress bar lengkap.</p>
+                <div class="panel-title flex items-center gap-1.5"><i data-lucide="list" class="w-4.5 h-4.5 text-indigo-650"></i> Daftar Laporan Aduan Saya</div>
+                <p class="panel-subtitle">Ditemukan {{ $pengaduans->total() }} aduan terdaftar atas nama Anda.</p>
             </div>
         </div>
 
         @if($pengaduans->count() === 0)
-            <div class="empty-state">Belum ada pengaduan yang cocok dengan filter saat ini.</div>
+            <div class="empty-state">
+                <i data-lucide="folder-open" class="w-10 h-10 text-slate-300 mx-auto mb-2 animate-pulse"></i>
+                Belum ada pengaduan yang cocok dengan kriteria pencarian saat ini.
+            </div>
         @else
-            <div class="history-grid">
+            <div class="grid grid-cols-1 gap-4">
                 @foreach($pengaduans as $p)
                     @php
                         $progressIndex = [
@@ -147,38 +106,65 @@
                             'ditolak' => 1,
                         ][$p->status] ?? 1;
                     @endphp
-                    <article class="history-card">
-                        <div class="history-top">
-                            <div>
-                                <div class="ticket-code">{{ $p->ticket_number ?? 'Belum tersedia' }}</div>
-                                <div class="complaint-title">{{ $p->judul }}</div>
-                                <div class="complaint-meta" style="margin-top:8px;">
-                                    <span>Kategori: <strong>{{ $p->kategori->nama_kategori }}</strong></span>
-                                    <span>Tanggal: <strong>{{ $p->created_at->format('d M Y, H:i') }}</strong></span>
-                                    <span>Prioritas: <strong>{{ $priorityLabels[$p->priority] ?? ucfirst($p->priority ?? 'sedang') }}</strong></span>
+                    <article class="complaint-card hover:-translate-y-0.5 transition-all">
+                        
+                        <div class="complaint-top">
+                            <div class="min-w-0">
+                                <span class="text-[10px] font-black text-indigo-650 flex items-center gap-0.5 mb-1 uppercase tracking-wider">
+                                    <i data-lucide="hash" class="w-3 h-3"></i> Tiket: {{ $p->ticket_number ?? 'PGD' }}
+                                </span>
+                                <h4 class="complaint-title truncate text-[14px] sm:text-base font-extrabold text-slate-800">{{ $p->judul }}</h4>
+                                
+                                <div class="complaint-meta mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-slate-500">
+                                    <span class="flex items-center gap-1"><i data-lucide="tag" class="w-3.5 h-3.5"></i> Kategori: <strong>{{ $p->kategori->nama_kategori }}</strong></span>
+                                    <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> Dilaporkan: <strong>{{ $p->created_at->format('d M Y, H:i') }}</strong></span>
+                                    <span class="flex items-center gap-1"><i data-lucide="flag" class="w-3.5 h-3.5"></i> Prioritas: <strong>{{ $priorityLabels[$p->priority] ?? ucfirst($p->priority ?? 'sedang') }}</strong></span>
                                 </div>
                             </div>
-                            <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
+                            <div class="flex flex-wrap gap-1.5 justify-end">
                                 @if($p->isOverdue())
                                     <span class="sla-badge">Lewat SLA</span>
                                 @endif
                                 <span class="badge badge-{{ $p->status }}">{{ $statusLabels[$p->status] ?? $p->status }}</span>
                             </div>
                         </div>
-                        <div class="progress-mini" aria-label="Progress pengaduan">
+
+                        <!-- Progress Mini indicator bar layout -->
+                        <div class="flex items-center gap-1 my-3.5 w-full bg-slate-100/50 p-1.5 rounded-lg border border-slate-150/70" aria-label="Progress bar mini">
                             @for($i = 1; $i <= 5; $i++)
-                                <span class="{{ $i < $progressIndex ? 'done' : ($i === $progressIndex ? 'active' : '') }}"></span>
+                                @php
+                                    $stepColor = 'bg-slate-200';
+                                    if ($i < $progressIndex) {
+                                        $stepColor = 'bg-emerald-500';
+                                    } elseif ($i === $progressIndex) {
+                                        $stepColor = $p->status === 'ditolak' ? 'bg-rose-500' : 'bg-indigo-600';
+                                    }
+                                @endphp
+                                <span class="h-1.5 flex-1 rounded-full {{ $stepColor }} transition-all duration-300"></span>
                             @endfor
                         </div>
-                        <p class="complaint-body">{{ Str::limit($p->isi_pengaduan, 190) }}</p>
-                        <div class="history-actions">
-                            <span class="panel-subtitle">Tanggapan: {{ $p->tanggapan->count() }} · Lampiran: {{ $p->lampiran->count() }}</span>
-                            <a href="{{ route('mahasiswa.pengaduan.show', $p->id_pengaduan) }}" class="btn-soft">Lihat Detail & Progress</a>
+
+                        <p class="complaint-body text-xs text-slate-655 leading-relaxed">{{ Str::limit($p->isi_pengaduan, 190) }}</p>
+                        
+                        <div class="complaint-actions flex items-center justify-between border-t border-slate-100 pt-3 mt-3">
+                            <span class="text-[10px] font-extrabold text-slate-450 uppercase flex items-center gap-2">
+                                <span class="flex items-center gap-1"><i data-lucide="message-square" class="w-3.5 h-3.5"></i> {{ $p->comments->count() }} Diskusi</span>
+                                <span>•</span>
+                                <span class="flex items-center gap-1"><i data-lucide="message-square-quote" class="w-3.5 h-3.5"></i> {{ $p->tanggapan->count() }} Respon</span>
+                                <span>•</span>
+                                <span class="flex items-center gap-1"><i data-lucide="paperclip" class="w-3.5 h-3.5"></i> {{ $p->lampiran->count() }} Berkas</span>
+                            </span>
+                            
+                            <a href="{{ route('mahasiswa.pengaduan.show', $p->id_pengaduan) }}" class="btn-soft flex items-center gap-1 text-[11px] h-8"><i data-lucide="eye" class="w-3.5 h-3.5"></i> Lihat Detail & Progress</a>
                         </div>
+
                     </article>
                 @endforeach
             </div>
-            @include('partials.simple-pagination', ['paginator' => $pengaduans])
+            
+            <div class="mt-4">
+                @include('partials.simple-pagination', ['paginator' => $pengaduans])
+            </div>
         @endif
     </section>
 @endsection
