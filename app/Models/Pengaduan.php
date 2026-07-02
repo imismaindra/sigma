@@ -120,4 +120,118 @@ class Pengaduan extends Model
             && !in_array($this->status, ['selesai', 'ditolak'], true)
             && $this->cancelled_at === null;
     }
+
+    /**
+     * Get the date and time when the complaint was first processed.
+     */
+    public function getWaktuProsesAttribute()
+    {
+        $log = $this->statusLogs->where('status_baru', 'proses')->first();
+        return $log ? $log->created_at : null;
+    }
+
+    /**
+     * Get the date and time when the complaint was resolved or rejected.
+     */
+    public function getWaktuSelesaiDitolakAttribute()
+    {
+        $log = $this->statusLogs->whereIn('status_baru', ['selesai', 'ditolak'])->first();
+        return $log ? $log->created_at : null;
+    }
+
+    /**
+     * Get the processing duration format (Indonesian).
+     */
+    public function getDurasiProsesAttribute(): ?string
+    {
+        $waktuProses = $this->waktu_proses;
+
+        // If it was never processed (never reached 'proses' status)
+        if (!$waktuProses) {
+            // Check if it went directly to selesai/ditolak
+            if (in_array($this->status, ['selesai', 'ditolak'])) {
+                $waktuProses = $this->created_at; // fallback to creation time
+            } else {
+                return 'Belum diproses';
+            }
+        }
+
+        if (in_array($this->status, ['selesai', 'ditolak'])) {
+            $end = $this->waktu_selesai_ditolak ?? $this->updated_at;
+        } else {
+            $end = now();
+        }
+
+        if ($end->lt($waktuProses)) {
+            return '0 menit';
+        }
+
+        $diff = $waktuProses->diff($end);
+
+        $parts = [];
+        if ($diff->d > 0) {
+            $parts[] = $diff->d . ' hari';
+        }
+        if ($diff->h > 0) {
+            $parts[] = $diff->h . ' jam';
+        }
+        if ($diff->i > 0) {
+            $parts[] = $diff->i . ' menit';
+        }
+
+        if (empty($parts)) {
+            return $diff->s . ' detik';
+        }
+
+        $formatted = implode(', ', $parts);
+
+        if (!in_array($this->status, ['selesai', 'ditolak'])) {
+            return 'Sedang diproses (sudah berjalan ' . $formatted . ')';
+        }
+
+        return $formatted;
+    }
+
+    /**
+     * Get the total resolution duration from report submission (lapor) to completion/resolution.
+     */
+    public function getDurasiPenyelesaianAttribute(): ?string
+    {
+        $start = $this->created_at;
+
+        if (in_array($this->status, ['selesai', 'ditolak'])) {
+            $end = $this->waktu_selesai_ditolak ?? $this->updated_at;
+        } else {
+            $end = now();
+        }
+
+        if ($end->lt($start)) {
+            return '0 menit';
+        }
+
+        $diff = $start->diff($end);
+
+        $parts = [];
+        if ($diff->d > 0) {
+            $parts[] = $diff->d . ' hari';
+        }
+        if ($diff->h > 0) {
+            $parts[] = $diff->h . ' jam';
+        }
+        if ($diff->i > 0) {
+            $parts[] = $diff->i . ' menit';
+        }
+
+        if (empty($parts)) {
+            return $diff->s . ' detik';
+        }
+
+        $formatted = implode(', ', $parts);
+
+        if (!in_array($this->status, ['selesai', 'ditolak'])) {
+            return 'Belum selesai (sudah berjalan ' . $formatted . ')';
+        }
+
+        return $formatted;
+    }
 }

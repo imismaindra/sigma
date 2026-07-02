@@ -130,14 +130,25 @@
                     @if($pengaduan->lampiran->isEmpty())
                         <p style="color:var(--muted);font-size:13px;">Belum ada lampiran.</p>
                     @else
-                        <div class="attachments">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" style="margin-top:10px; display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:10px;">
                             @foreach($pengaduan->lampiran as $file)
-                                <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="attachment">
-                                    {{ $file->nama_file }} <span style="color:var(--muted);font-weight:600;">({{ $file->tipe_file }})</span>
+                                <div class="flex items-center gap-3 p-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100/50 transition-colors" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; display:flex; align-items:center; gap:12px;">
                                     @if(Str::startsWith($file->tipe_file, 'image/'))
-                                        <img src="{{ asset('storage/' . $file->path_file) }}" alt="{{ $file->nama_file }}">
+                                        <img src="{{ asset('storage/' . $file->path_file) }}" alt="{{ $file->nama_file }}" class="w-10 h-10 rounded object-cover border border-slate-200" style="width:40px; height:40px; border-radius:6px; object-fit:cover; border:1px solid #e2e8f0; flex-shrink:0;">
+                                    @else
+                                        @php
+                                            $ext = pathinfo($file->nama_file, PATHINFO_EXTENSION) ?: 'FILE';
+                                        @endphp
+                                        <div class="w-10 h-10 rounded bg-slate-200 border border-slate-350 flex items-center justify-center text-[10px] font-extrabold text-slate-600" style="width:40px; height:40px; border-radius:6px; background:#e2e8f0; border:1px solid #cbd5e1; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color: #4b5563; flex-shrink:0;">{{ strtoupper($ext) }}</div>
                                     @endif
-                                </a>
+                                    <div style="min-width:0; flex:1;">
+                                        <p style="font-size:12px; font-weight:700; color:#1f2937; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="{{ $file->nama_file }}">{{ $file->nama_file }}</p>
+                                        <p style="font-size:10px; color:#6b7280; margin:3px 0 0 0;">{{ explode('/', $file->tipe_file)[1] ?? 'Dokumen' }}</p>
+                                    </div>
+                                    <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="inline-flex items-center justify-center p-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors" style="display:inline-flex; align-items:center; justify-content:center; padding:6px; border-radius:6px; background:#dbeafe; color:#1d4ed8; text-decoration:none; flex-shrink:0;" title="Lihat Berkas">
+                                        <svg xmlns="http://www.w3.org/2000/svg" style="width:16px; height:16px;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                    </a>
+                                </div>
                             @endforeach
                         </div>
                     @endif
@@ -227,7 +238,8 @@
                             </div>
                             <div>
                                 <label class="form-label" for="lampiran">Tambah Lampiran</label>
-                                <input type="file" id="lampiran" name="lampiran[]" class="form-input" multiple>
+                                <input type="file" id="lampiran" name="lampiran[]" class="form-input" multiple accept=".pdf,.docx,.jpg,.jpeg,.png">
+                                <div id="filePreview" class="file-note" style="display:grid; gap:8px; margin-top:12px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));"></div>
                             </div>
                             <button type="submit" class="btn-primary">Simpan Perubahan</button>
                         </form>
@@ -269,6 +281,38 @@
             </aside>
         </div>
     </main>
+    <script>
+        document.getElementById('lampiran')?.addEventListener('change', function () {
+            const preview = document.getElementById('filePreview');
+            const files = Array.from(this.files || []);
+            preview.innerHTML = files.length ? files.map((file) => {
+                const size = (file.size / 1024 / 1024).toFixed(2);
+                const isTooLarge = file.size > 2 * 1024 * 1024;
+                const containerStyle = isTooLarge 
+                    ? 'border:1px solid #fecaca; background:#fff5f5; color:#991b1b; padding:8px; border-radius:8px; display:flex; align-items:center; gap:10px; font-size:12px;' 
+                    : 'border:1px solid #e2e8f0; background:#f8fafc; color:#374151; padding:8px; border-radius:8px; display:flex; align-items:center; gap:10px; font-size:12px;';
+                
+                let previewHtml = '';
+                if (file.type.startsWith('image/')) {
+                    const imgUrl = URL.createObjectURL(file);
+                    previewHtml = `<img src="${imgUrl}" class="w-10 h-10 rounded object-cover border border-slate-250 bg-white" style="width:40px; height:40px; border-radius:6px; object-fit:cover; border:1px solid #cbd5e1; flex-shrink:0;" />`;
+                } else {
+                    let ext = file.name.split('.').pop().toUpperCase();
+                    previewHtml = `<div class="w-10 h-10 rounded bg-slate-200 border border-slate-350 flex items-center justify-center text-[10px] font-extrabold text-slate-600" style="width:40px; height:40px; border-radius:6px; background:#e2e8f0; border:1px solid #cbd5e1; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:#4b5563; flex-shrink:0;">${ext}</div>`;
+                }
+
+                return `
+                    <div style="${containerStyle}">
+                        ${previewHtml}
+                        <div style="min-width:0; flex:1;">
+                            <p style="font-weight:700; color:#1f2937; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${file.name}">${file.name}</p>
+                            <p style="font-size:10px; color:#6b7280; margin:3px 0 0 0;">${size} MB ${isTooLarge ? '<span style="color:#dc2626; font-weight:800;">(Maksimal 2 MB)</span>' : ''}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('') : '';
+        });
+    </script>
     @include('partials.toast')
 </body>
 </html>

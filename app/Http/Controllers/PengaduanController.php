@@ -191,10 +191,15 @@ class PengaduanController extends Controller
             ->get();
         $categoryStats = $allPengaduans
             ->groupBy(fn ($item) => $item->kategori?->nama_kategori ?? 'Tanpa Kategori')
-            ->map->count();
+            ->map->count()
+            ->sortDesc()
+            ->take(5);
+
+        $kanbanPengaduans = $this->filterPengaduanQuery(clone $baseQuery, request())->latest()->get();
 
         return view('admin.dashboard', [
             'pengaduans' => $pengaduans,
+            'kanbanPengaduans' => $kanbanPengaduans,
             'allPengaduans' => $allPengaduans,
             'kategoris' => $kategoris,
             'activities' => $activities,
@@ -359,14 +364,26 @@ class PengaduanController extends Controller
             );
             $this->recordActivity('status_diperbarui', "Status pengaduan diubah dari {$statusLama} menjadi {$statusBaru}.", $pengaduan, ['status' => $statusLama], ['status' => $statusBaru]);
 
-            DB::commit();
-            return back()->with('success', "Status pengaduan berhasil diperbarui menjadi {$this->statusLabels[$statusBaru]}.");
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with('error', 'Gagal memperbarui status: ' . $e->getMessage());
-        }
-    }
+             DB::commit();
+             if ($request->wantsJson()) {
+                 return response()->json([
+                     'success' => true,
+                     'message' => "Status aduan berhasil diperbarui menjadi {$this->statusLabels[$statusBaru]}."
+                 ]);
+             }
+             return back()->with('success', "Status aduan berhasil diperbarui menjadi {$this->statusLabels[$statusBaru]}.");
+ 
+         } catch (\Exception $e) {
+             DB::rollBack();
+             if ($request->wantsJson()) {
+                 return response()->json([
+                     'success' => false,
+                     'message' => 'Gagal memperbarui status: ' . $e->getMessage()
+                 ], 500);
+             }
+             return back()->with('error', 'Gagal memperbarui status: ' . $e->getMessage());
+         }
+     }
 
     /**
      * Kirim Tanggapan Baru (Admin).

@@ -1,253 +1,697 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full bg-slate-50/50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Pengaduan Admin - SIPMA</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Vite Assets (Tailwind CSS v4 & JS) -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Google Fonts: Plus Jakarta Sans for extreme modern layout -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;650;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
-        :root { --primary:#2563eb; --dark:#1e3a8a; --bg:#f3f4f6; --card:#fff; --border:#e5e7eb; --text:#1f2937; --muted:#4b5563; --danger:#dc2626; }
-        *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-        body{background:var(--bg);color:var(--text);min-height:100vh}
-        .navbar{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;background:var(--dark);color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-        .navbar-brand{font-size:18px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.4px}
-        .navbar-user{display:flex;align-items:center;gap:16px}
-        .user-info{text-align:right}
-        .user-name{font-size:14px;font-weight:700}
-        .user-role{font-size:12px;color:#93c5fd}
-        .btn-nav{min-height:36px;border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1);color:#fff;text-decoration:none;font-size:12px;font-weight:800;cursor:pointer}
-        .btn-nav:hover{background:rgba(255,255,255,.16)}
-        .btn-nav.danger:hover{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.35);color:#fecaca}
-        .container{width:100%;max-width:1500px;margin:24px auto;padding:0 24px 44px}
-        .hero,.card{background:var(--card);border:1px solid var(--border);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-        .hero{padding:22px;margin-bottom:18px}
-        h1{font-size:28px;line-height:1.15;margin-bottom:10px}
-        .meta{display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:13px}
-        .badge{padding:4px 9px;border-radius:999px;font-size:11px;font-weight:800;text-transform:uppercase}
-        .badge-pending{background:#fef3c7;color:#b45309}.badge-proses{background:#dbeafe;color:#1d4ed8}.badge-menunggu_klarifikasi,.badge-menunggu_verifikasi_mahasiswa{background:#ede9fe;color:#6d28d9}.badge-ditindaklanjuti{background:#ccfbf1;color:#0f766e}.badge-selesai{background:#d1fae5;color:#047857}.badge-ditolak{background:#fee2e2;color:#b91c1c}
-        .grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(360px,.75fr);gap:20px;align-items:start}
-        .card{padding:18px;margin-bottom:18px}
-        .section-title{font-size:16px;font-weight:800;margin-bottom:12px}
-        .body-text{white-space:pre-wrap;line-height:1.7;background:#f9fafb;border:1px solid var(--border);border-radius:8px;padding:16px;font-size:14px}
-        .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:14px}
-        .info-item{border:1px solid var(--border);border-radius:8px;background:#f9fafb;padding:12px}
-        .info-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
-        .info-value{font-size:13px;font-weight:800;color:var(--text)}
-        .timeline{display:grid;gap:10px}.timeline-item{background:#f9fafb;border-left:3px solid var(--primary);border-radius:8px;padding:12px 14px;font-size:13px;line-height:1.55}.timeline-meta{color:var(--muted);font-size:12px;margin-top:4px}
-        .attachment{display:block;border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:10px;text-decoration:none;color:var(--primary);font-size:13px;font-weight:700;background:#fff}.attachment img{display:block;width:100%;max-height:240px;object-fit:cover;border-radius:6px;margin-top:8px}
-        .form-label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}.form-select,.form-textarea{width:100%;border:1px solid var(--border);border-radius:6px;background:#fff;padding:10px 12px;font-size:13px;margin-bottom:12px}.form-textarea{min-height:100px;resize:vertical}
-        .btn{min-height:38px;border:0;border-radius:6px;background:var(--primary);color:#fff;padding:0 12px;font-weight:800;cursor:pointer}.btn-link{display:inline-flex;align-items:center;min-height:38px;border:1px solid var(--border);border-radius:6px;padding:0 12px;text-decoration:none;color:var(--dark);background:#fff;font-size:13px;font-weight:800}
-        .logout-modal{position:fixed;inset:0;z-index:10000;background:rgba(15,23,42,.45);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease;padding:16px}
-        .logout-modal.is-open{opacity:1;pointer-events:auto}
-        .logout-modal-content{background:#fff;border:1px solid rgba(226,232,240,.9);border-radius:16px;padding:24px;width:100%;max-width:420px;box-shadow:0 24px 70px rgba(15,23,42,.18);transform:scale(.95);transition:transform .2s ease;text-align:center}
-        .logout-modal.is-open .logout-modal-content{transform:scale(1)}
-        .logout-modal-content h3{font-size:18px;font-weight:800;color:var(--text);margin-bottom:10px}
-        .logout-modal-content p{font-size:14px;color:var(--muted);line-height:1.55;margin-bottom:24px}
-        .logout-modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-        .btn-modal-cancel{min-height:44px;border:1px solid var(--border);border-radius:8px;background:#f8fafc;color:var(--text);font-size:13.5px;font-weight:800;cursor:pointer}
-        .btn-modal-confirm{min-height:44px;border:0;border-radius:8px;background:var(--danger);color:#fff;font-size:13.5px;font-weight:800;cursor:pointer;box-shadow:0 8px 16px rgba(220,38,38,.2)}
-        @media(max-width:1180px){.grid{grid-template-columns:1fr}.container{max-width:980px}}
-        @media(max-width:820px){.navbar{padding:12px 16px;align-items:flex-start;flex-direction:column}.navbar-user{width:100%;justify-content:space-between;flex-wrap:wrap}.user-info{text-align:left}.container{padding:0 16px 32px}.hero{padding:18px}h1{font-size:24px}}
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        /* Custom scrollbar for high-end feel */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
-<body>
-    <nav class="navbar">
-        <a href="{{ route('admin.dashboard') }}" class="navbar-brand">Sistem Informasi Pengaduan Mahasiswa</a>
-        <div class="navbar-user">
-            <a href="{{ route('admin.dashboard') }}" class="btn-nav">Kembali ke Dashboard</a>
-            <div class="user-info">
-                <div class="user-name">{{ Auth::user()->nama }}</div>
-                <div class="user-role">Administrator ({{ Auth::user()->nim_nip }})</div>
+<body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-indigo-500 selection:text-white bg-slate-55/40 relative">
+
+    <!-- Background Decorative Glowing Lights (Mesh Glow) -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute -top-[40%] -left-[20%] w-[90%] h-[90%] rounded-full bg-gradient-to-tr from-indigo-200/35 to-violet-200/35 blur-[120px]"></div>
+        <div class="absolute -bottom-[40%] -right-[20%] w-[90%] h-[90%] rounded-full bg-gradient-to-br from-blue-200/25 to-purple-200/25 blur-[120px]"></div>
+    </div>
+
+    <!-- Top Navigation Bar (Translucent Glassmorphism) -->
+    <nav class="sticky top-0 z-40 backdrop-blur-md bg-white/75 border-b border-slate-200/60 px-4 sm:px-8 py-3 flex items-center justify-between shadow-xs shadow-slate-100/50">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-2.5 group">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-purple-650 flex items-center justify-center text-white font-extrabold text-xs shadow-lg shadow-indigo-500/25 transform group-hover:rotate-6 transition-all duration-300">
+                    SP
+                </div>
+                <div>
+                    <h2 class="text-xs font-extrabold text-slate-900 leading-tight tracking-tight">SIPMA</h2>
+                    <p class="text-[9px] text-indigo-600 font-bold uppercase tracking-wider">Dashboard Admin</p>
+                </div>
+            </a>
+        </div>
+        
+        <div class="flex items-center gap-3">
+            <a href="{{ route('admin.dashboard') }}" class="inline-flex h-8 items-center gap-1.5 px-3 rounded-lg border border-slate-200 bg-white/80 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-950 transition-all shadow-xs hover:border-slate-350">
+                <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
+                Dashboard
+            </a>
+            
+            <div class="h-5 w-px bg-slate-200"></div>
+            
+            <div class="hidden sm:flex flex-col text-right">
+                <p class="text-xs font-extrabold text-slate-900 leading-none">{{ Auth::user()->nama }}</p>
+                <p class="text-[9px] text-slate-450 font-bold mt-0.5 uppercase tracking-wide">Administrator</p>
             </div>
-            <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display:none;">
-                @csrf
-            </form>
-            <button type="button" class="btn-nav danger" id="btnTriggerLogout">Logout</button>
+            
+            <button type="button" class="inline-flex h-8 items-center gap-1.5 px-3 rounded-lg bg-rose-50 border border-rose-200/70 text-xs font-bold text-rose-600 hover:bg-rose-100 hover:text-rose-700 transition-all shadow-xs cursor-pointer" id="btnTriggerLogout">
+                <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                Keluar
+            </button>
         </div>
     </nav>
-    <main class="container">
-        <section class="hero">
-            <h1>{{ $pengaduan->judul }}</h1>
-            <div class="meta">
-                <span>Tiket: <strong>{{ $pengaduan->ticket_number ?? 'Belum tersedia' }}</strong></span>
-                <span class="badge badge-{{ $pengaduan->status }}">{{ $statusLabels[$pengaduan->status] ?? $pengaduan->status }}</span>
-                <span>Prioritas: <strong>{{ $priorityLabels[$pengaduan->priority] ?? ucfirst($pengaduan->priority ?? 'sedang') }}</strong></span>
-                <span>Pelapor: {{ $pengaduan->user->nama }} ({{ $pengaduan->user->nim_nip }})</span>
-                <span>Kategori: {{ $pengaduan->kategori->nama_kategori }}</span>
-                <span>Dibuat: {{ $pengaduan->created_at->format('d M Y, H:i') }}</span>
-                @if($pengaduan->due_at)<span>SLA: {{ $pengaduan->due_at->format('d M Y, H:i') }}</span>@endif
+
+    <!-- Main Container -->
+    <main class="relative z-10 flex-1 max-w-[1500px] w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        
+        <!-- Breadcrumbs -->
+        <nav class="flex text-[10px] font-extrabold text-slate-450 tracking-wider uppercase" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1.5">
+                <li><a href="{{ route('admin.dashboard') }}" class="hover:text-indigo-600 transition-colors">Dashboard</a></li>
+                <li><i data-lucide="chevron-right" class="w-3 h-3 text-slate-300"></i></li>
+                <li><span class="text-slate-800">Detail Pengaduan</span></li>
+            </ol>
+        </nav>
+
+        <!-- Hero Section: Title and Glowing Badges -->
+        <section class="bg-white/85 backdrop-blur-sm border border-slate-200/80 rounded-2xl p-6 lg:p-7 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-md transition-all duration-300">
+            <div class="space-y-3 max-w-4xl">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider bg-slate-100 text-slate-700 px-2.5 py-0.5 rounded-md border border-slate-200 shadow-3xs">
+                        <i data-lucide="hash" class="w-3 h-3"></i>
+                        {{ $pengaduan->ticket_number ?? 'Belum tersedia' }}
+                    </span>
+                    
+                    @php
+                        $badgeClasses = [
+                            'pending' => 'bg-amber-50/70 text-amber-700 border-amber-200 shadow-amber-500/5',
+                            'proses' => 'bg-blue-50/70 text-blue-700 border-blue-200 shadow-blue-500/5',
+                            'menunggu_klarifikasi' => 'bg-purple-50/70 text-purple-700 border-purple-200 shadow-purple-500/5',
+                            'menunggu_verifikasi_mahasiswa' => 'bg-indigo-50/70 text-indigo-700 border-indigo-200 shadow-indigo-500/5',
+                            'ditindaklanjuti' => 'bg-teal-50/70 text-teal-700 border-teal-200 shadow-teal-500/5',
+                            'selesai' => 'bg-emerald-50/70 text-emerald-700 border-emerald-200 shadow-emerald-500/5',
+                            'ditolak' => 'bg-rose-50/70 text-rose-700 border-rose-200 shadow-rose-500/5',
+                        ];
+                        $badgeColor = $badgeClasses[$pengaduan->status] ?? 'bg-slate-50 text-slate-800 border-slate-200';
+                    @endphp
+                    <span class="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-md border shadow-3xs {{ $badgeColor }}">
+                        <span class="relative flex h-1.5 w-1.5">
+                            <span class="animate-pulse absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-current"></span>
+                        </span>
+                        {{ $statusLabels[$pengaduan->status] ?? $pengaduan->status }}
+                    </span>
+
+                    @php
+                        $priorityColor = [
+                            'rendah' => 'bg-slate-50 text-slate-600 border-slate-200',
+                            'sedang' => 'bg-blue-50/50 text-blue-600 border-blue-200/50',
+                            'tinggi' => 'bg-orange-50 text-orange-700 border-orange-200',
+                            'mendesak' => 'bg-red-50 text-red-700 border-red-200',
+                        ][$pengaduan->priority] ?? 'bg-slate-50 text-slate-600 border-slate-200';
+                    @endphp
+                    <span class="inline-flex items-center gap-1.5 text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-md border shadow-3xs {{ $priorityColor }}">
+                        <i data-lucide="flag" class="w-3 h-3"></i>
+                        {{ $priorityLabels[$pengaduan->priority] ?? ucfirst($pengaduan->priority ?? 'sedang') }}
+                    </span>
+                </div>
+
+                <h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight leading-snug text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-indigo-950 to-violet-900">
+                    {{ $pengaduan->judul }}
+                </h1>
+
+                <p class="text-xs text-slate-500 font-medium leading-relaxed">
+                    Kategori: <strong class="text-slate-800 font-bold">{{ $pengaduan->kategori->nama_kategori }}</strong> 
+                    • Dilaporkan: <strong class="text-slate-800 font-bold">{{ $pengaduan->created_at->format('d M Y, H:i') }} WIB</strong>
+                    @if($pengaduan->due_at)
+                    • Batas SLA: <strong class="text-slate-800 font-bold">{{ $pengaduan->due_at->format('d M Y, H:i') }} WIB</strong>
+                    @endif
+                </p>
             </div>
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-label">Pelapor</div>
-                    <div class="info-value">{{ $pengaduan->user->nama }}</div>
+            
+            <div class="hidden md:block h-12 w-px bg-slate-200"></div>
+
+            <div class="flex items-center gap-2.5 min-w-[220px] bg-slate-50/60 p-3 rounded-xl border border-slate-200/80 shadow-3xs">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-violet-500 text-white flex items-center justify-center font-extrabold text-xs shadow-md shadow-indigo-500/10">
+                    {{ strtoupper(substr($pengaduan->user->nama, 0, 2)) }}
                 </div>
-                <div class="info-item">
-                    <div class="info-label">NIM/NIP</div>
-                    <div class="info-value">{{ $pengaduan->user->nim_nip }}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Kategori</div>
-                    <div class="info-value">{{ $pengaduan->kategori->nama_kategori }}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Status</div>
-                    <div class="info-value">{{ $statusLabels[$pengaduan->status] ?? $pengaduan->status }}</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Prioritas</div>
-                    <div class="info-value">{{ $priorityLabels[$pengaduan->priority] ?? ucfirst($pengaduan->priority ?? 'sedang') }}</div>
+                <div class="min-w-0 filter blur-sm hover:blur-none transition-all duration-300 select-none hover:select-text cursor-pointer" title="Arahkan kursor untuk melihat nama pelapor">
+                    <p class="font-extrabold text-slate-900 text-xs truncate leading-tight">{{ $pengaduan->user->nama }}</p>
+                    <p class="text-[10px] text-slate-450 font-bold mt-0.5 truncate uppercase tracking-wider">{{ $pengaduan->user->nim_nip }}</p>
                 </div>
             </div>
         </section>
 
-        <div class="grid">
-            <section>
-                <article class="card">
-                    <div class="section-title">Isi Laporan</div>
-                    <div class="body-text">{{ $pengaduan->isi_pengaduan }}</div>
+        <!-- Information Metric Cards Grid (Dynamic hover style) -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+            
+            <!-- Card Pelapor -->
+            <div class="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-xs rounded-xl p-4 flex items-center gap-3.5 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-md hover:border-indigo-200/50 hover:bg-white transition-all duration-300 cursor-default">
+                <div class="flex items-center justify-center p-2.5 rounded-lg bg-gradient-to-tr from-blue-500 to-indigo-500 text-white shadow-sm shadow-indigo-500/15 flex-shrink-0">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 space-y-0.5">
+                    <p class="text-[9px] text-slate-450 font-extrabold uppercase tracking-wider leading-none">Pelapor</p>
+                    <div class="filter blur-sm hover:blur-none transition-all duration-300 select-none hover:select-text cursor-pointer" title="Arahkan kursor untuk melihat nama pelapor">
+                        <p class="text-xs font-bold text-slate-900 truncate leading-snug">{{ $pengaduan->user->nama }}</p>
+                        <p class="text-[9px] text-slate-500 font-semibold truncate">{{ $pengaduan->user->nim_nip }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Kategori -->
+            <div class="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-xs rounded-xl p-4 flex items-center gap-3.5 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-md hover:border-indigo-200/50 hover:bg-white transition-all duration-300 cursor-default">
+                <div class="flex items-center justify-center p-2.5 rounded-lg bg-gradient-to-tr from-indigo-500 to-violet-500 text-white shadow-sm shadow-violet-500/15 flex-shrink-0">
+                    <i data-lucide="tag" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 space-y-0.5">
+                    <p class="text-[9px] text-slate-450 font-extrabold uppercase tracking-wider leading-none">Kategori</p>
+                    <p class="text-xs font-bold text-slate-900 truncate leading-snug">{{ $pengaduan->kategori->nama_kategori }}</p>
+                    <p class="text-[9px] text-slate-500 font-semibold">Keluhan Kampus</p>
+                </div>
+            </div>
+
+            <!-- Card Status -->
+            <div class="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-xs rounded-xl p-4 flex items-center gap-3.5 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-md hover:border-indigo-200/50 hover:bg-white transition-all duration-300 cursor-default">
+                <div class="flex items-center justify-center p-2.5 rounded-lg bg-gradient-to-tr from-violet-500 to-purple-500 text-white shadow-sm shadow-purple-500/15 flex-shrink-0">
+                    <i data-lucide="info" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 space-y-0.5">
+                    <p class="text-[9px] text-slate-450 font-extrabold uppercase tracking-wider leading-none">Status & Prioritas</p>
+                    <p class="text-xs font-bold text-slate-900 truncate leading-snug">{{ $statusLabels[$pengaduan->status] ?? $pengaduan->status }}</p>
+                    <p class="text-[9px] text-slate-500 font-semibold truncate">Prioritas: {{ $priorityLabels[$pengaduan->priority] ?? $pengaduan->priority }}</p>
+                </div>
+            </div>
+
+            <!-- Card SLA/Tanggal -->
+            <div class="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-xs rounded-xl p-4 flex items-center gap-3.5 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-md hover:border-indigo-200/50 hover:bg-white transition-all duration-300 cursor-default">
+                <div class="flex items-center justify-center p-2.5 rounded-lg bg-gradient-to-tr from-purple-500 to-rose-500 text-white shadow-sm shadow-rose-500/15 flex-shrink-0">
+                    <i data-lucide="calendar" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 space-y-0.5">
+                    <p class="text-[9px] text-slate-450 font-extrabold uppercase tracking-wider leading-none">Tanggal Masuk</p>
+                    <p class="text-xs font-bold text-slate-900 truncate leading-snug">{{ $pengaduan->created_at->format('d M Y') }}</p>
+                    <p class="text-[9px] text-slate-500 font-semibold">Jam: {{ $pengaduan->created_at->format('H:i') }} WIB</p>
+                </div>
+            </div>
+
+            <!-- Card Durasi Penyelesaian (Total dari pertama lapor) -->
+            <div class="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-xs rounded-xl p-4 flex items-center gap-3.5 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-md hover:border-indigo-200/50 hover:bg-white transition-all duration-300 cursor-default">
+                <div class="flex items-center justify-center p-2.5 rounded-lg bg-gradient-to-tr from-teal-500 to-emerald-500 text-white shadow-sm shadow-teal-500/15 flex-shrink-0">
+                    <i data-lucide="timer" class="w-4 h-4"></i>
+                </div>
+                <div class="min-w-0 space-y-0.5">
+                    <p class="text-[9px] text-slate-450 font-extrabold uppercase tracking-wider leading-none">Durasi Penyelesaian</p>
+                    <p class="text-xs font-bold text-slate-900 truncate leading-snug">{{ $pengaduan->durasi_penyelesaian }}</p>
+                    <p class="text-[9px] text-slate-500 font-semibold truncate">Sejak pertama lapor</p>
+                </div>
+            </div>
+
+            <!-- Card Durasi Pengerjaan -->
+            @if($pengaduan->waktu_proses)
+                @php
+                    $durationBorder = in_array($pengaduan->status, ['selesai', 'ditolak']) ? 'border-l-emerald-500' : 'border-l-indigo-600';
+                @endphp
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-xs rounded-xl p-4 flex items-center gap-3.5 border-l-4 {{ $durationBorder }} hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-md hover:border-indigo-200/50 hover:bg-white transition-all duration-300 cursor-default">
+                    <div class="flex items-center justify-center p-2.5 rounded-lg bg-gradient-to-tr from-rose-500 to-amber-500 text-white shadow-sm shadow-amber-500/15 flex-shrink-0">
+                        <i data-lucide="clock" class="w-4 h-4"></i>
+                    </div>
+                    <div class="min-w-0 space-y-0.5">
+                        <p class="text-[9px] text-slate-450 font-extrabold uppercase tracking-wider leading-none">Durasi Proses</p>
+                        <p class="text-xs font-bold text-slate-900 truncate leading-snug">{{ $pengaduan->durasi_proses }}</p>
+                        <p class="text-[9px] text-slate-505 font-medium truncate">Mulai: {{ $pengaduan->waktu_proses->format('d M, H:i') }}</p>
+                    </div>
+                </div>
+            @else
+                <div class="bg-white/80 backdrop-blur-sm border border-slate-200 shadow-xs rounded-xl p-4 flex items-center gap-3.5 hover:scale-[1.02] hover:-translate-y-0.5 hover:shadow-md hover:border-indigo-200/50 hover:bg-white transition-all duration-300 cursor-default">
+                    <div class="flex items-center justify-center p-2.5 rounded-lg bg-gradient-to-tr from-slate-400 to-slate-500 text-white shadow-sm flex-shrink-0">
+                        <i data-lucide="clock-alert" class="w-4 h-4"></i>
+                    </div>
+                    <div class="min-w-0 space-y-0.5">
+                        <p class="text-[9px] text-slate-450 font-extrabold uppercase tracking-wider leading-none">Durasi Proses</p>
+                        <p class="text-xs font-bold text-slate-450 truncate leading-snug">Belum diproses</p>
+                        <p class="text-[9px] text-slate-500 font-semibold truncate">Menunggu pengerjaan</p>
+                    </div>
+                </div>
+            @endif
+
+        </section>
+
+        <!-- Main Content Area: Left & Right Column -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            
+            <!-- Left Column: Details, Attachments, Logs (span 2) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Card Isi Laporan -->
+                <article class="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 hover:shadow-md transition-shadow duration-300 space-y-4">
+                    <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                        <i data-lucide="file-text" class="w-4 h-4 text-indigo-600"></i>
+                        <h3 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Isi Laporan / Detail Pengaduan</h3>
+                    </div>
+                    <div class="bg-gradient-to-br from-slate-50/50 via-slate-50 to-indigo-50/15 border border-slate-100 rounded-xl p-5 text-sm leading-relaxed text-slate-750 whitespace-pre-wrap select-text">
+                        {{ $pengaduan->isi_pengaduan }}
+                    </div>
                 </article>
-                <article class="card">
-                    <div class="section-title">Lampiran</div>
-                    @forelse($pengaduan->lampiran as $file)
-                        <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="attachment">
-                            {{ $file->nama_file }} <span style="color:var(--muted)">({{ $file->tipe_file }})</span>
-                            @if(Str::startsWith($file->tipe_file, 'image/'))<img src="{{ asset('storage/' . $file->path_file) }}" alt="{{ $file->nama_file }}">@endif
-                        </a>
-                    @empty
-                        <p style="color:var(--muted);font-size:13px">Tidak ada lampiran.</p>
-                    @endforelse
-                </article>
-                <article class="card">
-                    <div class="section-title">Audit Aktivitas</div>
-                    <div class="timeline">
-                        @forelse($pengaduan->activities as $activity)
-                            <div class="timeline-item">
-                                <strong>{{ str_replace('_', ' ', $activity->action) }}</strong>
-                                <div>{{ $activity->description }}</div>
-                                <div class="timeline-meta">{{ $activity->user?->nama ?? 'Sistem' }} - {{ $activity->created_at->format('d M Y, H:i') }}</div>
-                                @if($activity->ip_address || $activity->before_data || $activity->after_data)
-                                    <div class="timeline-meta">
-                                        IP: {{ $activity->ip_address ?? '-' }}
-                                        @if($activity->before_data)
-                                            | Sebelum: {{ json_encode($activity->before_data, JSON_UNESCAPED_UNICODE) }}
-                                        @endif
-                                        @if($activity->after_data)
-                                            | Sesudah: {{ json_encode($activity->after_data, JSON_UNESCAPED_UNICODE) }}
-                                        @endif
+
+                <!-- Card Lampiran -->
+                <article class="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 hover:shadow-md transition-shadow duration-300 space-y-4">
+                    <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                        <i data-lucide="paperclip" class="w-4 h-4 text-indigo-600"></i>
+                        <h3 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Lampiran Dokumen</h3>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        @forelse($pengaduan->lampiran as $file)
+                            <div class="flex items-center gap-3 p-2.5 bg-white border border-slate-200 rounded-xl hover:shadow-md hover:-translate-y-0.5 hover:border-indigo-200 transition-all duration-250 shadow-3xs group">
+                                @if(Str::startsWith($file->tipe_file, 'image/'))
+                                    <div class="w-10 h-10 rounded-lg overflow-hidden border border-slate-150 bg-white flex-shrink-0 relative">
+                                        <img src="{{ asset('storage/' . $file->path_file) }}" alt="{{ $file->nama_file }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                    </div>
+                                @else
+                                    @php
+                                        $ext = pathinfo($file->nama_file, PATHINFO_EXTENSION) ?: 'FILE';
+                                    @endphp
+                                    <div class="w-10 h-10 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-center text-[9px] font-extrabold text-slate-500 flex-shrink-0">
+                                        {{ strtoupper($ext) }}
                                     </div>
                                 @endif
+                                <div class="min-w-0 flex-1 space-y-0.5">
+                                    <p class="text-xs font-bold text-slate-805 truncate group-hover:text-indigo-650 transition-colors" title="{{ $file->nama_file }}">
+                                        {{ $file->nama_file }}
+                                    </p>
+                                    <p class="text-[9px] text-slate-400 font-extrabold uppercase tracking-wider">
+                                        {{ explode('/', $file->tipe_file)[1] ?? 'File' }}
+                                    </p>
+                                </div>
+                                <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-650 hover:bg-indigo-100 hover:scale-105 transition-all shadow-3xs flex-shrink-0" title="Lihat Berkas">
+                                    <i data-lucide="eye" class="w-4 h-4"></i>
+                                </a>
                             </div>
                         @empty
-                            <p style="color:var(--muted);font-size:13px">Belum ada aktivitas.</p>
+                            <div class="sm:col-span-2 text-center py-6 bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
+                                <i data-lucide="folder-open" class="w-6 h-6 text-slate-400 mx-auto mb-1.5 animate-bounce"></i>
+                                <p class="text-[11px] text-slate-500 font-semibold">Tidak ada lampiran dokumen untuk pengaduan ini.</p>
+                            </div>
                         @endforelse
                     </div>
                 </article>
-            </section>
-            <aside>
-                @if(Auth::user()->role !== 'pimpinan')
-                    <article class="card">
-                        <div class="section-title">Update Status</div>
-                        <form action="{{ route('admin.pengaduan.status.update', $pengaduan->id_pengaduan) }}" method="POST">
-                            @csrf
-                            <label class="form-label" for="status">Status Baru</label>
-                            <select name="status" id="status" class="form-select" required>
-                                @foreach($statusLabels as $status => $label)
-                                    <option value="{{ $status }}" {{ $pengaduan->status === $status ? 'selected' : '' }}>{{ $label }}</option>
-                                @endforeach
-                            </select>
-                            <label class="form-label" for="catatan">Catatan</label>
-                            <textarea name="catatan" id="catatan" class="form-textarea"></textarea>
-                            <button type="submit" class="btn">Update Status</button>
-                        </form>
-                    </article>
-                    <article class="card">
-                        <div class="section-title">Kirim Tanggapan</div>
-                        <form action="{{ route('admin.pengaduan.tanggapan.store', $pengaduan->id_pengaduan) }}" method="POST">
-                            @csrf
-                            <label class="form-label" for="isi_tanggapan">Pesan</label>
-                            <textarea name="isi_tanggapan" id="isi_tanggapan" class="form-textarea" required></textarea>
-                            <button type="submit" class="btn">Kirim Tanggapan</button>
-                        </form>
-                    </article>
-                    <article class="card">
-                        <div class="section-title">Komentar Lanjutan</div>
-                        <div class="timeline" style="margin-bottom:12px;">
-                            @forelse($pengaduan->comments as $comment)
-                                <div class="timeline-item">
-                                    <strong>{{ $comment->user->nama }}</strong>
-                                    <div>{{ $comment->message }}</div>
-                                    <div class="timeline-meta">{{ $comment->created_at->format('d M Y, H:i') }}</div>
+
+                <!-- Card Audit Aktivitas -->
+                <article class="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 hover:shadow-md transition-shadow duration-300 space-y-4">
+                    <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                        <i data-lucide="history" class="w-4 h-4 text-indigo-600"></i>
+                        <h3 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Audit Aktivitas Sistem</h3>
+                    </div>
+                    
+                    <div class="relative border-l-2 border-indigo-100 ml-2.5 pl-6 space-y-6 py-1">
+                        @forelse($pengaduan->activities as $activity)
+                            <div class="relative">
+                                <!-- Marker dot (pulsing indicator) -->
+                                <span class="absolute -left-[31px] top-1.5 flex items-center justify-center w-4 h-4 rounded-full bg-white border-2 border-indigo-500 shadow-sm">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                                </span>
+                                
+                                <div class="space-y-1">
+                                    <div class="flex flex-wrap items-center gap-1.5">
+                                        <span class="text-xs font-bold text-slate-900 uppercase tracking-wide text-[11px]">
+                                            {{ str_replace('_', ' ', $activity->action) }}
+                                        </span>
+                                        <span class="text-[10px] font-semibold text-slate-300">•</span>
+                                        <span class="text-[10px] font-semibold text-slate-450">
+                                            {{ $activity->created_at->format('d M Y, H:i') }} WIB
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-slate-650 leading-relaxed">
+                                        {{ $activity->description }}
+                                    </p>
+                                    <p class="text-[10px] text-slate-400 font-semibold">
+                                        Oleh: 
+                                        @if($activity->user && $activity->user->role === 'mahasiswa')
+                                            <span class="inline-block filter blur-sm hover:blur-none transition-all duration-300 select-none hover:select-text cursor-pointer" title="Arahkan kursor untuk melihat nama">
+                                                {{ $activity->user->nama }}
+                                            </span>
+                                        @else
+                                            {{ $activity->user?->nama ?? 'Sistem' }}
+                                        @endif
+                                        @if($activity->ip_address) • IP: {{ $activity->ip_address }} @endif
+                                    </p>
+                                    
+                                    @if($activity->before_data || $activity->after_data)
+                                        <details class="mt-2 text-[10px] font-semibold text-slate-500">
+                                            <summary class="cursor-pointer hover:text-indigo-600 outline-none list-none inline-flex items-center gap-1 select-none">
+                                                <i data-lucide="chevron-right" class="w-3.5 h-3.5 transform transition-transform details-arrow"></i>
+                                                Detail Perubahan Data
+                                            </summary>
+                                            <div class="mt-1.5 p-3 rounded-xl bg-slate-50 border border-slate-200 font-mono text-[9px] space-y-1.5 overflow-x-auto">
+                                                @if($activity->before_data)
+                                                    <div><span class="text-rose-600 font-bold">Sebelum:</span> {{ json_encode($activity->before_data, JSON_UNESCAPED_UNICODE) }}</div>
+                                                @endif
+                                                @if($activity->after_data)
+                                                    <div><span class="text-emerald-600 font-bold">Sesudah:</span> {{ json_encode($activity->after_data, JSON_UNESCAPED_UNICODE) }}</div>
+                                                @endif
+                                            </div>
+                                        </details>
+                                    @endif
                                 </div>
-                            @empty
-                                <p style="color:var(--muted);font-size:13px">Belum ada komentar lanjutan.</p>
-                            @endforelse
+                            </div>
+                        @empty
+                            <div class="text-center py-4 text-slate-400 text-xs font-semibold">
+                                Belum ada riwayat aktivitas sistem.
+                            </div>
+                        @endforelse
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Right Column: Interactive Tab Action Panel & Timelines -->
+            <div class="space-y-6">
+                
+                @if(Auth::user()->role !== 'pimpinan')
+                    <!-- Card Panel Aksi (Tabs) -->
+                    <article class="bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden hover:shadow-md transition-shadow duration-300">
+                        
+                        <!-- Tabs Header (TabsList style) -->
+                        <div class="bg-slate-100/80 backdrop-blur-xs p-1.5 flex gap-1 border-b border-slate-200/50">
+                            <button type="button" class="tab-btn active flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer" data-tab="tab-status">
+                                <i data-lucide="check-square" class="w-3.5 h-3.5"></i>
+                                Status
+                            </button>
+                            <button type="button" class="tab-btn flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold rounded-lg text-slate-550 hover:text-slate-905 transition-all cursor-pointer" data-tab="tab-tanggapan">
+                                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                                Tanggapan
+                            </button>
+                            <button type="button" class="tab-btn flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold rounded-lg text-slate-550 hover:text-slate-905 transition-all cursor-pointer" data-tab="tab-komentar">
+                                <i data-lucide="message-square" class="w-3.5 h-3.5"></i>
+                                Komentar
+                            </button>
                         </div>
-                        <form action="{{ route('admin.pengaduan.comment', $pengaduan->id_pengaduan) }}" method="POST">
-                            @csrf
-                            <label class="form-label" for="message">Komentar</label>
-                            <textarea name="message" id="message" class="form-textarea" required placeholder="Tambahkan catatan lanjutan untuk mahasiswa..."></textarea>
-                            <button type="submit" class="btn">Kirim Komentar</button>
-                        </form>
+
+                        <!-- Tab Content Body -->
+                        <div class="p-6">
+                            
+                            <!-- Form 1: Update Status -->
+                            <div id="tab-status" class="tab-content space-y-4">
+                                <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-2">Update Status Pengaduan</h4>
+                                <form action="{{ route('admin.pengaduan.status.update', $pengaduan->id_pengaduan) }}" method="POST" class="space-y-4">
+                                    @csrf
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1.5" for="status">Pilih Status Baru</label>
+                                        <select name="status" id="status" class="block w-full text-xs font-medium rounded-lg border border-slate-250 bg-white px-3 h-10 shadow-3xs outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-500 transition-all cursor-pointer" required>
+                                            @foreach($statusLabels as $status => $label)
+                                                <option value="{{ $status }}" {{ $pengaduan->status === $status ? 'selected' : '' }}>{{ $label }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1.5" for="catatan">Catatan / Alasan Perubahan</label>
+                                        <textarea name="catatan" id="catatan" rows="3" class="block w-full text-xs font-medium rounded-lg border border-slate-250 bg-white px-3 py-2 shadow-3xs outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-500 transition-all resize-none" placeholder="Tulis catatan atau alasan pengubahan status tiket di sini..."></textarea>
+                                    </div>
+                                    <button type="submit" class="w-full inline-flex h-10 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 via-indigo-650 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-xs font-bold text-white shadow-md shadow-indigo-500/15 hover:scale-[1.01] active:scale-[0.99] hover:shadow-lg transition-all duration-200 cursor-pointer">
+                                        <i data-lucide="save" class="w-3.5 h-3.5 mr-1.5 animate-pulse"></i>
+                                        Perbarui Status
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Form 2: Kirim Tanggapan Resmi -->
+                            <div id="tab-tanggapan" class="tab-content space-y-4 hidden">
+                                <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-2">Kirim Tanggapan Resmi</h4>
+                                <p class="text-[11px] text-slate-500 leading-snug">Tanggapan resmi akan langsung terkirim dan dapat dilihat oleh mahasiswa pelapor di akun mereka.</p>
+                                <form action="{{ route('admin.pengaduan.tanggapan.store', $pengaduan->id_pengaduan) }}" method="POST" class="space-y-4">
+                                    @csrf
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1.5" for="isi_tanggapan">Pesan Tanggapan</label>
+                                        <textarea name="isi_tanggapan" id="isi_tanggapan" rows="4" class="block w-full text-xs font-medium rounded-lg border border-slate-250 bg-white px-3 py-2 shadow-3xs outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-500 transition-all" required placeholder="Tulis respon resmi, solusi, atau arahan untuk pelapor..."></textarea>
+                                    </div>
+                                    <button type="submit" class="w-full inline-flex h-10 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 via-indigo-650 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-xs font-bold text-white shadow-md shadow-indigo-500/15 hover:scale-[1.01] active:scale-[0.99] hover:shadow-lg transition-all duration-200 cursor-pointer">
+                                        <i data-lucide="send" class="w-3.5 h-3.5 mr-1.5 animate-pulse"></i>
+                                        Kirim Tanggapan
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Form 3: Komentar Lanjutan / Internal -->
+                            <div id="tab-komentar" class="tab-content space-y-4 hidden">
+                                <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-2">Komentar & Diskusi Internal</h4>
+                                
+                                <div class="max-h-[200px] overflow-y-auto space-y-3 pr-1 border border-slate-100 p-2 rounded-xl bg-slate-50/50 shadow-3xs">
+                                    @forelse($pengaduan->comments as $comment)
+                                        <div class="bg-white rounded-lg border border-slate-150 p-2.5 shadow-3xs space-y-1">
+                                            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-1 mb-1">
+                                                @if($comment->user->role === 'mahasiswa')
+                                                    <div class="filter blur-sm hover:blur-none transition-all duration-300 select-none hover:select-text cursor-pointer" title="Arahkan kursor untuk melihat nama">
+                                                        <p class="text-[10px] font-bold text-slate-800 leading-none">{{ $comment->user->nama }}</p>
+                                                    </div>
+                                                @else
+                                                    <p class="text-[10px] font-bold text-slate-800 leading-none">{{ $comment->user->nama }}</p>
+                                                @endif
+                                                <p class="text-[9px] text-slate-400 font-semibold">{{ $comment->created_at->format('d M, H:i') }}</p>
+                                            </div>
+                                            <p class="text-[11px] text-slate-650 leading-snug">
+                                                {{ $comment->message }}
+                                            </p>
+                                        </div>
+                                    @empty
+                                        <p class="text-[10px] text-slate-450 text-center py-4 font-bold">Belum ada diskusi komentar.</p>
+                                    @endforelse
+                                </div>
+
+                                <form action="{{ route('admin.pengaduan.comment', $pengaduan->id_pengaduan) }}" method="POST" class="space-y-4 pt-2 border-t border-slate-100">
+                                    @csrf
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1.5" for="message">Tambah Komentar Lanjutan</label>
+                                        <textarea name="message" id="message" rows="3" class="block w-full text-xs font-medium rounded-lg border border-slate-250 bg-white px-3 py-2 shadow-3xs outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-500 transition-all resize-none" required placeholder="Tulis komentar atau diskusi internal di sini..."></textarea>
+                                    </div>
+                                    <button type="submit" class="w-full inline-flex h-10 items-center justify-center rounded-lg bg-gradient-to-r from-indigo-600 via-indigo-650 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-xs font-bold text-white shadow-md shadow-indigo-500/15 hover:scale-[1.01] active:scale-[0.99] hover:shadow-lg transition-all duration-200 cursor-pointer">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5 mr-1.5 animate-pulse"></i>
+                                        Kirim Komentar
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
                     </article>
                 @endif
-                <article class="card">
-                    <div class="section-title">Riwayat Status</div>
-                    <div class="timeline">
-                        @foreach($pengaduan->statusLogs as $log)
-                            <div class="timeline-item">
-                                <div>{{ $log->status_lama ?: 'awal' }} menjadi <strong>{{ $log->status_baru }}</strong></div>
-                                @if($log->catatan)<div>{{ $log->catatan }}</div>@endif
-                                <div class="timeline-meta">{{ $log->creator->nama }} - {{ $log->created_at->format('d M Y, H:i') }}</div>
-                            </div>
-                        @endforeach
+
+                <!-- Card Riwayat Transisi Status -->
+                <article class="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 hover:shadow-md transition-shadow duration-300 space-y-4">
+                    <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                        <i data-lucide="route" class="w-4 h-4 text-indigo-600"></i>
+                        <h3 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Riwayat Perubahan Status</h3>
                     </div>
-                </article>
-                <article class="card">
-                    <div class="section-title">Tanggapan</div>
-                    <div class="timeline">
-                        @forelse($pengaduan->tanggapan as $reply)
-                            <div class="timeline-item">
-                                <strong>{{ $reply->admin->nama }}</strong>
-                                <div>{{ $reply->isi_tanggapan }}</div>
-                                <div class="timeline-meta">{{ $reply->created_at->format('d M Y, H:i') }}</div>
+                    
+                    <div class="relative border-l-2 border-slate-200 ml-2 pl-5 space-y-5 py-1">
+                        @forelse($pengaduan->statusLogs as $log)
+                            <div class="relative text-xs">
+                                <span class="absolute -left-[29px] top-1.5 w-3 h-3 rounded-full bg-indigo-550 border-2 border-white shadow-xs"></span>
+                                <div class="space-y-1">
+                                    <p class="font-bold text-slate-900 leading-none">
+                                        Status: <span class="text-slate-400 font-semibold text-[10px] line-through">{{ $log->status_lama ?: 'awal' }}</span> 
+                                        <i data-lucide="arrow-right" class="w-3 h-3 inline text-slate-350"></i> 
+                                        <span class="text-indigo-600 font-bold">{{ $log->status_baru }}</span>
+                                    </p>
+                                    
+                                    @if($log->catatan)
+                                        <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-[11px] text-slate-650 italic">
+                                            "{{ $log->catatan }}"
+                                        </div>
+                                    @endif
+                                    
+                                    <p class="text-[10px] text-slate-400 font-semibold">
+                                        Oleh: {{ $log->creator->nama }} • {{ $log->created_at->format('d M Y, H:i') }}
+                                    </p>
+                                </div>
                             </div>
                         @empty
-                            <p style="color:var(--muted);font-size:13px">Belum ada tanggapan.</p>
+                            <p class="text-xs text-slate-450 font-semibold py-1">Belum ada perubahan status.</p>
                         @endforelse
                     </div>
                 </article>
-            </aside>
+
+                <!-- Card Riwayat Tanggapan Resmi -->
+                <article class="bg-white border border-slate-200 shadow-sm rounded-2xl p-6 hover:shadow-md transition-shadow duration-300 space-y-4">
+                    <div class="flex items-center gap-2 pb-3 border-b border-slate-100">
+                        <i data-lucide="message-square-quote" class="w-4 h-4 text-indigo-600"></i>
+                        <h3 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider">Riwayat Tanggapan Resmi</h3>
+                    </div>
+                    
+                    <div class="space-y-3.5">
+                        @forelse($pengaduan->tanggapan as $reply)
+                            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 space-y-2">
+                                <div class="flex items-center justify-between gap-2 border-b border-slate-150 pb-1.5">
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="w-5 h-5 rounded-lg bg-gradient-to-tr from-indigo-500 to-violet-500 text-white text-[10px] font-extrabold flex items-center justify-center">
+                                            {{ strtoupper(substr($reply->admin->nama, 0, 1)) }}
+                                        </div>
+                                        <span class="text-xs font-bold text-slate-805">{{ $reply->admin->nama }}</span>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400 font-semibold">{{ $reply->created_at->format('d M Y, H:i') }}</span>
+                                </div>
+                                <p class="text-xs text-slate-650 leading-relaxed whitespace-pre-wrap select-text">
+                                    {{ $reply->isi_tanggapan }}
+                                </p>
+                            </div>
+                        @empty
+                            <div class="text-center py-6 bg-slate-50/50 border border-dashed border-slate-200 rounded-xl">
+                                <i data-lucide="message-square-text" class="w-6 h-6 text-slate-400 mx-auto mb-1"></i>
+                                <p class="text-xs text-slate-500 font-semibold">Belum ada respon atau tanggapan resmi.</p>
+                            </div>
+                        @endforelse
+                    </div>
+                </article>
+
+            </div>
+
         </div>
+
     </main>
+
+    <!-- Logout Confirmation Modal (Dynamic Animation Style) -->
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs opacity-0 pointer-events-none transition-all duration-200" id="logoutModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="w-full max-w-sm bg-white border border-slate-200 rounded-2xl p-6 shadow-xl transform scale-95 transition-transform duration-200" id="logoutModalContent">
+            
+            <div class="text-center space-y-4">
+                <div class="w-11 h-11 rounded-full bg-rose-50 border border-rose-100 text-rose-600 flex items-center justify-center mx-auto shadow-xs">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                </div>
+                
+                <div class="space-y-1.5">
+                    <h3 class="text-sm font-extrabold text-slate-950" id="modalTitle">Konfirmasi Keluar</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">Apakah Anda yakin ingin keluar dari Panel Administrasi SIPMA?</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5 pt-2">
+                    <button type="button" class="inline-flex h-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-950 transition-colors shadow-3xs cursor-pointer" id="btnCancelLogout">
+                        Batal
+                    </button>
+                    <button type="button" class="inline-flex h-9 items-center justify-center rounded-lg bg-zinc-900 hover:bg-zinc-800 text-xs font-bold text-white transition-colors cursor-pointer shadow-sm shadow-zinc-900/10" id="btnConfirmLogout">
+                        Keluar
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Hidden Logout Form -->
+    <form id="logoutForm" action="{{ route('logout') }}" method="POST" class="hidden">
+        @csrf
+    </form>
+
+    <!-- Interactive Scripts -->
     <script>
-        (() => {
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // Lucide Icons Initialization
+            if (window.lucide) {
+                window.lucide.createIcons();
+            }
+
+            // Tab Switcher Logic
+            const tabButtons = document.querySelectorAll(".tab-btn");
+            const tabContents = document.querySelectorAll(".tab-content");
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const targetTabId = btn.getAttribute("data-tab");
+
+                    // Set buttons classes (dynamic gradient style active tabs)
+                    tabButtons.forEach(b => {
+                        b.classList.remove("active", "bg-gradient-to-r", "from-indigo-600", "to-violet-600", "text-white", "shadow-md", "shadow-indigo-500/20", "font-bold", "scale-[1.01]");
+                        b.classList.add("text-slate-550", "hover:text-slate-905");
+                    });
+                    btn.classList.add("active", "bg-gradient-to-r", "from-indigo-600", "to-violet-600", "text-white", "shadow-md", "shadow-indigo-500/20", "font-bold", "scale-[1.01]");
+                    btn.classList.remove("text-slate-550", "hover:text-slate-905");
+
+                    // Toggle contents visibility with dynamic transition effect
+                    tabContents.forEach(content => {
+                        if (content.id === targetTabId) {
+                            content.classList.remove("hidden");
+                            content.classList.add("animate-fade-in");
+                        } else {
+                            content.classList.add("hidden");
+                            content.classList.remove("animate-fade-in");
+                        }
+                    });
+                    
+                    // Refresh Lucide Icons in tabs
+                    if (window.lucide) {
+                        window.lucide.createIcons();
+                    }
+                });
+            });
+
+            // Set Initial Active Tab styling
+            const activeTab = document.querySelector(".tab-btn.active");
+            if (activeTab) {
+                activeTab.classList.add("bg-gradient-to-r", "from-indigo-600", "to-violet-600", "text-white", "shadow-md", "shadow-indigo-500/20", "font-bold", "scale-[1.01]");
+                activeTab.classList.remove("text-slate-550", "hover:text-slate-905");
+            }
+
+            // Logout Modal Toggle Logic
             const btnTrigger = document.getElementById('btnTriggerLogout');
             const modal = document.getElementById('logoutModal');
+            const modalContent = document.getElementById('logoutModalContent');
             const btnCancel = document.getElementById('btnCancelLogout');
             const btnConfirm = document.getElementById('btnConfirmLogout');
             const form = document.getElementById('logoutForm');
 
-            btnTrigger?.addEventListener('click', () => modal?.classList.add('is-open'));
-            btnCancel?.addEventListener('click', () => modal?.classList.remove('is-open'));
+            const openModal = () => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            };
+
+            const closeModal = () => {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+            };
+
+            btnTrigger?.addEventListener('click', openModal);
+            btnCancel?.addEventListener('click', closeModal);
             modal?.addEventListener('click', (event) => {
                 if (event.target === modal) {
-                    modal.classList.remove('is-open');
+                    closeModal();
                 }
             });
             btnConfirm?.addEventListener('click', () => form?.submit());
-        })();
+
+            // Details arrows rotation effect
+            const detailsElements = document.querySelectorAll('details');
+            detailsElements.forEach(details => {
+                const summary = details.querySelector('summary');
+                const arrow = summary.querySelector('.details-arrow');
+                
+                details.addEventListener('toggle', () => {
+                    if (details.open) {
+                        arrow?.classList.add('rotate-90');
+                    } else {
+                        arrow?.classList.remove('rotate-90');
+                    }
+                });
+            });
+        });
     </script>
-    <div class="logout-modal" id="logoutModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="logout-modal-content">
-            <h3 id="modalTitle">Konfirmasi Keluar</h3>
-            <p>Apakah Anda yakin ingin keluar dari Panel Administrasi SIPMA?</p>
-            <div class="logout-modal-actions">
-                <button type="button" class="btn-modal-cancel" id="btnCancelLogout">Batal</button>
-                <button type="button" class="btn-modal-confirm" id="btnConfirmLogout">Keluar</button>
-            </div>
-        </div>
-    </div>
+    
+    <!-- Include Global Toast partial -->
     @include('partials.toast')
 </body>
 </html>

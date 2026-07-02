@@ -75,7 +75,7 @@
                 <label for="lampiran" class="form-label">Lampiran <span style="color:var(--muted);font-weight:700;">Opsional</span></label>
                 <input type="file" name="lampiran[]" id="lampiran" class="form-input" multiple accept=".pdf,.docx,.jpg,.jpeg,.png">
                 <div class="file-note">Format: PDF, DOCX, JPG, PNG. Maksimal 2 MB per berkas.</div>
-                <div id="filePreview" class="file-note" style="display:grid;gap:4px;margin-top:8px;"></div>
+                <div id="filePreview" class="file-note" style="display:grid;gap:8px;margin-top:12px;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));"></div>
             </div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -91,8 +91,29 @@
             const files = Array.from(this.files || []);
             preview.innerHTML = files.length ? files.map((file) => {
                 const size = (file.size / 1024 / 1024).toFixed(2);
-                const warning = file.size > 2 * 1024 * 1024 ? ' - melebihi 2 MB' : '';
-                return `<span>${file.name} (${size} MB)${warning}</span>`;
+                const isTooLarge = file.size > 2 * 1024 * 1024;
+                const containerStyle = isTooLarge 
+                    ? 'border:1px solid #fecaca; background:#fff5f5; color:#991b1b; padding:8px; border-radius:8px; display:flex; align-items:center; gap:10px; font-size:12px;' 
+                    : 'border:1px solid #e2e8f0; background:#f8fafc; color:#374151; padding:8px; border-radius:8px; display:flex; align-items:center; gap:10px; font-size:12px;';
+                
+                let previewHtml = '';
+                if (file.type.startsWith('image/')) {
+                    const imgUrl = URL.createObjectURL(file);
+                    previewHtml = `<img src="${imgUrl}" class="w-10 h-10 rounded object-cover border border-slate-250 bg-white" style="width:40px; height:40px; border-radius:6px; object-fit:cover; border:1px solid #cbd5e1; flex-shrink:0;" />`;
+                } else {
+                    let ext = file.name.split('.').pop().toUpperCase();
+                    previewHtml = `<div class="w-10 h-10 rounded bg-slate-200 border border-slate-350 flex items-center justify-center text-[10px] font-extrabold text-slate-600" style="width:40px; height:40px; border-radius:6px; background:#e2e8f0; border:1px solid #cbd5e1; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:#4b5563; flex-shrink:0;">${ext}</div>`;
+                }
+
+                return `
+                    <div style="${containerStyle}">
+                        ${previewHtml}
+                        <div style="min-width:0; flex:1;">
+                            <p style="font-weight:700; color:#1f2937; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${file.name}">${file.name}</p>
+                            <p style="font-size:10px; color:#6b7280; margin:3px 0 0 0;">${size} MB ${isTooLarge ? '<span style="color:#dc2626; font-weight:800;">(Maksimal 2 MB)</span>' : ''}</p>
+                        </div>
+                    </div>
+                `;
             }).join('') : '';
         });
     </script>

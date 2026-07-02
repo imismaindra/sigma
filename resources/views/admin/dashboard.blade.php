@@ -910,6 +910,211 @@
         .btn-modal-confirm:hover {
             background: #b91c1c;
         }
+
+        /* Blur effect for Pelapor */
+        .blurred-pelapor {
+            filter: blur(4.5px);
+            transition: filter 0.25s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .blurred-pelapor:hover {
+            filter: blur(0);
+            user-select: auto;
+        }
+
+        /* Kanban View Styles */
+        .kanban-board {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            align-items: flex-start;
+            min-height: 550px;
+        }
+
+        .kanban-column {
+            flex: 0 0 290px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            max-height: 700px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .kanban-column-header {
+            padding: 12px 14px;
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--border-color);
+            border-top-left-radius: 9px;
+            border-top-right-radius: 9px;
+            color: var(--text-main);
+        }
+
+        /* Status Colors for Column Headers */
+        .kanban-column[data-status="pending"] .kanban-column-header { border-bottom-color: var(--pending); background: #fffbeb; }
+        .kanban-column[data-status="proses"] .kanban-column-header { border-bottom-color: var(--proses); background: #eff6ff; }
+        .kanban-column[data-status="menunggu_klarifikasi"] .kanban-column-header { border-bottom-color: #6d28d9; background: #faf5ff; }
+        .kanban-column[data-status="ditindaklanjuti"] .kanban-column-header { border-bottom-color: #0f766e; background: #f0fdfa; }
+        .kanban-column[data-status="menunggu_verifikasi_mahasiswa"] .kanban-column-header { border-bottom-color: #6d28d9; background: #faf5ff; }
+        .kanban-column[data-status="selesai"] .kanban-column-header { border-bottom-color: var(--selesai); background: #f0fdf4; }
+        .kanban-column[data-status="ditolak"] .kanban-column-header { border-bottom-color: var(--ditolak); background: #fef2f2; }
+
+        .kanban-count {
+            background: rgba(0,0,0,0.06);
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .kanban-cards {
+            padding: 10px;
+            overflow-y: auto;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 250px;
+            background: #f8fafc;
+            border-bottom-left-radius: 9px;
+            border-bottom-right-radius: 9px;
+            transition: background-color 0.2s;
+        }
+
+        .kanban-cards.drag-over {
+            background-color: #e2e8f0;
+        }
+
+        .kanban-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            cursor: grab;
+            transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+            position: relative;
+        }
+
+        .kanban-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.06);
+            border-color: #cbd5e1;
+        }
+
+        .kanban-card:active {
+            cursor: grabbing;
+        }
+
+        .kanban-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .kanban-ticket {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--text-muted);
+        }
+
+        .kanban-priority {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .kanban-priority.priority-tinggi { background: #fee2e2; color: #b91c1c; }
+        .kanban-priority.priority-sedang { background: #fef3c7; color: #b45309; }
+        .kanban-priority.priority-rendah { background: #dbeafe; color: #1d4ed8; }
+
+        .kanban-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .kanban-card-desc {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .kanban-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 11px;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 8px;
+            margin-bottom: 6px;
+        }
+
+        .kanban-reporter {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .kanban-date {
+            color: var(--text-muted);
+        }
+
+        .kanban-detail-link {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .kanban-detail-link:hover {
+            text-decoration: underline;
+        }
+
+        /* View Toggle Styling */
+        .view-toggle-container {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-toggle-view {
+            border: 0;
+            background: transparent;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.15s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-toggle-view.active {
+            background: #ffffff;
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
     </style>
 </head>
 <body>
@@ -1029,12 +1234,17 @@
         </div>
 
         <div class="analytics-card">
-            <div class="section-title">Statistik per Kategori</div>
+            <div class="section-title">Top 5 Masalah Aduan Terbanyak (Kategori)</div>
             <div class="analytics-grid">
+                @php $rank = 1; @endphp
                 @foreach($categoryStats as $categoryName => $count)
-                    <div class="analytics-item">
-                        <strong>{{ $categoryName }}</strong>
-                        <div class="activity-meta">{{ $count }} pengaduan</div>
+                    <div class="analytics-item" style="position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-left: 4px solid var(--primary);">
+                        <div>
+                            <div style="font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Peringkat #{{ $rank }}</div>
+                            <strong style="font-size: 14px; color: var(--text-main); display: block;">{{ $categoryName }}</strong>
+                            <div class="activity-meta" style="margin-top: 4px; font-weight: 600; font-size: 12px;">{{ $count }} laporan aduan</div>
+                        </div>
+                        <div style="font-size: 32px; font-weight: 800; color: rgba(37, 99, 235, 0.08); user-select: none; line-height: 1;">#{{ $rank++ }}</div>
                     </div>
                 @endforeach
             </div>
@@ -1084,167 +1294,442 @@
 
         <!-- Main Panel List -->
         <div class="section-card">
-            <div class="section-title">Daftar Pengaduan Masuk</div>
-
-            @if($pengaduans->isEmpty())
-                <div style="text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 13.5px;">
-                    Belum ada data pengaduan masuk dalam sistem database.
+            <div class="section-title" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                <span>Daftar Pengaduan Masuk</span>
+                <div class="view-toggle-container">
+                    <button class="btn-toggle-view active" id="btn-list-view" onclick="switchView('list')">
+                        📄 List View
+                    </button>
+                    <button class="btn-toggle-view" id="btn-kanban-view" onclick="switchView('kanban')">
+                        📋 Kanban View
+                    </button>
                 </div>
-            @else
-                <div class="complaint-list">
-                    <div class="complaint-sheet-head">
-                        <div>Judul</div>
-                        <div>Tiket</div>
-                        <div>Pelapor</div>
-                        <div>Kategori</div>
-                        <div>Status</div>
-                        <div>Prioritas</div>
-                        <div>Aksi</div>
+            </div>
+
+            <div id="list-view">
+                @if($pengaduans->isEmpty())
+                    <div style="text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 13.5px;">
+                        Belum ada data pengaduan masuk dalam sistem database.
                     </div>
-                    @foreach($pengaduans as $p)
-                        <div class="complaint-item" onclick="toggleDetails(this)">
-                            <div class="complaint-header">
-                                <div class="sheet-cell">
-                                    <span class="sheet-label">Judul</span>
-                                    <div class="complaint-title" title="{{ $p->judul }}">{{ $p->judul }}</div>
-                                    <div class="sheet-cell-muted">{{ Str::limit($p->isi_pengaduan, 70) }}</div>
+                @else
+                    <div class="complaint-list">
+                        <div class="complaint-sheet-head">
+                            <div>Judul</div>
+                            <div>Tiket</div>
+                            <div>Pelapor</div>
+                            <div>Kategori</div>
+                            <div>Status</div>
+                            <div>Prioritas</div>
+                            <div>Aksi</div>
+                        </div>
+                        @foreach($pengaduans as $p)
+                            <div class="complaint-item" onclick="toggleDetails(this)">
+                                <div class="complaint-header">
+                                    <div class="sheet-cell">
+                                        <span class="sheet-label">Judul</span>
+                                        <div class="complaint-title" title="{{ $p->judul }}">{{ $p->judul }}</div>
+                                        <div class="sheet-cell-muted">{{ Str::limit($p->isi_pengaduan, 70) }}</div>
+                                    </div>
+                                    <div class="sheet-cell">
+                                        <span class="sheet-label">Tiket</span>
+                                        <strong>{{ $p->ticket_number ?? 'Belum tersedia' }}</strong>
+                                    </div>
+                                    <div class="sheet-cell">
+                                        <span class="sheet-label">Pelapor</span>
+                                        <div class="blurred-pelapor" title="Arahkan kursor untuk melihat nama pelapor">
+                                            <strong>{{ $p->user->nama }}</strong>
+                                            <div class="sheet-cell-muted">{{ $p->user->nim_nip }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="sheet-cell">
+                                        <span class="sheet-label">Kategori</span>
+                                        <strong>{{ $p->kategori->nama_kategori }}</strong>
+                                        <div class="sheet-cell-muted">{{ $p->created_at->format('d M Y, H:i') }}</div>
+                                    </div>
+                                    <div class="sheet-cell">
+                                        <span class="sheet-label">Status</span>
+                                        @if($p->isOverdue())
+                                            <span class="sla-badge">Lewat SLA</span>
+                                        @endif
+                                        <span class="badge badge-{{ $p->status }}">{{ $statusLabels[$p->status] ?? $p->status }}</span>
+                                    </div>
+                                    <div class="sheet-cell">
+                                        <span class="sheet-label">Prioritas</span>
+                                        <strong>{{ $priorityLabels[$p->priority] ?? ucfirst($p->priority ?? 'sedang') }}</strong>
+                                        @if($p->due_at)
+                                            <div class="sheet-cell-muted">SLA {{ $p->due_at->format('d M') }}</div>
+                                        @endif
+                                    </div>
+                                    <div class="sheet-cell">
+                                        <span class="sheet-label">Aksi</span>
+                                        <a href="{{ route('admin.pengaduan.show', $p->id_pengaduan) }}" class="btn-detail" onclick="event.stopPropagation()">Detail</a>
+                                    </div>
                                 </div>
-                                <div class="sheet-cell">
-                                    <span class="sheet-label">Tiket</span>
-                                    <strong>{{ $p->ticket_number ?? 'Belum tersedia' }}</strong>
-                                </div>
-                                <div class="sheet-cell">
-                                    <span class="sheet-label">Pelapor</span>
-                                    <strong>{{ $p->user->nama }}</strong>
-                                    <div class="sheet-cell-muted">{{ $p->user->nim_nip }}</div>
-                                </div>
-                                <div class="sheet-cell">
-                                    <span class="sheet-label">Kategori</span>
-                                    <strong>{{ $p->kategori->nama_kategori }}</strong>
-                                    <div class="sheet-cell-muted">{{ $p->created_at->format('d M Y, H:i') }}</div>
-                                </div>
-                                <div class="sheet-cell">
-                                    <span class="sheet-label">Status</span>
-                                    @if($p->isOverdue())
-                                        <span class="sla-badge">Lewat SLA</span>
+
+                                <!-- Detail Dropdown -->
+                                <div class="complaint-details" onclick="event.stopPropagation()">
+                                    <div class="detail-section">
+                                        <div class="detail-title">Detail Laporan</div>
+                                        <p style="white-space: pre-wrap; font-size: 13.5px; line-height: 1.5; color: #1f2937; background: #f3f4f6; padding: 12px; border-radius: 4px; border: 1px solid var(--border-color);">{{ $p->isi_pengaduan }}</p>
+                                    </div>
+
+                                    <div class="detail-section" style="margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;">
+                                        <div style="border: 1px solid #99f6e4; border-radius: 6px; background: #f0fdfa; padding: 8px 12px;">
+                                            <div style="font-size: 10px; font-weight: 800; color: #0f766e; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Durasi Penyelesaian (Total)</div>
+                                            <div style="font-size: 12.5px; font-weight: 800; color: #0d9488;">{{ $p->durasi_penyelesaian }}</div>
+                                        </div>
+                                        @if($p->waktu_proses)
+                                            <div style="border: 1px solid var(--border-color); border-radius: 6px; background: #f9fafb; padding: 8px 12px;">
+                                                <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Mulai Diproses</div>
+                                                <div style="font-size: 12.5px; font-weight: 700; color: var(--text-main);">{{ $p->waktu_proses->format('d M Y, H:i') }}</div>
+                                            </div>
+                                            @if(in_array($p->status, ['selesai', 'ditolak']))
+                                                <div style="border: 1px solid var(--border-color); border-radius: 6px; background: #f9fafb; padding: 8px 12px;">
+                                                    <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Waktu Selesai/Ditolak</div>
+                                                    <div style="font-size: 12.5px; font-weight: 700; color: var(--text-main);">{{ $p->waktu_selesai_ditolak ? $p->waktu_selesai_ditolak->format('d M Y, H:i') : '-' }}</div>
+                                                </div>
+                                                <div style="border: 1px solid #bbf7d0; border-radius: 6px; background: #f0fdf4; padding: 8px 12px;">
+                                                    <div style="font-size: 10px; font-weight: 800; color: #166534; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Durasi Proses</div>
+                                                    <div style="font-size: 12.5px; font-weight: 800; color: #15803d;">{{ $p->durasi_proses }}</div>
+                                                </div>
+                                            @else
+                                                <div style="border: 1px solid #bfdbfe; border-radius: 6px; background: #eff6ff; padding: 8px 12px;">
+                                                    <div style="font-size: 10px; font-weight: 800; color: #1d4ed8; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Durasi Proses</div>
+                                                    <div style="font-size: 12.5px; font-weight: 800; color: #1e40af;">{{ $p->durasi_proses }}</div>
+                                                </div>
+                                            @endif
+                                        @else
+                                            <div style="border: 1px solid var(--border-color); border-radius: 6px; background: #f9fafb; padding: 8px 12px;">
+                                                <div style="font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px;">Durasi Proses</div>
+                                                <div style="font-size: 12.5px; font-weight: 700; color: var(--text-muted);">Belum diproses</div>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    @if($p->lampiran->isNotEmpty())
+                                        <div class="detail-section">
+                                            <div class="detail-title">Lampiran Berkas ({{ $p->lampiran->count() }})</div>
+                                            <div class="attachments-list">
+                                                @foreach($p->lampiran as $file)
+                                                    <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="attachment-link">
+                                                        📁 {{ $file->nama_file }} 
+                                                        <span style="color: var(--text-muted); font-size: 11px;">({{ $file->tipe_file }})</span>
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     @endif
-                                    <span class="badge badge-{{ $p->status }}">{{ $statusLabels[$p->status] ?? $p->status }}</span>
-                                </div>
-                                <div class="sheet-cell">
-                                    <span class="sheet-label">Prioritas</span>
-                                    <strong>{{ $priorityLabels[$p->priority] ?? ucfirst($p->priority ?? 'sedang') }}</strong>
-                                    @if($p->due_at)
-                                        <div class="sheet-cell-muted">SLA {{ $p->due_at->format('d M') }}</div>
+
+                                    <!-- Actions Grid -->
+                                    @if(Auth::user()->role !== 'pimpinan')
+                                    <div class="actions-grid">
+                                        <!-- Aksi 1: Update Status -->
+                                        <form action="{{ route('admin.pengaduan.status.update', $p->id_pengaduan) }}" method="POST">
+                                            @csrf
+                                            <div class="detail-title" style="margin-bottom: 12px; color: var(--text-main);">Update Status Pengaduan</div>
+                                            
+                                            <div class="form-group">
+                                                <label class="form-label" for="status-{{ $p->id_pengaduan }}">Status Baru</label>
+                                                <select name="status" id="status-{{ $p->id_pengaduan }}" class="form-select" required>
+                                                    @foreach($statusLabels as $status => $label)
+                                                        <option value="{{ $status }}" {{ $p->status === $status ? 'selected' : '' }}>{{ $label }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="form-label" for="catatan-{{ $p->id_pengaduan }}">Catatan Perubahan</label>
+                                                <textarea name="catatan" id="catatan-{{ $p->id_pengaduan }}" class="form-textarea" placeholder="Tambahkan catatan..."></textarea>
+                                            </div>
+
+                                            <button type="submit" class="btn-small">Update Status</button>
+                                        </form>
+
+                                        <!-- Aksi 2: Kirim Tanggapan / Feedback -->
+                                        <form action="{{ route('admin.pengaduan.tanggapan.store', $p->id_pengaduan) }}" method="POST">
+                                            @csrf
+                                            <div class="detail-title" style="margin-bottom: 12px; color: var(--text-main);">Kirim Tanggapan Resmi</div>
+
+                                            <div class="form-group">
+                                                <label class="form-label" for="isi_tanggapan-{{ $p->id_pengaduan }}">Pesan Tanggapan</label>
+                                                <textarea name="isi_tanggapan" id="isi_tanggapan-{{ $p->id_pengaduan }}" class="form-textarea" required placeholder="Tuliskan tanggapan resmi kepada pelapor..."></textarea>
+                                            </div>
+
+                                            <button type="submit" class="btn-small">Kirim Tanggapan</button>
+                                        </form>
+                                    </div>
                                     @endif
-                                </div>
-                                <div class="sheet-cell">
-                                    <span class="sheet-label">Aksi</span>
-                                    <a href="{{ route('admin.pengaduan.show', $p->id_pengaduan) }}" class="btn-detail" onclick="event.stopPropagation()">Detail</a>
+
+                                    @if($p->tanggapan->isNotEmpty())
+                                        <div class="detail-section">
+                                            <div class="detail-title">Tanggapan Terkirim</div>
+                                            <div class="complaint-list" style="gap: 10px;">
+                                                @foreach($p->tanggapan as $reply)
+                                                    <div class="reply-box">
+                                                        <div class="reply-header">Dijawab oleh: {{ $reply->admin->nama }} (Admin)</div>
+                                                        <div>{{ $reply->isi_tanggapan }}</div>
+                                                        <div class="timeline-meta" style="margin-top: 4px;">Pada: {{ $reply->created_at->format('d M Y, H:i') }}</div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    @if($p->statusLogs->isNotEmpty())
+                                        <div class="detail-section">
+                                            <div class="detail-title">Log Perubahan Status</div>
+                                            <div class="timeline">
+                                                @foreach($p->statusLogs as $log)
+                                                    <div class="timeline-item">
+                                                        <div>Status berubah dari <strong>{{ $log->status_lama ?: 'null' }}</strong> menjadi <strong>{{ $log->status_baru }}</strong></div>
+                                                        @if($log->catatan)
+                                                            <div style="color: #4b5563; margin-top: 2px;">Catatan: "{{ $log->catatan }}"</div>
+                                                        @endif
+                                                        <div class="timeline-meta">Oleh: {{ $log->creator->nama }} | {{ $log->created_at->format('d M Y, H:i') }}</div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
+                        @endforeach
+                    </div>
+                    @include('partials.simple-pagination', ['paginator' => $pengaduans])
+                @endif
+            </div>
 
-                            <!-- Detail Dropdown -->
-                            <div class="complaint-details" onclick="event.stopPropagation()">
-                                <div class="detail-section">
-                                    <div class="detail-title">Detail Laporan</div>
-                                    <p style="white-space: pre-wrap; font-size: 13.5px; line-height: 1.5; color: #1f2937; background: #f3f4f6; padding: 12px; border-radius: 4px; border: 1px solid var(--border-color);">{{ $p->isi_pengaduan }}</p>
-                                </div>
-
-                                @if($p->lampiran->isNotEmpty())
-                                    <div class="detail-section">
-                                        <div class="detail-title">Lampiran Berkas ({{ $p->lampiran->count() }})</div>
-                                        <div class="attachments-list">
-                                            @foreach($p->lampiran as $file)
-                                                <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="attachment-link">
-                                                    📁 {{ $file->nama_file }} 
-                                                    <span style="color: var(--text-muted); font-size: 11px;">({{ $file->tipe_file }})</span>
-                                                </a>
-                                            @endforeach
+            <!-- Tampilan Kanban (Disembunyikan secara default) -->
+            <div id="kanban-view" style="display: none; margin-top: 20px;">
+                <div class="kanban-board">
+                    @foreach($statusLabels as $statusKey => $statusLabel)
+                        <div class="kanban-column" data-status="{{ $statusKey }}">
+                            <div class="kanban-column-header">
+                                <span>{{ $statusLabel }}</span>
+                                <span class="kanban-count">{{ $kanbanPengaduans->where('status', $statusKey)->count() }}</span>
+                            </div>
+                            <div class="kanban-cards" ondragover="allowDrop(event)" ondrop="drop(event)">
+                                @foreach($kanbanPengaduans->where('status', $statusKey) as $p)
+                                    <div class="kanban-card" draggable="true" ondragstart="drag(event)" id="card-{{ $p->id_pengaduan }}" data-id="{{ $p->id_pengaduan }}">
+                                        <div class="kanban-card-header">
+                                            <span class="kanban-ticket">{{ $p->ticket_number ?? 'PGD' }}</span>
+                                            <span class="kanban-priority priority-{{ $p->priority }}">{{ $priorityLabels[$p->priority] ?? $p->priority }}</span>
                                         </div>
+                                        <div class="kanban-card-title">{{ $p->judul }}</div>
+                                        <div class="kanban-card-desc">{{ Str::limit($p->isi_pengaduan, 65) }}</div>
+                                        <div class="kanban-card-footer">
+                                            <div class="blurred-pelapor" title="Arahkan kursor untuk melihat nama pelapor">
+                                                <div class="kanban-reporter">{{ $p->user->nama }}</div>
+                                            </div>
+                                            <div class="kanban-date">{{ $p->created_at->format('d M') }}</div>
+                                        </div>
+                                        <a href="{{ route('admin.pengaduan.show', $p->id_pengaduan) }}" class="kanban-detail-link">Detail →</a>
                                     </div>
-                                @endif
-
-                                <!-- Actions Grid -->
-                                @if(Auth::user()->role !== 'pimpinan')
-                                <div class="actions-grid">
-                                    <!-- Aksi 1: Update Status -->
-                                    <form action="{{ route('admin.pengaduan.status.update', $p->id_pengaduan) }}" method="POST">
-                                        @csrf
-                                        <div class="detail-title" style="margin-bottom: 12px; color: var(--text-main);">Update Status Pengaduan</div>
-                                        
-                                        <div class="form-group">
-                                            <label class="form-label" for="status-{{ $p->id_pengaduan }}">Status Baru</label>
-                                            <select name="status" id="status-{{ $p->id_pengaduan }}" class="form-select" required>
-                                                @foreach($statusLabels as $status => $label)
-                                                    <option value="{{ $status }}" {{ $p->status === $status ? 'selected' : '' }}>{{ $label }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label" for="catatan-{{ $p->id_pengaduan }}">Catatan Perubahan</label>
-                                            <textarea name="catatan" id="catatan-{{ $p->id_pengaduan }}" class="form-textarea" placeholder="Tambahkan catatan..."></textarea>
-                                        </div>
-
-                                        <button type="submit" class="btn-small">Update Status</button>
-                                    </form>
-
-                                    <!-- Aksi 2: Kirim Tanggapan / Feedback -->
-                                    <form action="{{ route('admin.pengaduan.tanggapan.store', $p->id_pengaduan) }}" method="POST">
-                                        @csrf
-                                        <div class="detail-title" style="margin-bottom: 12px; color: var(--text-main);">Kirim Tanggapan Resmi</div>
-
-                                        <div class="form-group">
-                                            <label class="form-label" for="isi_tanggapan-{{ $p->id_pengaduan }}">Pesan Tanggapan</label>
-                                            <textarea name="isi_tanggapan" id="isi_tanggapan-{{ $p->id_pengaduan }}" class="form-textarea" required placeholder="Tuliskan tanggapan resmi kepada pelapor..."></textarea>
-                                        </div>
-
-                                        <button type="submit" class="btn-small">Kirim Tanggapan</button>
-                                    </form>
-                                </div>
-                                @endif
-
-                                @if($p->tanggapan->isNotEmpty())
-                                    <div class="detail-section">
-                                        <div class="detail-title">Tanggapan Terkirim</div>
-                                        <div class="complaint-list" style="gap: 10px;">
-                                            @foreach($p->tanggapan as $reply)
-                                                <div class="reply-box">
-                                                    <div class="reply-header">Dijawab oleh: {{ $reply->admin->nama }} (Admin)</div>
-                                                    <div>{{ $reply->isi_tanggapan }}</div>
-                                                    <div class="timeline-meta" style="margin-top: 4px;">Pada: {{ $reply->created_at->format('d M Y, H:i') }}</div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-
-                                @if($p->statusLogs->isNotEmpty())
-                                    <div class="detail-section">
-                                        <div class="detail-title">Log Perubahan Status</div>
-                                        <div class="timeline">
-                                            @foreach($p->statusLogs as $log)
-                                                <div class="timeline-item">
-                                                    <div>Status berubah dari <strong>{{ $log->status_lama ?: 'null' }}</strong> menjadi <strong>{{ $log->status_baru }}</strong></div>
-                                                    @if($log->catatan)
-                                                        <div style="color: #4b5563; margin-top: 2px;">Catatan: "{{ $log->catatan }}"</div>
-                                                    @endif
-                                                    <div class="timeline-meta">Oleh: {{ $log->creator->nama }} | {{ $log->created_at->format('d M Y, H:i') }}</div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
+                                @endforeach
                             </div>
                         </div>
                     @endforeach
                 </div>
-                @include('partials.simple-pagination', ['paginator' => $pengaduans])
-            @endif
+            </div>
         </div>
     </div>
 
     <script>
+        function switchView(view) {
+            const listView = document.getElementById('list-view');
+            const kanbanView = document.getElementById('kanban-view');
+            const btnList = document.getElementById('btn-list-view');
+            const btnKanban = document.getElementById('btn-kanban-view');
+
+            if (view === 'list') {
+                listView.style.display = 'block';
+                kanbanView.style.display = 'none';
+                btnList.classList.add('active');
+                btnKanban.classList.remove('active');
+                localStorage.setItem('admin_dashboard_view', 'list');
+            } else {
+                listView.style.display = 'none';
+                kanbanView.style.display = 'block';
+                btnList.classList.remove('active');
+                btnKanban.classList.add('active');
+                localStorage.setItem('admin_dashboard_view', 'kanban');
+            }
+        }
+
+        // Keep view selection on refresh
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedView = localStorage.getItem('admin_dashboard_view');
+            if (savedView === 'kanban') {
+                switchView('kanban');
+            }
+        });
+
+        // Drag and Drop Logic
+        function drag(ev) {
+            ev.dataTransfer.setData("text/plain", ev.target.id);
+            ev.target.style.opacity = '0.5';
+        }
+
+        document.addEventListener('dragend', (ev) => {
+            if (ev.target.classList.contains('kanban-card')) {
+                ev.target.style.opacity = '1';
+            }
+        });
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+            const cardsContainer = ev.target.closest('.kanban-cards');
+            if (cardsContainer) {
+                cardsContainer.classList.add('drag-over');
+            }
+        }
+
+        // Remove highlight on leave
+        document.addEventListener('dragleave', (ev) => {
+            if (ev.target.classList.contains('kanban-cards')) {
+                ev.target.classList.remove('drag-over');
+            }
+        });
+
+        function drop(ev) {
+            ev.preventDefault();
+            const cardsContainer = ev.target.closest('.kanban-cards');
+            if (!cardsContainer) return;
+            
+            cardsContainer.classList.remove('drag-over');
+            
+            const cardId = ev.dataTransfer.getData("text/plain");
+            const cardElement = document.getElementById(cardId);
+            if (!cardElement) return;
+
+            const targetColumn = cardsContainer.closest('.kanban-column');
+            const targetStatus = targetColumn.dataset.status;
+            const complaintId = cardElement.dataset.id;
+            
+            // Check if status is actually changing
+            const sourceColumn = cardElement.closest('.kanban-column');
+            const sourceStatus = sourceColumn.dataset.status;
+            
+            if (sourceStatus === targetStatus) return;
+
+            // Move the card elements visually first
+            cardsContainer.appendChild(cardElement);
+            
+            // Update counter for source and target columns
+            updateColumnCounters();
+
+            // Send AJAX to update status
+            updateComplaintStatus(complaintId, targetStatus, sourceColumn, cardElement);
+        }
+
+        function updateColumnCounters() {
+            document.querySelectorAll('.kanban-column').forEach(column => {
+                const count = column.querySelectorAll('.kanban-card').length;
+                column.querySelector('.kanban-count').textContent = count;
+            });
+        }
+
+        function updateComplaintStatus(id, status, sourceColumn, cardElement) {
+            // Toast notification creator
+            showToast('Mengubah status aduan...', 'info');
+
+            fetch(`/admin/pengaduan/${id}/status`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    status: status,
+                    catatan: 'Dipindahkan via papan Kanban.'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Gagal memperbarui status di database.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, 'success');
+                } else {
+                    throw new Error(data.message || 'Gagal memperbarui status.');
+                }
+            })
+            .catch(error => {
+                showToast(error.message, 'error');
+                // Revert card movement
+                sourceColumn.querySelector('.kanban-cards').appendChild(cardElement);
+                updateColumnCounters();
+            });
+        }
+
+        // Custom beautiful toast function for admin panel
+        function showToast(message, type = 'success') {
+            // Remove existing toast if any
+            const existing = document.getElementById('ajax-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'ajax-toast';
+            toast.className = `success-toast`; // use existing success toast layout styles
+            
+            // Custom styling based on type
+            let borderColor = '#bbf7d0';
+            let bg = '#ffffff';
+            let color = '#15803d';
+            let icon = '✔️';
+
+            if (type === 'error') {
+                borderColor = '#fca5a5';
+                color = '#b91c1c';
+                icon = '❌';
+            } else if (type === 'info') {
+                borderColor = '#bfdbfe';
+                color = '#1d4ed8';
+                icon = '⏳';
+            }
+
+            toast.style.cssText = `
+                position: fixed;
+                right: 24px;
+                top: 24px;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 12px 18px;
+                border-radius: 8px;
+                border: 1px solid ${borderColor};
+                background: ${bg};
+                color: ${color};
+                font-weight: 700;
+                font-size: 13px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                transition: opacity 0.3s, transform 0.3s;
+            `;
+
+            toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+            document.body.appendChild(toast);
+
+            // Trigger animation
+            setTimeout(() => {
+                toast.style.transform = 'translateY(0)';
+                toast.style.opacity = '1';
+            }, 50);
+
+            // Auto dismiss unless it's info (loading)
+            if (type !== 'info') {
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-10px)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+        }
+
         function toggleDetails(element) {
             if (element.classList.contains('active')) {
                 return;
