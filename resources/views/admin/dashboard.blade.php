@@ -251,6 +251,7 @@
                 </button>
             </div>
 
+<<<<<<< HEAD
             <!-- Tabs buttons -->
             <div class="flex bg-slate-100 border border-slate-200/50 p-1 rounded-xl">
                 <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-650 cursor-pointer transition-all active-view-btn" id="btn-list-view" onclick="switchView('list')">
@@ -259,6 +260,239 @@
                 <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-655 cursor-pointer transition-all" id="btn-kanban-view" onclick="switchView('kanban')">
                     <i data-lucide="kanban" class="w-3.5 h-3.5"></i> Kanban View
                 </button>
+=======
+            @if($pengaduans->isEmpty())
+                <div style="text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 13.5px;">
+                    Belum ada data pengaduan masuk dalam sistem database.
+                </div>
+            @else
+                <div class="complaint-list">
+                    <div class="complaint-sheet-head">
+                        <div>Judul</div>
+                        <div>Tiket</div>
+                        <div>Pelapor</div>
+                        <div>Kategori</div>
+                        <div>Status</div>
+                        <div>Prioritas</div>
+                        <div>Aksi</div>
+                    </div>
+                    @foreach($pengaduans as $p)
+                        <div class="complaint-item" onclick="toggleDetails(this)">
+                            <div class="complaint-header">
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Judul</span>
+                                    <div class="complaint-title" title="{{ $p->judul }}">{{ $p->judul }}</div>
+                                    <div class="sheet-cell-muted">{{ Str::limit($p->isi_pengaduan, 70) }}</div>
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Tiket</span>
+                                    <strong>{{ $p->ticket_number ?? 'Belum tersedia' }}</strong>
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Pelapor</span>
+                                    <strong>{{ $p->user->nama }}</strong>
+                                    <div class="sheet-cell-muted">{{ $p->user->nim_nip }}</div>
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Kategori</span>
+                                    <strong>{{ $p->kategori->nama_kategori }}</strong>
+                                    <div class="sheet-cell-muted">{{ $p->created_at->format('d M Y, H:i') }}</div>
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Status</span>
+                                    @if($p->isOverdue())
+                                        <span class="sla-badge">Lewat SLA</span>
+                                    @endif
+                                    <span class="badge badge-{{ $p->status }}">{{ $statusLabels[$p->status] ?? $p->status }}</span>
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Prioritas</span>
+                                    <strong>{{ $priorityLabels[$p->priority] ?? ucfirst($p->priority ?? 'sedang') }}</strong>
+                                    @if($p->due_at)
+                                        <div class="sheet-cell-muted">SLA {{ $p->due_at->format('d M') }}</div>
+                                    @endif
+                                </div>
+                                <div class="sheet-cell">
+                                    <span class="sheet-label">Aksi</span>
+                                    <a href="{{ route('admin.pengaduan.show', $p->id_pengaduan) }}" class="btn-detail" onclick="event.stopPropagation()">Detail</a>
+                                </div>
+                            </div>
+
+                            <!-- Detail Dropdown -->
+                            <div class="complaint-details" onclick="event.stopPropagation()">
+                                <div class="detail-section">
+                                    <div class="detail-title">Detail Laporan</div>
+                                    <p style="white-space: pre-wrap; font-size: 13.5px; line-height: 1.5; color: #1f2937; background: #f3f4f6; padding: 12px; border-radius: 4px; border: 1px solid var(--border-color);">{{ $p->isi_pengaduan }}</p>
+                                </div>
+
+                                @if($p->lampiran->isNotEmpty())
+                                    <div class="detail-section">
+                                        <div class="detail-title">Lampiran Berkas ({{ $p->lampiran->count() }})</div>
+                                        <div class="attachments-list">
+                                            @foreach($p->lampiran as $file)
+                                                <a href="{{ asset('storage/' . $file->path_file) }}" target="_blank" class="attachment-link">
+                                                    📁 {{ $file->nama_file }} 
+                                                    <span style="color: var(--text-muted); font-size: 11px;">({{ $file->tipe_file }})</span>
+                                                </a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+
+                                <!-- Actions Grid -->
+                                @if(Auth::user()->role !== 'pimpinan')
+                                <div class="actions-grid">
+                                    <!-- Aksi 1: Update Status -->
+                                    <form action="{{ route('admin.pengaduan.status.update', $p->id_pengaduan) }}" method="POST">
+                                        @csrf
+                                        <div class="detail-title" style="margin-bottom: 12px; color: var(--text-main);">Update Status Pengaduan</div>
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label" for="status-{{ $p->id_pengaduan }}">Status Baru</label>
+                                            <select name="status" id="status-{{ $p->id_pengaduan }}" class="form-select" required>
+                                                @foreach($statusLabels as $status => $label)
+                                                    <option value="{{ $status }}" {{ $p->status === $status ? 'selected' : '' }}>{{ $label }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="catatan-{{ $p->id_pengaduan }}">Catatan Perubahan</label>
+                                            <textarea name="catatan" id="catatan-{{ $p->id_pengaduan }}" class="form-textarea" placeholder="Tambahkan catatan..."></textarea>
+                                        </div>
+
+                                        <button type="submit" class="btn-small">Update Status</button>
+                                    </form>
+
+                                    <!-- Aksi 2: Kirim Tanggapan / Feedback -->
+                                    <form action="{{ route('admin.pengaduan.tanggapan.store', $p->id_pengaduan) }}" method="POST">
+                                        @csrf
+                                        <div class="detail-title" style="margin-bottom: 12px; color: var(--text-main);">Kirim Tanggapan Resmi</div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="isi_tanggapan-{{ $p->id_pengaduan }}">Pesan Tanggapan</label>
+                                            <textarea name="isi_tanggapan" id="isi_tanggapan-{{ $p->id_pengaduan }}" class="form-textarea" required placeholder="Tuliskan tanggapan resmi kepada pelapor..."></textarea>
+                                        </div>
+
+                                        <button type="submit" class="btn-small">Kirim Tanggapan</button>
+                                    </form>
+                                </div>
+                                @endif
+
+                                @if($p->tanggapan->isNotEmpty())
+                                    <div class="detail-section">
+                                        <div class="detail-title">Tanggapan Terkirim</div>
+                                        <div class="complaint-list" style="gap: 10px;">
+                                            @foreach($p->tanggapan as $reply)
+                                                <div class="reply-box">
+                                                    <div class="reply-header">Dijawab oleh: {{ $reply->admin->nama }} (Admin)</div>
+                                                    <div>{{ $reply->isi_tanggapan }}</div>
+                                                    <div class="timeline-meta" style="margin-top: 4px;">Pada: {{ $reply->created_at->format('d M Y, H:i') }}</div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+
+                                @if($p->statusLogs->isNotEmpty())
+                                    <div class="detail-section">
+                                        <div class="detail-title">Log Perubahan Status</div>
+                                        <div class="timeline">
+                                            @foreach($p->statusLogs as $log)
+                                                <div class="timeline-item">
+                                                    <div>Status berubah dari <strong>{{ $log->status_lama ?: 'null' }}</strong> menjadi <strong>{{ $log->status_baru }}</strong></div>
+                                                    @if($log->catatan)
+                                                        <div style="color: #4b5563; margin-top: 2px;">Catatan: "{{ $log->catatan }}"</div>
+                                                    @endif
+                                                    <div class="timeline-meta">Oleh: {{ $log->creator->nama }} | {{ $log->created_at->format('d M Y, H:i') }}</div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                @include('partials.simple-pagination', ['paginator' => $pengaduans])
+            @endif
+        </div>
+    </div>
+
+    <script>
+        function toggleDetails(element) {
+            if (element.classList.contains('active')) {
+                return;
+            }
+            document.querySelectorAll('.complaint-item').forEach(item => {
+                if (item !== element) {
+                    item.classList.remove('active');
+                }
+            });
+            element.classList.toggle('active');
+        }
+
+        // Mencegah penutupan detail saat berinteraksi di formulir/form-group
+        document.querySelectorAll('.complaint-details').forEach(detail => {
+            detail.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // Penanganan klik header untuk menutup item aktif
+        document.querySelectorAll('.complaint-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (!e.target.closest('.complaint-details')) {
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        e.stopPropagation();
+                    }
+                }
+            });
+        });
+
+        (() => {
+            // Success Toast Logic
+            const toast = document.getElementById('successToast');
+            if (toast) {
+                const close = document.getElementById('successToastClose');
+                window.setTimeout(() => toast.classList.add('is-visible'), 120);
+                const hideToast = () => toast.classList.remove('is-visible');
+                close?.addEventListener('click', hideToast);
+                window.setTimeout(hideToast, 5200);
+            }
+
+            document.addEventListener('click', (event) => {
+                const modal = document.getElementById('logoutModal');
+
+                if (event.target.closest('#btnTriggerLogout')) {
+                    modal?.classList.add('is-open');
+                }
+
+                if (event.target.closest('#btnCancelLogout')) {
+                    modal?.classList.remove('is-open');
+                }
+
+                if (event.target === modal) {
+                    modal.classList.remove('is-open');
+                }
+
+                if (event.target.closest('#btnConfirmLogout')) {
+                    document.getElementById('logoutForm')?.submit();
+                }
+            });
+        })();
+    </script>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="logout-modal" id="logoutModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="logout-modal-content">
+            <h3 id="modalTitle">Konfirmasi Keluar</h3>
+            <p>Apakah Anda yakin ingin keluar dari Panel Administrasi SIPMA?</p>
+            <div class="logout-modal-actions">
+                <button type="button" class="btn-modal-cancel" id="btnCancelLogout">Batal</button>
+                <button type="button" class="btn-modal-confirm" id="btnConfirmLogout">Keluar</button>
+>>>>>>> origin/Abiyyu-dev
             </div>
         </div>
 
