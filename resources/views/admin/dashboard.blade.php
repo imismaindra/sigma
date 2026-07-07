@@ -1287,30 +1287,24 @@
                 window.setTimeout(hideToast, 5200);
             }
 
-            window.addEventListener('DOMContentLoaded', () => {
-                const btnTrigger = document.getElementById('btnTriggerLogout');
+            document.addEventListener('click', (event) => {
                 const modal = document.getElementById('logoutModal');
-                const btnCancel = document.getElementById('btnCancelLogout');
-                const btnConfirm = document.getElementById('btnConfirmLogout');
-                const form = document.getElementById('logoutForm');
 
-                btnTrigger?.addEventListener('click', () => {
+                if (event.target.closest('#btnTriggerLogout')) {
                     modal?.classList.add('is-open');
-                });
+                }
 
-                btnCancel?.addEventListener('click', () => {
+                if (event.target.closest('#btnCancelLogout')) {
                     modal?.classList.remove('is-open');
-                });
+                }
 
-                modal?.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.classList.remove('is-open');
-                    }
-                });
+                if (event.target === modal) {
+                    modal.classList.remove('is-open');
+                }
 
-                btnConfirm?.addEventListener('click', () => {
-                    form?.submit();
-                });
+                if (event.target.closest('#btnConfirmLogout')) {
+                    document.getElementById('logoutForm')?.submit();
+                }
             });
         })();
     </script>
