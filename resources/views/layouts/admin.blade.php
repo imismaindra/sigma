@@ -34,6 +34,19 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+
+        /* Optimize scrolling performance for elements with backdrop-filter or backdrop-blur */
+        [class*="backdrop-blur-"],
+        .backdrop-blur,
+        #appSidebar,
+        nav.sticky,
+        .fixed.pointer-events-none.z-0 > div {
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform;
+        }
     </style>
     @yield('styles')
 </head>

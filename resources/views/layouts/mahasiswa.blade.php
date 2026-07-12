@@ -1,18 +1,10 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-slate-50/50">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard Mahasiswa') - SIPMA</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-<<<<<<< HEAD
-    
-    <!-- Google Fonts: Plus Jakarta Sans for high-end look -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-=======
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         (() => {
@@ -20,17 +12,16 @@
             document.documentElement.dataset.theme = savedTheme;
         })();
     </script>
->>>>>>> origin/Abiyyu-dev
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #3730a3;
-            --primary-soft: #eeebff;
+            --primary: #1d4ed8;
+            --primary-dark: #1e3a8a;
+            --primary-soft: #dbeafe;
             --accent: #0f766e;
             --accent-soft: #ccfbf1;
-            --bg: #f8fafc;
+            --bg: #f5f7fb;
             --surface: #ffffff;
-            --surface-soft: #f1f5f9;
+            --surface-soft: #f8fafc;
             --border: #e2e8f0;
             --text: #0f172a;
             --muted: #64748b;
@@ -38,9 +29,6 @@
             --proses: #2563eb;
             --selesai: #16a34a;
             --ditolak: #dc2626;
-<<<<<<< HEAD
-            --shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-=======
             --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
             --app-bg: #f5f7fb;
             --shell-bg: rgba(255, 255, 255, 0.94);
@@ -92,44 +80,37 @@
             --watch-accent: #2563eb;
             --watch-green: #16a34a;
             --watch-red: #dc2626;
->>>>>>> origin/Abiyyu-dev
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         html,
         body {
             width: 100%;
             min-height: 100%;
+            overflow-x: hidden;
         }
 
         body {
             background:
-<<<<<<< HEAD
-                radial-gradient(circle at 10% 0%, rgba(79, 70, 229, 0.08), transparent 30%),
-                radial-gradient(circle at 92% 8%, rgba(15, 118, 110, 0.06), transparent 24%),
-                var(--bg);
-=======
                 radial-gradient(circle at 10% 0%, rgba(29, 78, 216, 0.12), transparent 30%),
                 radial-gradient(circle at 92% 8%, rgba(15, 118, 110, 0.1), transparent 24%),
                 var(--app-bg);
->>>>>>> origin/Abiyyu-dev
             color: var(--text);
         }
 
         a {
             color: inherit;
-            text-decoration: none;
         }
 
         .app-shell {
             min-height: 100vh;
-            display: flex;
+            display: block;
         }
 
         .sidebar-backdrop {
@@ -137,8 +118,7 @@
             inset: 0;
             z-index: 35;
             display: none;
-            background: rgba(15, 23, 42, 0.3);
-            backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.38);
         }
 
         .sidebar-backdrop.is-open {
@@ -155,27 +135,6 @@
             z-index: 40;
             display: flex;
             flex-direction: column;
-<<<<<<< HEAD
-            border-right: 1px solid rgba(226, 232, 240, 0.8);
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            box-shadow: 1px 0 10px rgba(15, 23, 42, 0.02);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: -translate-x-full;
-            }
-            .sidebar.is-open {
-                transform: translateX(0);
-            }
-        }
-
-        .sidebar-head {
-            padding: 24px;
-            border-bottom: 1px solid var(--border);
-=======
             border-right: 1px solid var(--shell-border);
             background: var(--shell-bg);
             box-shadow: 10px 0 30px rgba(15, 23, 42, 0.12);
@@ -186,7 +145,6 @@
         .sidebar-head {
             padding: 22px;
             border-bottom: 1px solid var(--shell-border);
->>>>>>> origin/Abiyyu-dev
         }
 
         .brand {
@@ -195,11 +153,12 @@
             gap: 12px;
             color: var(--text);
             text-decoration: none;
+            min-width: 0;
         }
 
         .brand-mark {
-            width: 42px;
-            height: 42px;
+            width: 44px;
+            height: 44px;
             border-radius: 12px;
             display: grid;
             place-items: center;
@@ -208,13 +167,11 @@
             font-size: 15px;
             font-weight: 800;
             flex: 0 0 auto;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
         }
 
         .brand strong {
             display: block;
-            font-size: 16px;
-            font-weight: 800;
+            font-size: 17px;
             line-height: 1.15;
         }
 
@@ -222,7 +179,7 @@
             display: block;
             margin-top: 3px;
             color: var(--muted);
-            font-size: 11px;
+            font-size: 12px;
             line-height: 1.35;
         }
 
@@ -230,26 +187,20 @@
             margin-top: 18px;
             padding: 14px;
             border-radius: 12px;
-<<<<<<< HEAD
-            background: rgba(248, 250, 252, 0.7);
-            border: 1px solid var(--border);
-=======
             background: var(--shell-soft);
             border: 1px solid var(--shell-border);
->>>>>>> origin/Abiyyu-dev
         }
 
         .sidebar-user-name {
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 800;
             margin-bottom: 4px;
-            color: var(--text);
             overflow-wrap: anywhere;
         }
 
         .sidebar-user-meta {
             color: var(--muted);
-            font-size: 11.5px;
+            font-size: 12px;
             line-height: 1.4;
             overflow-wrap: anywhere;
         }
@@ -257,33 +208,27 @@
         .sidebar-nav {
             padding: 16px;
             display: grid;
-            gap: 6px;
-            flex-grow: 1;
-            overflow-y: auto;
+            gap: 8px;
         }
 
         .nav-link {
-            min-height: 44px;
+            min-height: 42px;
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 0 14px;
+            padding: 0 12px;
             border-radius: 10px;
             color: var(--muted);
             text-decoration: none;
             font-size: 13px;
-            font-weight: 700;
+            font-weight: 800;
             border: 1px solid transparent;
-            transition: all 0.2s ease;
         }
 
         .nav-link:hover,
         .nav-link.is-active {
-            color: var(--primary);
+            color: var(--primary-dark);
             background: var(--primary-soft);
-<<<<<<< HEAD
-            border-color: rgba(79, 70, 229, 0.15);
-=======
             border-color: rgba(124, 198, 255, .35);
         }
 
@@ -293,7 +238,6 @@
             border-radius: 999px;
             background: currentColor;
             opacity: 0.7;
->>>>>>> origin/Abiyyu-dev
         }
 
         .nav-icon {
@@ -310,9 +254,9 @@
         .btn-danger {
             min-height: 42px;
             border-radius: 10px;
-            padding: 0 16px;
+            padding: 0 14px;
             font-size: 13px;
-            font-weight: 700;
+            font-weight: 800;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -320,53 +264,22 @@
             cursor: pointer;
             border: 0;
             white-space: nowrap;
-            transition: all 0.2s ease;
         }
 
         .btn-logout {
-<<<<<<< HEAD
-            border: 1px solid #fecaca;
-            background: #fff5f5;
-            color: #b91c1c;
-=======
             border: 1px solid rgba(239, 68, 68, .35);
             background: rgba(239, 68, 68, .12);
             color: #fecaca;
->>>>>>> origin/Abiyyu-dev
-        }
-        .btn-logout:hover {
-            background: #fee2e2;
         }
 
         .btn-primary {
             color: #ffffff;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15);
-        }
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 24px rgba(79, 70, 229, 0.25);
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            box-shadow: 0 12px 22px rgba(37, 99, 235, 0.2);
         }
 
         .btn-secondary {
             border: 1px solid var(--border);
-<<<<<<< HEAD
-            background: #ffffff;
-            color: var(--text);
-        }
-        .btn-secondary:hover {
-            background: #f8fafc;
-            border-color: #cbd5e1;
-        }
-
-        .btn-soft {
-            border: 1px solid #ddd6fe;
-            background: var(--primary-soft);
-            color: var(--primary);
-        }
-        .btn-soft:hover {
-            background: #e0daff;
-=======
             background: var(--shell-bg);
             color: var(--primary-dark);
         }
@@ -375,15 +288,11 @@
             border: 1px solid rgba(124, 198, 255, .35);
             background: var(--primary-soft);
             color: var(--primary-dark);
->>>>>>> origin/Abiyyu-dev
         }
 
         .btn-danger {
             background: var(--ditolak);
             color: #ffffff;
-        }
-        .btn-danger:hover {
-            background: #b91c1c;
         }
 
         .app-main {
@@ -391,15 +300,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            flex-grow: 1;
-            padding-left: 280px;
-            transition: padding 0.3s ease;
-        }
-
-        @media (max-width: 1024px) {
-            .app-main {
-                padding-left: 0;
-            }
+            margin-left: 280px;
         }
 
         .topbar {
@@ -414,22 +315,10 @@
             justify-content: space-between;
             gap: 14px;
             padding: 0 28px;
-<<<<<<< HEAD
-            background: rgba(255, 255, 255, 0.85);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-            backdrop-filter: blur(12px);
-        }
-
-        @media (max-width: 640px) {
-            .topbar {
-                padding: 0 16px;
-            }
-=======
             background: var(--topbar-bg);
             border-bottom: 1px solid var(--shell-border);
             backdrop-filter: blur(16px);
             color: var(--topbar-text);
->>>>>>> origin/Abiyyu-dev
         }
 
         .mobile-menu-btn {
@@ -442,15 +331,7 @@
             color: var(--text);
             cursor: pointer;
             font-size: 20px;
-            font-weight: 700;
-            align-items: center;
-            justify-content: center;
-        }
-
-        @media (max-width: 1024px) {
-            .mobile-menu-btn {
-                display: inline-flex;
-            }
+            font-weight: 800;
         }
 
         .topbar-title {
@@ -460,20 +341,23 @@
         .topbar-title strong {
             display: block;
             font-size: 15px;
-            font-weight: 800;
         }
 
         .topbar-title span {
             display: block;
             margin-top: 3px;
             color: var(--muted);
-            font-size: 11.5px;
+            font-size: 12px;
         }
 
         .topbar-actions {
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        .topbar-actions form {
+            display: flex;
         }
 
         .notification-pill {
@@ -483,28 +367,22 @@
             gap: 8px;
             border: 1px solid var(--border);
             border-radius: 999px;
-<<<<<<< HEAD
-            background: #ffffff;
-            padding: 0 14px;
-=======
             background: var(--shell-bg);
             padding: 0 12px;
->>>>>>> origin/Abiyyu-dev
             color: var(--muted);
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .notification-count {
-            min-width: 20px;
-            height: 20px;
+            min-width: 22px;
+            height: 22px;
             border-radius: 999px;
             display: grid;
             place-items: center;
             background: var(--primary);
             color: #ffffff;
-            font-size: 10px;
-            font-weight: 800;
+            font-size: 11px;
         }
 
         .theme-toggle {
@@ -534,32 +412,24 @@
         }
 
         .content-wrap {
-            width: 100%;
-            max-width: 1200px;
+            width: min(100%, 1180px);
             margin: 0 auto;
-            padding: 28px 28px 48px;
-            flex-grow: 1;
+            padding: 26px 28px 34px;
         }
 
-        @media (max-width: 640px) {
-            .content-wrap {
-                padding: 16px 16px 36px;
-            }
-        }
-
-        /* Shared Dashboard Panels & Cards styling */
         .page-hero {
             display: grid;
             grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
-            gap: 20px;
+            gap: 18px;
             align-items: stretch;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
         }
 
-        @media (max-width: 768px) {
-            .page-hero {
-                grid-template-columns: 1fr;
-            }
+        .page-hero > *,
+        .dashboard-grid > *,
+        .stats-grid > *,
+        .filter-form > * {
+            min-width: 0;
         }
 
         .hero-card,
@@ -568,22 +438,17 @@
         .complaint-card,
         .notification-panel,
         .filter-panel {
-<<<<<<< HEAD
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 16px;
-=======
             background: var(--surface);
             border: 1px solid var(--shell-border);
             border-radius: 14px;
->>>>>>> origin/Abiyyu-dev
             box-shadow: var(--shadow);
             overflow: hidden;
         }
 
         .hero-card {
-            padding: 30px;
+            padding: clamp(22px, 4vw, 34px);
             min-width: 0;
+            overflow: hidden;
             position: relative;
         }
 
@@ -595,381 +460,222 @@
             right: -90px;
             bottom: -130px;
             border-radius: 50%;
-            background: rgba(79, 70, 229, 0.05);
+            background: rgba(29, 78, 216, 0.08);
         }
 
         .eyebrow {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            min-height: 26px;
-            padding: 0 10px;
+            gap: 8px;
+            min-height: 30px;
+            padding: 0 11px;
             border-radius: 999px;
             background: var(--primary-soft);
-            color: var(--primary);
-            font-size: 11px;
+            color: var(--primary-dark);
+            font-size: 12px;
             font-weight: 800;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
         }
 
         .eyebrow::before {
             content: "";
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 999px;
             background: var(--accent);
+            box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
         }
 
         .hero-card h1 {
-            font-size: clamp(24px, 3.5vw, 34px);
-            font-weight: 850;
-            line-height: 1.15;
-            letter-spacing: -0.02em;
+            position: relative;
+            z-index: 1;
+            font-size: clamp(28px, 4vw, 44px);
+            line-height: 1.08;
+            letter-spacing: 0;
+            max-width: 720px;
             margin-bottom: 12px;
-            color: var(--text);
         }
 
         .hero-card p {
+            position: relative;
+            z-index: 1;
             color: var(--muted);
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.65;
             max-width: 640px;
         }
 
         .guide-card {
-            padding: 24px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 16px;
+            gap: 18px;
         }
 
         .guide-card strong {
-            font-size: 14.5px;
-            font-weight: 800;
+            font-size: 15px;
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .guide-card p {
             color: var(--muted);
-            font-size: 12.5px;
-            line-height: 1.5;
+            font-size: 13px;
+            line-height: 1.55;
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
         }
 
         .stat-card {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            border-left: 4px solid var(--primary);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .stat-card:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+            padding: 18px;
+            min-width: 0;
         }
 
         .stat-label {
-            font-size: 11px;
             color: var(--muted);
+            font-size: 12px;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin-bottom: 8px;
         }
 
         .stat-value {
-            font-size: 32px;
-            font-weight: 850;
-            color: var(--text);
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--primary-dark);
             line-height: 1;
         }
 
         .stat-hint {
-            font-size: 11px;
+            margin-top: 8px;
             color: var(--muted);
+            font-size: 12px;
         }
 
-        /* Filter Panel Styles */
-        .filter-panel {
+        .panel {
             padding: 20px;
-            margin-bottom: 24px;
         }
 
         .panel-head {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
-            gap: 16px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 16px;
-            margin-bottom: 18px;
+            gap: 14px;
+            margin-bottom: 16px;
         }
 
         .panel-title {
-            font-size: 15px;
+            font-size: 17px;
             font-weight: 800;
-            color: var(--text);
+            margin-bottom: 5px;
         }
 
         .panel-subtitle {
-            font-size: 12px;
             color: var(--muted);
-            margin-top: 2px;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: minmax(300px, 410px) minmax(0, 1fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .form-grid,
+        .filter-form {
+            display: grid;
+            gap: 12px;
         }
 
         .filter-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 14px;
+            grid-template-columns: minmax(180px, 1fr) repeat(4, minmax(128px, auto)) auto;
             align-items: end;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 8px;
         }
 
         .form-label {
             display: block;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 6px;
             color: var(--text);
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 6px;
         }
 
         .form-input,
         .form-select,
         .form-textarea {
             width: 100%;
-            min-height: 40px;
-            background: #ffffff;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0 12px;
-            font-size: 13px;
+            border-radius: 10px;
+            background: var(--surface-soft);
             color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
             outline: none;
-            transition: all 0.2s;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        }
+
+        .form-input,
+        .form-select {
+            min-height: 44px;
+            padding: 0 12px;
+        }
+
+        .form-textarea {
+            min-height: 128px;
+            padding: 12px;
+            resize: vertical;
         }
 
         .form-input:focus,
         .form-select:focus,
         .form-textarea:focus {
-<<<<<<< HEAD
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
-=======
             border-color: #60a5fa;
             background: var(--surface);
             box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.12);
->>>>>>> origin/Abiyyu-dev
         }
 
-        .form-textarea {
-            padding: 10px 12px;
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .filter-actions {
-            display: flex;
-            gap: 8px;
-            min-height: 40px;
-        }
-        .filter-actions > * {
-            flex: 1;
-        }
-
-        /* Notifikasi */
-        .notification-panel {
-            padding: 20px;
-            margin-bottom: 24px;
-        }
-
-        .notification-list {
-            display: grid;
-            gap: 8px;
-        }
-
-        .notification-item {
-            display: block;
-            padding: 12px 14px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: rgba(248, 250, 252, 0.5);
-            transition: all 0.15s ease;
-        }
-
-        .notification-item:hover {
-            border-color: #cbd5e1;
-            background: #ffffff;
-        }
-
-        .notification-item.unread {
-            border-color: rgba(79, 70, 229, 0.2);
-            background: rgba(79, 70, 229, 0.02);
-        }
-
-        .notification-title {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--text);
-            margin-bottom: 3px;
-        }
-
-        .notification-message {
-            font-size: 12.5px;
+        .file-note {
+            margin-top: 6px;
             color: var(--muted);
-            line-height: 1.4;
-        }
-
-        /* Riwayat Pengaduan / Panel list */
-        .panel {
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: var(--muted);
-            padding: 48px 0;
-            font-size: 13.5px;
-        }
-
-        .complaint-list {
-            display: grid;
-            gap: 12px;
-            margin-top: 14px;
-        }
-
-        .complaint-card {
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 18px;
-            background: #ffffff;
-            transition: all 0.2s ease;
-        }
-
-        .complaint-card:hover {
-            border-color: #cbd5e1;
-            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.02);
-            transform: translateY(-1px);
-        }
-
-        .complaint-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 16px;
-            margin-bottom: 8px;
-        }
-
-        .complaint-title {
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--text);
-            line-height: 1.35;
-        }
-
-        .complaint-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 11.5px;
-            color: var(--muted);
-            margin-bottom: 12px;
-        }
-
-        .complaint-meta strong {
-            color: var(--text);
-        }
-
-        .complaint-body {
-            font-size: 13px;
-            line-height: 1.55;
-            color: #334155;
-            margin-bottom: 14px;
-        }
-
-        .complaint-actions {
-            display: flex;
-            gap: 8px;
-            border-top: 1px solid var(--border);
-            padding-top: 12px;
-            justify-content: flex-end;
-        }
-
-        .complaint-actions .btn-soft,
-        .complaint-actions .btn-secondary {
-            min-height: 34px;
-            padding: 0 12px;
             font-size: 12px;
-            border-radius: 8px;
-        }
-
-        /* Badges */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 22px;
-            padding: 0 8px;
-            border-radius: 6px;
-            font-size: 10.5px;
-            font-weight: 800;
-            text-transform: uppercase;
-            border: 1px solid transparent;
-        }
-
-        .badge-pending { background: #fffbeb; color: #b45309; border-color: #fde68a; }
-        .badge-proses { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
-        .badge-menunggu_klarifikasi,
-        .badge-menunggu_verifikasi_mahasiswa { background: #faf5ff; color: #6d28d9; border-color: #ddd6fe; }
-        .badge-ditindaklanjuti { background: #f0fdfa; color: #0f766e; border-color: #99f6e4; }
-        .badge-selesai { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
-        .badge-ditolak { background: #fef2f2; color: #b91c1c; border-color: #fca5a5; }
-
-        .sla-badge {
-            display: inline-flex;
-            align-items: center;
-            min-height: 22px;
-            padding: 0 8px;
-            border-radius: 6px;
-            background: #fee2e2;
-            color: #991b1b;
-            font-size: 10.5px;
-            font-weight: 800;
-            border: 1px solid #fca5a5;
-        }
-
-        /* Toast & Alerts */
-        .alert {
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-bottom: 20px;
             line-height: 1.45;
+        }
+
+        .alert {
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.45;
+            margin-bottom: 16px;
             border: 1px solid transparent;
         }
 
         .alert-success {
             background: #f0fdf4;
             border-color: #bbf7d0;
-            color: #15803d;
+            color: #166534;
         }
 
         .alert-danger {
             background: #fef2f2;
             border-color: #fecaca;
-            color: #b91c1c;
+            color: #991b1b;
         }
 
-<<<<<<< HEAD
-        .file-note {
-=======
         .notification-panel,
         .filter-panel {
             padding: 16px;
@@ -1061,12 +767,29 @@
             min-height: 26px;
             border-radius: 999px;
             padding: 0 9px;
->>>>>>> origin/Abiyyu-dev
             font-size: 11px;
+            font-weight: 800;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+
+        .badge-pending { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .badge-proses { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+        .badge-selesai { background: #d1fae5; color: #047857; border: 1px solid #a7f3d0; }
+        .badge-ditolak { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+        .sla-badge {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .empty-state {
+            min-height: 220px;
+            display: grid;
+            place-items: center;
+            text-align: center;
             color: var(--muted);
-<<<<<<< HEAD
-            margin-top: 5px;
-=======
             border: 1px dashed #cbd5e1;
             border-radius: 12px;
             background: var(--surface-soft);
@@ -1262,24 +985,17 @@
         .page-info span {
             font-size: 12px;
             font-weight: 600;
->>>>>>> origin/Abiyyu-dev
         }
 
-        /* Modal styling */
         .logout-modal {
             position: fixed;
             inset: 0;
             z-index: 10000;
-<<<<<<< HEAD
-            background: rgba(15, 23, 42, 0.45);
-            backdrop-filter: blur(8px);
-=======
             background:
                 radial-gradient(circle at 50% 22%, rgba(109, 199, 255, .18), transparent 34%),
                 rgba(3, 10, 20, .66);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
->>>>>>> origin/Abiyyu-dev
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1296,16 +1012,6 @@
 
         .logout-modal-content {
             width: 100%;
-<<<<<<< HEAD
-            max-width: 420px;
-            background: #ffffff;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
-            transform: scale(.95);
-=======
             max-width: 430px;
             background:
                 linear-gradient(145deg, var(--glass-highlight), transparent 44%),
@@ -1318,7 +1024,6 @@
                 0 30px 90px rgba(0, 0, 0, .34),
                 inset 0 1px 0 rgba(255, 255, 255, .12);
             transform: translateY(14px) scale(.96);
->>>>>>> origin/Abiyyu-dev
             transition: transform .2s ease;
             color: var(--text);
             backdrop-filter: blur(24px);
@@ -1347,11 +1052,7 @@
         }
 
         .logout-modal-content h3 {
-<<<<<<< HEAD
-            font-size: 17px;
-=======
             font-size: 21px;
->>>>>>> origin/Abiyyu-dev
             font-weight: 900;
             color: var(--text);
             margin-bottom: 8px;
@@ -1359,15 +1060,9 @@
 
         .logout-modal-content p {
             color: var(--muted);
-<<<<<<< HEAD
-            font-size: 13.5px;
-            line-height: 1.5;
-            margin-bottom: 22px;
-=======
             font-size: 14px;
             line-height: 1.55;
             margin-bottom: 24px;
->>>>>>> origin/Abiyyu-dev
         }
 
         .logout-modal-actions {
@@ -1378,26 +1073,17 @@
 
         .btn-modal-cancel,
         .btn-modal-confirm {
-<<<<<<< HEAD
-            min-height: 42px;
-            border-radius: 10px;
-=======
             min-height: 48px;
             border-radius: 16px;
->>>>>>> origin/Abiyyu-dev
             font-size: 13px;
-            font-weight: 800;
+            font-weight: 900;
             cursor: pointer;
-<<<<<<< HEAD
-            transition: all 0.15s;
-=======
             transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
         }
 
         .btn-modal-cancel:hover,
         .btn-modal-confirm:hover {
             transform: translateY(-1px);
->>>>>>> origin/Abiyyu-dev
         }
 
         .btn-modal-cancel {
@@ -1405,20 +1091,11 @@
             background: var(--glass-bg);
             color: var(--text);
         }
-        .btn-modal-cancel:hover {
-            background: #e2e8f0;
-        }
 
         .btn-modal-confirm {
             border: 0;
             background: linear-gradient(135deg, #ff6b7a, #dc2626);
             color: #ffffff;
-<<<<<<< HEAD
-            box-shadow: 0 6px 16px rgba(220, 38, 38, 0.15);
-        }
-        .btn-modal-confirm:hover {
-            background: #b91c1c;
-=======
             box-shadow: 0 14px 26px rgba(220, 38, 38, .24);
         }
 
@@ -1751,108 +1428,87 @@
             .app-footer {
                 display: none;
             }
->>>>>>> origin/Abiyyu-dev
+        }
+
+        /* Optimize scroll and paint performance for glassmorphism elements */
+        .sidebar,
+        .topbar,
+        .app-footer,
+        .hero-card,
+        .panel,
+        .stat-card,
+        .complaint-card,
+        .notification-panel,
+        .filter-panel,
+        .watch-panel,
+        .notice-panel,
+        .mobile-bottom-nav,
+        .theme-toggle,
+        .notification-pill,
+        .btn-secondary,
+        .btn-logout,
+        .mobile-menu-btn,
+        .logout-modal,
+        .logout-modal-content,
+        .balance-card,
+        .metric-card,
+        .portfolio-panel,
+        .case-card,
+        .activity-panel,
+        .activity-row,
+        .connected-mini,
+        .detail-hero,
+        .history-hero,
+        .history-item,
+        .profile-hero,
+        .profile-card {
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform;
         }
 
         @yield('styles')
     </style>
 </head>
-<body class="min-h-full flex flex-col text-slate-800 antialiased selection:bg-indigo-500 selection:text-white relative bg-slate-50/30">
-
-    <!-- Glowing lights background -->
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div class="absolute -top-[40%] -left-[20%] w-[90%] h-[90%] rounded-full bg-gradient-to-tr from-indigo-200/20 to-violet-200/20 blur-[120px]"></div>
-        <div class="absolute -bottom-[40%] -right-[20%] w-[90%] h-[90%] rounded-full bg-gradient-to-br from-blue-200/15 to-purple-200/15 blur-[120px]"></div>
-    </div>
-
-    <!-- Mobile Sidebar Backdrop -->
+<body>
     <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
-
-    <div class="app-shell relative z-10 flex min-h-screen">
-        
-        <!-- Sidebar Navigation -->
+    <div class="app-shell">
         @include('partials.mahasiswa.sidebar')
 
-        <!-- Main Wrapper -->
         <div class="app-main">
-            
-            <!-- Navbar Header -->
             @include('partials.mahasiswa.navbar')
 
-            <!-- Content Panel -->
             <main class="content-wrap">
                 @yield('content')
             </main>
 
-            <!-- Footer -->
             @include('partials.mahasiswa.footer')
         </div>
     </div>
     @include('partials.mahasiswa.bottom-nav')
 
-    <!-- Student Logout Modal -->
-    <div class="logout-modal" id="mahasiswaLogoutModal" role="dialog" aria-modal="true" aria-labelledby="mahasiswaLogoutTitle">
-        <div class="logout-modal-content">
-            <div class="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-4 border border-rose-100">
-                <i data-lucide="log-out" class="w-6 h-6"></i>
-            </div>
-            <h3 id="mahasiswaLogoutTitle">Konfirmasi Keluar</h3>
-            <p>Apakah Anda yakin ingin keluar dari dashboard mahasiswa SIPMA?</p>
-            <div class="logout-modal-actions">
-                <button type="button" class="btn-modal-cancel" id="btnCancelMahasiswaLogout">Batal</button>
-                <form id="mahasiswaLogoutForm" action="{{ route('logout') }}" method="POST" style="display:none;">
-                    @csrf
-                </form>
-                <button type="button" class="btn-modal-confirm" id="btnConfirmMahasiswaLogout">Keluar</button>
-            </div>
-        </div>
-    </div>
-
-    @include('partials.toast')
-
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        (() => {
             const sidebar = document.getElementById('appSidebar');
             const backdrop = document.getElementById('sidebarBackdrop');
             const toggle = document.getElementById('sidebarToggle');
-
-            const openSidebar = () => {
-                sidebar?.classList.add('is-open');
-                backdrop?.classList.add('is-open');
-            };
-
             const closeSidebar = () => {
                 sidebar?.classList.remove('is-open');
                 backdrop?.classList.remove('is-open');
             };
 
-            toggle?.addEventListener('click', openSidebar);
+            toggle?.addEventListener('click', () => {
+                sidebar?.classList.toggle('is-open');
+                backdrop?.classList.toggle('is-open');
+            });
+
             backdrop?.addEventListener('click', closeSidebar);
             document.querySelectorAll('[data-close-sidebar]').forEach((link) => {
                 link.addEventListener('click', closeSidebar);
             });
 
-<<<<<<< HEAD
-            // Logout Modal controls
-            const logoutTrigger = document.getElementById('btnTriggerMahasiswaLogout');
-            const logoutModal = document.getElementById('mahasiswaLogoutModal');
-            const logoutCancel = document.getElementById('btnCancelMahasiswaLogout');
-            const logoutConfirm = document.getElementById('btnConfirmMahasiswaLogout');
-            const logoutForm = document.getElementById('mahasiswaLogoutForm');
-
-            logoutTrigger?.addEventListener('click', () => {
-                closeSidebar();
-                logoutModal?.classList.add('is-open');
-            });
-
-            logoutCancel?.addEventListener('click', () => {
-                logoutModal?.classList.remove('is-open');
-            });
-
-            logoutModal?.addEventListener('click', (event) => {
-                if (event.target === logoutModal) {
-                    logoutModal.classList.remove('is-open');
-=======
             const themeToggle = document.getElementById('themeToggle');
             const themeToggleText = document.getElementById('themeToggleText');
             const themeToggleIcon = document.getElementById('themeToggleIcon');
@@ -1860,7 +1516,6 @@
                 const theme = document.documentElement.dataset.theme || 'dark';
                 if (themeToggleText) {
                     themeToggleText.textContent = theme === 'dark' ? 'Dark' : 'Light';
->>>>>>> origin/Abiyyu-dev
                 }
                 if (themeToggleIcon) {
                     themeToggleIcon.textContent = theme === 'dark' ? '☾' : '☀';
@@ -1911,15 +1566,8 @@
                     logoutForm?.submit();
                 });
             });
-
-            // Initialize Lucide Icons
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons();
-            }
-        });
+        })();
     </script>
-<<<<<<< HEAD
-=======
     <div class="logout-modal" id="mahasiswaLogoutModal" role="dialog" aria-modal="true" aria-labelledby="mahasiswaLogoutTitle">
         <div class="logout-modal-content">
             <div class="logout-modal-icon" aria-hidden="true">
@@ -1938,7 +1586,6 @@
         </div>
     </div>
     @include('partials.toast')
->>>>>>> origin/Abiyyu-dev
     @yield('scripts')
 </body>
 </html>
