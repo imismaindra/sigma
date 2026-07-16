@@ -31,6 +31,14 @@
             <i data-lucide="clipboard-list" class="nav-icon"></i>
             Riwayat Pengaduan
         </a>
+        <a href="{{ route('mahasiswa.notifications.index') }}" class="nav-link {{ str_starts_with($activeRoute ?? '', 'mahasiswa.notifications') ? 'is-active' : '' }}" data-close-sidebar>
+            <i data-lucide="bell" class="nav-icon"></i>
+            Notifikasi
+            @php $nCount = Auth::user()->notifications()->whereNull('read_at')->count(); @endphp
+            @if($nCount > 0)
+                <span style="margin-left:auto;min-width:20px;height:20px;border-radius:999px;background:var(--stock-blue);color:#03111f;display:grid;place-items:center;font-size:10px;font-weight:900;">{{ $nCount > 9 ? '9+' : $nCount }}</span>
+            @endif
+        </a>
         <a href="{{ route('mahasiswa.profile') }}" class="nav-link {{ str_starts_with($activeRoute ?? '', 'mahasiswa.profile') ? 'is-active' : '' }}" data-close-sidebar>
             <i data-lucide="user" class="nav-icon"></i>
             Profil Mahasiswa

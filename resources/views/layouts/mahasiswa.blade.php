@@ -717,6 +717,177 @@
             line-height: 1.45;
         }
 
+        .notif-dropdown {
+            position: relative;
+        }
+
+        .notif-trigger {
+            min-height: 38px;
+            min-width: 38px;
+            border: 1px solid var(--glass-border);
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--glass-bg-strong);
+            color: var(--text);
+            cursor: pointer;
+            position: relative;
+            backdrop-filter: blur(18px);
+            transition: border-color .15s ease;
+        }
+
+        .notif-trigger:hover {
+            border-color: var(--stock-blue);
+        }
+
+        .notif-bell-count {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            display: none;
+            place-items: center;
+            font-size: 9px;
+            font-weight: 900;
+            background: var(--stock-red);
+            color: #ffffff;
+            border: 2px solid var(--topbar-bg);
+            line-height: 1;
+            padding: 0 4px;
+        }
+
+        .notif-bell-count.has-unread {
+            display: grid;
+        }
+
+        .notif-panel {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 360px;
+            max-width: calc(100vw - 32px);
+            background: var(--glass-bg-strong);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            backdrop-filter: blur(28px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .34);
+            z-index: 100;
+            display: none;
+            overflow: hidden;
+        }
+
+        .notif-panel.is-open {
+            display: block;
+        }
+
+        .notif-panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .notif-panel-title {
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--text);
+        }
+
+        .notif-mark-all-btn {
+            background: none;
+            border: none;
+            color: var(--stock-blue);
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+            transition: background .15s ease;
+        }
+
+        .notif-mark-all-btn:hover {
+            background: var(--primary-soft);
+        }
+
+        .notif-panel-list {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .notif-panel-loading,
+        .notif-panel-empty {
+            padding: 24px 16px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .notif-panel-item {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            border-bottom: 1px solid var(--glass-border);
+            transition: background .12s ease;
+            cursor: pointer;
+        }
+
+        .notif-panel-item:hover {
+            background: var(--glass-highlight);
+        }
+
+        .notif-panel-item.unread {
+            background: rgba(109, 199, 255, .06);
+            border-left: 3px solid var(--stock-blue);
+        }
+
+        .notif-panel-item-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 3px;
+        }
+
+        .notif-panel-item.unread .notif-panel-item-title {
+            color: var(--stock-blue);
+        }
+
+        .notif-panel-item-message {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .notif-panel-item-time {
+            font-size: 10px;
+            color: var(--muted);
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .notif-panel-footer {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--stock-blue);
+            text-decoration: none;
+            border-top: 1px solid var(--glass-border);
+            transition: background .12s ease;
+        }
+
+        .notif-panel-footer:hover {
+            background: var(--glass-highlight);
+        }
+
         .complaint-card {
             padding: 16px;
             min-width: 0;
@@ -1531,7 +1702,109 @@
                 applyThemeLabel();
             });
 
+            function initNotifications() {
+                const trigger = document.getElementById('notifTrigger');
+                const panel = document.getElementById('notifPanel');
+                const list = document.getElementById('notifPanelList');
+                const bellCount = document.getElementById('notifBellCount');
+                const markAllBtn = document.getElementById('notifMarkAllRead');
+
+                if (!trigger) return;
+
+                function closePanel() { panel?.classList.remove('is-open'); }
+
+                trigger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isOpen = panel?.classList.contains('is-open');
+                    if (isOpen) { closePanel(); return; }
+                    panel?.classList.add('is-open');
+                    if (list) {
+                        list.innerHTML = '<div class="notif-panel-loading">Memuat...</div>';
+                        fetch('{{ route('mahasiswa.notifications.latest') }}', {
+                            headers: { 'Accept': 'application/json' }
+                        })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data.notifications.length === 0) {
+                                list.innerHTML = '<div class="notif-panel-empty">Tidak ada notifikasi</div>';
+                                return;
+                            }
+                            list.innerHTML = data.notifications.map(n => `
+                                <a href="${n.url}" class="notif-panel-item ${n.is_unread ? 'unread' : ''}" data-notif-id="${n.id}">
+                                    <div class="notif-panel-item-title">${n.title}</div>
+                                    <div class="notif-panel-item-message">${n.message}</div>
+                                    <div class="notif-panel-item-time">${n.created_at}</div>
+                                </a>
+                            `).join('');
+
+                            list.querySelectorAll('.notif-panel-item.unread').forEach(item => {
+                                item.addEventListener('click', function(e) {
+                                    const id = this.dataset.notifId;
+                                    fetch('{{ route('mahasiswa.notifications.read', '') }}/' + id, {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json',
+                                        },
+                                    });
+                                });
+                            });
+
+                            if (markAllBtn) {
+                                markAllBtn.style.display = data.unread_count > 0 ? '' : 'none';
+                            }
+                        })
+                        .catch(() => {
+                            list.innerHTML = '<div class="notif-panel-loading">Gagal memuat notifikasi</div>';
+                        });
+                    }
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!trigger.contains(e.target) && !panel?.contains(e.target)) {
+                        closePanel();
+                    }
+                });
+
+                markAllBtn?.addEventListener('click', function() {
+                    fetch('{{ route('mahasiswa.notifications.read-all') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                        },
+                    }).then(() => {
+                        document.querySelectorAll('.notif-panel-item.unread').forEach(el => el.classList.remove('unread'));
+                        if (bellCount) {
+                            bellCount.textContent = '0';
+                            bellCount.classList.remove('has-unread');
+                        }
+                        markAllBtn.style.display = 'none';
+                    });
+                });
+
+                // Poll for new notifications every 30 seconds
+                setInterval(function() {
+                    fetch('{{ route('mahasiswa.notifications.unread-count') }}', {
+                        headers: { 'Accept': 'application/json' }
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (bellCount) {
+                            bellCount.textContent = data.count;
+                            bellCount.classList.toggle('has-unread', data.count > 0);
+                        }
+                        if (markAllBtn) {
+                            markAllBtn.style.display = data.count > 0 ? '' : 'none';
+                        }
+                    })
+                    .catch(() => {});
+                }, 30000);
+            }
+
             window.addEventListener('DOMContentLoaded', () => {
+                initNotifications();
+
                 const logoutModal = document.getElementById('mahasiswaLogoutModal');
                 const logoutCancel = document.getElementById('btnCancelMahasiswaLogout');
                 const logoutConfirm = document.getElementById('btnConfirmMahasiswaLogout');

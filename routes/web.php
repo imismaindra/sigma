@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\MahasiswaProfileController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PengaduanController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -42,6 +43,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/pengaduan/{id}/komentar', [PengaduanController::class, 'storeComment'])->name('mahasiswa.pengaduan.comment');
         Route::post('/pengaduan/{id}/confirm', [PengaduanController::class, 'confirmCompletion'])->name('mahasiswa.pengaduan.confirm');
         Route::post('/pengaduan/{id}/reopen', [PengaduanController::class, 'reopenPengaduan'])->name('mahasiswa.pengaduan.reopen');
+        Route::get('/notifications', [NotificationController::class, 'index'])->name('mahasiswa.notifications.index');
+        Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('mahasiswa.notifications.read');
+        Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('mahasiswa.notifications.read-all');
+        Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('mahasiswa.notifications.unread-count');
+        Route::get('/notifications/latest', [NotificationController::class, 'latest'])->name('mahasiswa.notifications.latest');
+
         Route::get('/profile', [MahasiswaProfileController::class, 'show'])->name('mahasiswa.profile');
         Route::put('/profile', [MahasiswaProfileController::class, 'update'])->name('mahasiswa.profile.update');
     });
@@ -49,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
     // 2. Admin/Super Admin/Pimpinan Routes
     Route::middleware(['role:admin,super_admin,pimpinan'])->prefix('admin')->group(function () {
         Route::get('/dashboard', [PengaduanController::class, 'adminDashboard'])->name('admin.dashboard');
+        Route::get('/pengaduan', [PengaduanController::class, 'adminPengaduanIndex'])->name('admin.pengaduan.index');
         Route::get('/export/pengaduan', [PengaduanController::class, 'exportPengaduan'])->name('admin.pengaduan.export');
         Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
         Route::post('/users', [AdminUserController::class, 'store'])->name('admin.users.store');
@@ -57,6 +65,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/pengaduan/{id}/status', [PengaduanController::class, 'updateStatus'])->name('admin.pengaduan.status.update');
         Route::post('/pengaduan/{id}/tanggapan', [PengaduanController::class, 'storeTanggapan'])->name('admin.pengaduan.tanggapan.store');
         Route::post('/pengaduan/{id}/komentar', [PengaduanController::class, 'storeComment'])->name('admin.pengaduan.comment');
+        Route::get('/notifications', [NotificationController::class, 'adminIndex'])->name('admin.notifications.index');
+        Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('admin.notifications.read');
+        Route::post('/notifications/read-all', [NotificationController::class, 'adminMarkAllAsRead'])->name('admin.notifications.read-all');
+        Route::get('/notifications/unread-count', [NotificationController::class, 'adminUnreadCount'])->name('admin.notifications.unread-count');
+        Route::get('/notifications/latest', [NotificationController::class, 'adminLatest'])->name('admin.notifications.latest');
+
+        Route::get('/kategori', [PengaduanController::class, 'adminKategoriIndex'])->name('admin.kategori.index');
         Route::post('/kategori', [PengaduanController::class, 'storeKategori'])->name('admin.kategori.store');
         Route::put('/kategori/{id}', [PengaduanController::class, 'updateKategori'])->name('admin.kategori.update');
     });

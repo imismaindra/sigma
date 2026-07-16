@@ -16,8 +16,11 @@ class MahasiswaProfileController extends Controller
     {
         $user = Auth::user();
 
+        $unreadNotifications = $user->notifications()->whereNull('read_at')->count();
+
         return view('mahasiswa.profile', [
             'user' => $user,
+            'unreadNotifications' => $unreadNotifications,
             'summary' => [
                 'total' => $user->pengaduan()->count(),
                 'pending' => $user->pengaduan()->where('status', 'pending')->count(),

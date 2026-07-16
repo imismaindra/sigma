@@ -9,18 +9,25 @@
         </svg>
         <span>Home</span>
     </a>
-    <a href="{{ route('mahasiswa.pengaduan.index') }}" class="bottom-nav-item {{ str_starts_with($activeRoute ?? '', 'mahasiswa.pengaduan.') && $activeRoute !== 'mahasiswa.pengaduan.create' ? 'is-active' : '' }}">
+    <a href="{{ route('mahasiswa.notifications.index') }}" class="bottom-nav-item {{ str_starts_with($activeRoute ?? '', 'mahasiswa.notifications') ? 'is-active' : '' }}">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M7 5h10M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M5.5 3.5h13A1.5 1.5 0 0 1 20 5v14a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V5a1.5 1.5 0 0 1 1.5-1.5Z" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="1.8"/>
         </svg>
-        <span>Riwayat</span>
+        <span>Notifikasi</span>
     </a>
     <a href="{{ route('mahasiswa.pengaduan.create') }}" class="bottom-nav-item bottom-nav-primary {{ $activeRoute === 'mahasiswa.pengaduan.create' ? 'is-active' : '' }}">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
         <span>Buat</span>
+    </a>
+    <a href="{{ route('mahasiswa.pengaduan.index') }}" class="bottom-nav-item {{ str_starts_with($activeRoute ?? '', 'mahasiswa.pengaduan.') && $activeRoute !== 'mahasiswa.pengaduan.create' ? 'is-active' : '' }}">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 5h10M7 9h10M7 13h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M5.5 3.5h13A1.5 1.5 0 0 1 20 5v14a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V5a1.5 1.5 0 0 1 1.5-1.5Z" stroke="currentColor" stroke-width="1.6"/>
+        </svg>
+        <span>Riwayat</span>
     </a>
     <a href="{{ route('mahasiswa.profile') }}" class="bottom-nav-item {{ str_starts_with($activeRoute ?? '', 'mahasiswa.profile') ? 'is-active' : '' }}">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -29,10 +36,4 @@
         </svg>
         <span>Profil</span>
     </a>
-    <button type="button" class="bottom-nav-item" data-mahasiswa-logout-trigger>
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M10 6H6.5A1.5 1.5 0 0 0 5 7.5v9A1.5 1.5 0 0 0 6.5 18H10M14 8l4 4-4 4M18 12H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>Keluar</span>
-    </button>
 </nav>

@@ -7,6 +7,7 @@ use App\Models\Lampiran;
 use App\Models\ActivityLog;
 use App\Models\Notification;
 use App\Models\Pengaduan;
+use App\Models\User;
 use App\Models\PengaduanComment;
 use App\Models\StatusLog;
 use App\Models\Tanggapan;
@@ -167,6 +168,17 @@ class PengaduanController extends Controller
 
             $this->recordActivity('pengaduan_dibuat', 'Mahasiswa membuat pengaduan baru.', $pengaduan, null, $pengaduan->only(['ticket_number', 'status', 'priority']));
 
+            // Notifikasi admin/pimpinan tentang pengaduan baru
+            $adminUsers = User::whereIn('role', ['admin', 'super_admin', 'pimpinan'])->where('account_status', 'aktif')->get();
+            foreach ($adminUsers as $admin) {
+                Notification::create([
+                    'id_user' => $admin->id_user,
+                    'id_pengaduan' => $pengaduan->id_pengaduan,
+                    'title' => 'Pengaduan baru masuk',
+                    'message' => "Pengaduan baru '{$pengaduan->judul}' dari {$pengaduan->user->nama} membutuhkan verifikasi.",
+                ]);
+            }
+
             DB::commit();
             return back()->with('success', 'Pengaduan Anda berhasil dikirim dan akan segera diproses.');
 
@@ -181,10 +193,7 @@ class PengaduanController extends Controller
      */
     public function adminDashboard()
     {
-        $baseQuery = Pengaduan::with(['user', 'kategori', 'lampiran', 'statusLogs', 'tanggapan']);
-        $pengaduans = $this->filterPengaduanQuery(clone $baseQuery, request())->latest()->paginate(10)->withQueryString();
         $allPengaduans = Pengaduan::with('kategori')->get();
-        $kategoris = KategoriPengaduan::withCount('pengaduan')->orderBy('nama_kategori')->get();
         $activities = ActivityLog::with(['user', 'pengaduan'])
             ->latest()
             ->limit(12)
@@ -195,18 +204,37 @@ class PengaduanController extends Controller
             ->sortDesc()
             ->take(5);
 
-        $kanbanPengaduans = $this->filterPengaduanQuery(clone $baseQuery, request())->latest()->get();
-
         return view('admin.dashboard', [
-            'pengaduans' => $pengaduans,
-            'kanbanPengaduans' => $kanbanPengaduans,
             'allPengaduans' => $allPengaduans,
-            'kategoris' => $kategoris,
             'activities' => $activities,
             'categoryStats' => $categoryStats,
             'statusLabels' => $this->statusLabels,
+        ]);
+    }
+
+    public function adminPengaduanIndex()
+    {
+        $baseQuery = Pengaduan::with(['user', 'kategori', 'lampiran', 'statusLogs', 'tanggapan']);
+        $pengaduans = $this->filterPengaduanQuery(clone $baseQuery, request())->latest()->paginate(10)->withQueryString();
+        $kanbanPengaduans = $this->filterPengaduanQuery(clone $baseQuery, request())->latest()->get();
+        $kategoris = KategoriPengaduan::orderBy('nama_kategori')->get();
+
+        return view('admin.pengaduan-index', [
+            'pengaduans' => $pengaduans,
+            'kanbanPengaduans' => $kanbanPengaduans,
+            'kategoris' => $kategoris,
+            'statusLabels' => $this->statusLabels,
             'priorityLabels' => $this->priorityLabels,
         ]);
+    }
+
+    public function adminKategoriIndex()
+    {
+        $kategoris = KategoriPengaduan::withCount('pengaduan')->orderBy('nama_kategori')->get();
+        $statusLabels = $this->statusLabels;
+        $priorityLabels = $this->priorityLabels;
+
+        return view('admin.kategori', compact('kategoris', 'statusLabels', 'priorityLabels'));
     }
 
     public function showMahasiswaPengaduan($id)
@@ -221,12 +249,15 @@ class PengaduanController extends Controller
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
+        $unreadNotifications = Auth::user()->notifications()->whereNull('read_at')->count();
+
         return view('mahasiswa.pengaduan-detail', [
             'pengaduan' => $pengaduan,
             'kategoris' => $kategoris,
             'statusLabels' => $this->statusLabels,
             'priorityLabels' => $this->priorityLabels,
             'progressSteps' => $this->progressSteps($pengaduan),
+            'unreadNotifications' => $unreadNotifications,
         ]);
     }
 

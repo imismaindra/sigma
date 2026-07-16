@@ -35,6 +35,81 @@
             background: #94a3b8;
         }
 
+        /* Badge styles */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 26px;
+            border-radius: 999px;
+            padding: 0 9px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: capitalize;
+            white-space: nowrap;
+        }
+        .badge-pending { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .badge-proses { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+        .badge-selesai { background: #d1fae5; color: #047857; border: 1px solid #a7f3d0; }
+        .badge-ditolak { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+        .badge-menunggu_klarifikasi { background: #f3e8ff; color: #7c3aed; border: 1px solid #e9d5ff; }
+        .badge-ditindaklanjuti { background: #ccfbf1; color: #0f766e; border: 1px solid #99f6e4; }
+        .badge-menunggu_verifikasi_mahasiswa { background: #e0e7ff; color: #4338ca; border: 1px solid #c7d2fe; }
+        .sla-badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 26px;
+            border-radius: 999px;
+            padding: 0 9px;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        .simple-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 14px;
+            margin-top: 18px;
+        }
+        .page-button {
+            min-height: 38px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 0 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            color: #4338ca;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .page-button.disabled {
+            color: #94a3b8;
+            background: #f8fafc;
+            cursor: not-allowed;
+        }
+        .page-info {
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            text-align: center;
+        }
+        .page-info span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
         /* Optimize scrolling performance for elements with backdrop-filter or backdrop-blur */
         [class*="backdrop-blur-"],
         .backdrop-blur,
@@ -46,6 +121,65 @@
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             will-change: transform;
+        }
+        .admin-notif-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 999px;
+            display: none;
+            place-items: center;
+            font-size: 8px;
+            font-weight: 900;
+            background: #ef4444;
+            color: #fff;
+            border: 2px solid #fff;
+            line-height: 1;
+            padding: 0 3px;
+        }
+        .admin-notif-badge.has-unread {
+            display: grid;
+        }
+        .admin-notif-panel-item {
+            display: block;
+            padding: 10px 14px;
+            text-decoration: none;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background .12s ease;
+            cursor: pointer;
+        }
+        .admin-notif-panel-item:hover {
+            background: #f8fafc;
+        }
+        .admin-notif-panel-item.unread {
+            background: #eef2ff;
+            border-left: 3px solid #6366f1;
+        }
+        .admin-notif-panel-item-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 2px;
+        }
+        .admin-notif-panel-item.unread .admin-notif-panel-item-title {
+            color: #4f46e5;
+        }
+        .admin-notif-panel-item-message {
+            font-size: 10px;
+            color: #64748b;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .admin-notif-panel-item-time {
+            font-size: 9px;
+            color: #94a3b8;
+            font-weight: 700;
+            margin-top: 3px;
         }
     </style>
     @yield('styles')
@@ -99,7 +233,22 @@
                     Dashboard Admin
                 </a>
 
+                <a href="{{ route('admin.pengaduan.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ str_starts_with($currentRoute, 'admin.pengaduan.') ? 'bg-indigo-50 text-indigo-650 border border-indigo-100/50 shadow-3xs shadow-indigo-500/5' : 'text-slate-655 hover:bg-slate-50 hover:text-slate-950 border border-transparent' }}">
+                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                    Daftar Pengaduan
+                </a>
+
+                <a href="{{ route('admin.notifications.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ str_starts_with($currentRoute, 'admin.notifications') ? 'bg-indigo-50 text-indigo-650 border border-indigo-100/50 shadow-3xs shadow-indigo-500/5' : 'text-slate-655 hover:bg-slate-50 hover:text-slate-950 border border-transparent' }}">
+                    <i data-lucide="bell" class="w-4 h-4"></i>
+                    Notifikasi
+                </a>
+
                 @if(Auth::user()->role !== 'pimpinan')
+                    <a href="{{ route('admin.kategori.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ $currentRoute === 'admin.kategori.index' ? 'bg-indigo-50 text-indigo-650 border border-indigo-100/50 shadow-3xs shadow-indigo-500/5' : 'text-slate-655 hover:bg-slate-50 hover:text-slate-950 border border-transparent' }}">
+                        <i data-lucide="tag" class="w-4 h-4"></i>
+                        Manajemen Kategori
+                    </a>
+
                     <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-bold transition-all {{ $currentRoute === 'admin.users.index' ? 'bg-indigo-50 text-indigo-650 border border-indigo-100/50 shadow-3xs shadow-indigo-500/5' : 'text-slate-655 hover:bg-slate-50 hover:text-slate-950 border border-transparent' }}">
                         <i data-lucide="users" class="w-4 h-4"></i>
                         Manajemen User
@@ -132,6 +281,26 @@
                 </div>
 
                 <div class="flex items-center gap-3">
+                    <div class="admin-notif-dropdown relative" id="adminNotifDropdown">
+                        <button type="button" class="relative inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-all cursor-pointer" id="adminNotifTrigger" aria-label="Notifikasi">
+                            <i data-lucide="bell" class="w-4 h-4"></i>
+                            @php $adminUnreadCount = Auth::user()->notifications()->whereNull('read_at')->count(); @endphp
+                            <span class="admin-notif-badge {{ $adminUnreadCount > 0 ? 'has-unread' : '' }}" id="adminNotifBellCount">{{ $adminUnreadCount }}</span>
+                        </button>
+                        <div class="admin-notif-panel hidden absolute top-full right-0 mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden" id="adminNotifPanel">
+                            <div class="flex items-center justify-between px-4 py-3 border-b border-slate-100">
+                                <span class="text-xs font-extrabold text-slate-900">Notifikasi</span>
+                                <button type="button" class="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer" id="adminNotifMarkAllRead" style="{{ $adminUnreadCount > 0 ? '' : 'display:none;' }}">Tandai dibaca</button>
+                            </div>
+                            <div class="max-h-72 overflow-y-auto" id="adminNotifPanelList">
+                                <div class="p-4 text-center text-xs text-slate-400">Memuat...</div>
+                            </div>
+                            <a href="{{ route('admin.notifications.index') }}" class="block text-center py-3 text-xs font-bold text-indigo-600 hover:bg-slate-50 border-t border-slate-100 transition-colors">
+                                Lihat Semua Notifikasi
+                            </a>
+                        </div>
+                    </div>
+
                     <div class="flex flex-col text-right">
                         <p class="text-xs font-extrabold text-slate-900 leading-none">{{ Auth::user()->nama }}</p>
                         <p class="text-[9px] text-slate-500 font-bold mt-0.5 uppercase tracking-wide">Administrator</p>
@@ -230,6 +399,99 @@
             logoutModal?.addEventListener('click', (e) => {
                 if (e.target === logoutModal) hideLogoutModal();
             });
+
+            // Admin Notification Dropdown
+            const adminTrigger = document.getElementById('adminNotifTrigger');
+            const adminPanel = document.getElementById('adminNotifPanel');
+            const adminNotifList = document.getElementById('adminNotifPanelList');
+            const adminBellCount = document.getElementById('adminNotifBellCount');
+            const adminMarkAllBtn = document.getElementById('adminNotifMarkAllRead');
+
+            if (adminTrigger) {
+                adminTrigger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const isHidden = adminPanel.classList.contains('hidden');
+                    if (!isHidden) { adminPanel.classList.add('hidden'); return; }
+                    adminPanel.classList.remove('hidden');
+                    if (adminNotifList) {
+                        adminNotifList.innerHTML = '<div class="p-4 text-center text-xs text-slate-400">Memuat...</div>';
+                        fetch('{{ route('admin.notifications.latest') }}', {
+                            headers: { 'Accept': 'application/json' }
+                        })
+                        .then(r => r.json())
+                        .then(data => {
+                            if (data.notifications.length === 0) {
+                                adminNotifList.innerHTML = '<div class="p-4 text-center text-xs text-slate-400">Tidak ada notifikasi</div>';
+                                return;
+                            }
+                            adminNotifList.innerHTML = data.notifications.map(n => `
+                                <a href="${n.url}" class="admin-notif-panel-item ${n.is_unread ? 'unread' : ''}" data-notif-id="${n.id}">
+                                    <div class="admin-notif-panel-item-title">${n.title}</div>
+                                    <div class="admin-notif-panel-item-message">${n.message}</div>
+                                    <div class="admin-notif-panel-item-time">${n.created_at}</div>
+                                </a>
+                            `).join('');
+                            adminNotifList.querySelectorAll('.admin-notif-panel-item.unread').forEach(item => {
+                                item.addEventListener('click', function() {
+                                    const id = this.dataset.notifId;
+                                    fetch('{{ route('admin.notifications.read', '') }}/' + id, {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json',
+                                        },
+                                    });
+                                });
+                            });
+                            if (adminMarkAllBtn) {
+                                adminMarkAllBtn.style.display = data.unread_count > 0 ? '' : 'none';
+                            }
+                        })
+                        .catch(() => {
+                            adminNotifList.innerHTML = '<div class="p-4 text-center text-xs text-slate-400">Gagal memuat</div>';
+                        });
+                    }
+                });
+
+                document.addEventListener('click', function(e) {
+                    const dropdown = document.getElementById('adminNotifDropdown');
+                    if (dropdown && !dropdown.contains(e.target)) {
+                        adminPanel.classList.add('hidden');
+                    }
+                });
+
+                adminMarkAllBtn?.addEventListener('click', function() {
+                    fetch('{{ route('admin.notifications.read-all') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                        },
+                    }).then(() => {
+                        document.querySelectorAll('.admin-notif-panel-item.unread').forEach(el => el.classList.remove('unread'));
+                        if (adminBellCount) {
+                            adminBellCount.textContent = '0';
+                            adminBellCount.classList.remove('has-unread');
+                        }
+                        adminMarkAllBtn.style.display = 'none';
+                    });
+                });
+
+                // Poll every 30s
+                setInterval(function() {
+                    fetch('{{ route('admin.notifications.unread-count') }}', {
+                        headers: { 'Accept': 'application/json' }
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (adminBellCount) {
+                            adminBellCount.textContent = data.count;
+                            adminBellCount.classList.toggle('has-unread', data.count > 0);
+                        }
+                    })
+                    .catch(() => {});
+                }, 30000);
+            }
 
             // Initialize Lucide Icons
             if (typeof lucide !== 'undefined') {
